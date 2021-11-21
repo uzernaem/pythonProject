@@ -34,7 +34,7 @@ class Image(models.Model):
 
 class ToDo(Inquiry):
     """Модель заявки на исполнение"""
-    author = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, related_name='todo_author')
+    author = models.ForeignKey('Profile', on_delete=models.SET_NULL, null=True, related_name='todo_author')
     TASK_STATUS = (
         ('n', 'Новая'),
         ('w', 'В работе'),
@@ -61,7 +61,7 @@ class ToDo(Inquiry):
         default='2',
         help_text='Приоритет заявки',
     )
-    assigned_person = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, related_name='assignee')
+    assignee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='assignee')
     status = models.CharField(
         max_length=1,
         choices=TASK_STATUS,
@@ -80,13 +80,13 @@ class ToDo(Inquiry):
 
 class Survey(Inquiry):
     """Модель опроса"""
-    author = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, related_name='survey_author')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='survey_author')
     deadline = models.DateTimeField
 
 
 class Announcement(Inquiry):
     """Модель объявления"""
-    author = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, related_name='announcement_author')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='announcement_author')
     deadline = models.DateTimeField
 
 
@@ -117,7 +117,7 @@ class Property(models.Model):
 
 class Ownership(models.Model):
     """Модель отношения помещение-собственник"""
-    owner = models.ForeignKey('Person', on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     property = models.ForeignKey('Property', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
@@ -128,7 +128,7 @@ class Comment(models.Model):
     """Модель комментария в заявке на исполнение"""
     task = models.ForeignKey('ToDo', on_delete=models.SET_NULL, null=True)
     text = models.TextField(max_length=4096, help_text='Введите текст комментария')
-    author = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     date = models.DateTimeField
 
 
@@ -144,16 +144,15 @@ class Selection(models.Model):
 class Vote(models.Model):
     """Модель голоса"""
     survey = models.ForeignKey('Survey', on_delete=models.CASCADE, null=True)
-    person = models.ForeignKey('Person', on_delete=models.CASCADE, null=True)
+    voter = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     selection = models.ForeignKey('Selection', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f'{self.person}'
+        return f'{self.voter}'
 
 
-class Person(models.Model):
+class Profile(models.Model):
     """Модель человека в системе"""
-    # id = models.IntegerField(help_text='Идентификатор')
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, verbose_name='Пользователь')
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -167,11 +166,11 @@ class Person(models.Model):
         ordering = ['is_manager', 'user']
 
     def __str__(self):
-        return self.user.username
+        return f'{self.first_name} {self.last_name}'
 
 
 @receiver(post_save, sender=User)
-def update_person_signal(sender, instance, created, **kwargs):
+def update_profile_signal(sender, instance, created, **kwargs):
     if created:
-        Person.objects.create(user=instance)
-    instance.person.save()
+        Profile.objects.create(user=instance)
+    instance.profile.save()
