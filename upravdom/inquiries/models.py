@@ -1,40 +1,19 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.urls import reverse
 from django.contrib.auth.models import User
+from django.forms import ModelForm, DateInput
 
 
 # Create your models here.
-
 class Inquiry(models.Model):
-    """Модель заявки"""
+    """Модель заявки на исполнение"""
     id = models.IntegerField(primary_key=True, help_text='Идентификатор заявки')
     title = models.CharField(max_length=256, help_text='Введите заголовок заявки')
     text = models.TextField(max_length=4096, help_text='Введите текст заявки')
     date = models.DateTimeField
     done = models.BooleanField
-
-    class Meta:
-        abstract = True
-
-    def __str__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        """URL для доступа к объекту класса заявка"""
-        return reverse('inquiry-detail', args=[str(self.id)])
-
-
-class Image(models.Model):
-    """Изображения в заявке"""
-    inquiry = models.ForeignKey('ToDo', on_delete=models.CASCADE, help_text='Заявка')
-    image = models.BinaryField(help_text='Изображение')
-
-
-class ToDo(Inquiry):
-    """Модель заявки на исполнение"""
-    author = models.ForeignKey('Profile', on_delete=models.SET_NULL, null=True, related_name='todo_author')
+    author = models.ForeignKey('Profile', on_delete=models.SET_NULL, null=True, related_name='inquiry_author')
     TASK_STATUS = (
         ('n', 'Новая'),
         ('w', 'В работе'),
@@ -78,16 +57,50 @@ class ToDo(Inquiry):
     )
 
 
-class Survey(Inquiry):
+class InquiryForm(ModelForm):
+    class Meta:
+        model = Inquiry
+        fields = ['title', 'text', 'category']
+
+
+class Image(models.Model):
+    """Изображения в заявке"""
+    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, help_text='Заявка')
+    image = models.BinaryField(help_text='Изображение')
+
+
+class Survey(models.Model):
     """Модель опроса"""
+    id = models.IntegerField(primary_key=True, help_text='Идентификатор опроса')
+    title = models.CharField(max_length=256, help_text='Введите заголовок опроса')
+    text = models.TextField(max_length=4096, help_text='Введите текст опроса')
+    date = models.DateTimeField
+    done = models.BooleanField
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='survey_author')
-    deadline = models.DateTimeField
+    deadline = models.DateField()
 
 
-class Announcement(Inquiry):
+class SurveyForm(ModelForm):
+    class Meta:
+        model = Survey
+        fields = ['title', 'text', 'deadline']
+
+
+class Announcement(models.Model):
     """Модель объявления"""
+    id = models.IntegerField(primary_key=True, help_text='Идентификатор объявления')
+    title = models.CharField(max_length=256, help_text='Введите заголовок объявления')
+    text = models.TextField(max_length=4096, help_text='Введите текст объявления')
+    date = models.DateTimeField
+    done = models.BooleanField
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='announcement_author')
-    deadline = models.DateTimeField
+    deadline = models.DateField()
+
+
+class AnnouncementForm(ModelForm):
+    class Meta:
+        model = Announcement
+        fields = ['title', 'text', 'deadline']
 
 
 class Property(models.Model):
@@ -126,7 +139,7 @@ class Ownership(models.Model):
 
 class Comment(models.Model):
     """Модель комментария в заявке на исполнение"""
-    task = models.ForeignKey('ToDo', on_delete=models.SET_NULL, null=True)
+    task = models.ForeignKey('Inquiry', on_delete=models.SET_NULL, null=True)
     text = models.TextField(max_length=4096, help_text='Введите текст комментария')
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     date = models.DateTimeField
