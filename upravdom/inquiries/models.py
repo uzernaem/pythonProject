@@ -13,7 +13,7 @@ class Inquiry(models.Model):
     text = models.TextField(max_length=4096, help_text='Введите текст заявки')
     date = models.DateTimeField
     done = models.BooleanField
-    author = models.ForeignKey('Profile', on_delete=models.SET_NULL, null=True, related_name='inquiry_author')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='inquiry_author')
     TASK_STATUS = (
         ('n', 'Новая'),
         ('w', 'В работе'),
@@ -68,7 +68,7 @@ class Image(models.Model):
     inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, help_text='Заявка')
     image = models.BinaryField(help_text='Изображение')
 
-
+"""DEPRECATION"""
 class Survey(models.Model):
     """Модель опроса"""
     id = models.IntegerField(primary_key=True, help_text='Идентификатор опроса')
@@ -147,7 +147,7 @@ class Comment(models.Model):
 
 class Selection(models.Model):
     """Модель варианта голосования"""
-    survey = models.ForeignKey('Survey', on_delete=models.SET_NULL, null=True)
+    survey = models.ForeignKey('Survey', on_delete=models.CASCADE, null=True)
     text = models.TextField(max_length=512, help_text='Текст варианта голосования')
 
     def __str__(self):
@@ -156,7 +156,6 @@ class Selection(models.Model):
 
 class Vote(models.Model):
     """Модель голоса"""
-    survey = models.ForeignKey('Survey', on_delete=models.CASCADE, null=True)
     voter = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     selection = models.ForeignKey('Selection', on_delete=models.CASCADE, null=True)
 
@@ -165,7 +164,7 @@ class Vote(models.Model):
 
 
 class Profile(models.Model):
-    """Модель человека в системе"""
+    """Профиль пользователя системы"""
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, verbose_name='Пользователь')
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # Add our new application
     'inquiries.apps.InquiriesConfig', #This object was created for us in /catalog/apps.py
     'accounts',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
