@@ -8,12 +8,22 @@ from django.forms import ModelForm, DateInput
 # Create your models here.
 class Inquiry(models.Model):
     """Модель заявки на исполнение"""
-    id = models.IntegerField(primary_key=True, help_text='Идентификатор заявки')
-    title = models.CharField(max_length=256, help_text='Введите заголовок заявки')
-    text = models.TextField(max_length=4096, help_text='Введите текст заявки')
-    date = models.DateTimeField
-    done = models.BooleanField
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='inquiry_author')
+    inquiry_id = models.IntegerField(primary_key=True, help_text='Идентификатор заявки')
+    inquiry_title = models.CharField(max_length=256, help_text='Введите заголовок заявки')
+    inquiry_text = models.TextField(max_length=4096, help_text='Введите текст заявки')
+    inquiry_creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    inquiry_creation_date = models.DateTimeField
+    inquiry_is_done = models.BooleanField
+
+
+class InquiryForm(ModelForm):
+    class Meta:
+        model = Inquiry
+        fields = ['inquiry_title', 'inquiry_text']
+
+
+class ToDo(ModelForm):
+    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE)
     TASK_STATUS = (
         ('n', 'Новая'),
         ('w', 'В работе'),
@@ -33,22 +43,22 @@ class Inquiry(models.Model):
         ('4', 'Лифт'),
         ('5', 'Общедомовая территория'),
     )
-    priority = models.CharField(
+    todo_priority = models.CharField(
         max_length=1,
         choices=TASK_PRIORITY,
         blank=True,
         default='2',
         help_text='Приоритет заявки',
     )
-    assignee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='assignee')
-    status = models.CharField(
+    todo_assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='assignee')
+    todo_status = models.CharField(
         max_length=1,
         choices=TASK_STATUS,
         blank=True,
         default='n',
         help_text='Статус заявки',
     )
-    category = models.CharField(
+    todo_category = models.CharField(
         max_length=1,
         choices=TASK_CATEGORY,
         blank=True,
@@ -57,68 +67,56 @@ class Inquiry(models.Model):
     )
 
 
-class InquiryForm(ModelForm):
-    class Meta:
-        model = Inquiry
-        fields = ['title', 'text', 'category']
-
-
 class Image(models.Model):
     """Изображения в заявке"""
     inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, help_text='Заявка')
     image = models.BinaryField(help_text='Изображение')
 
+
 """DEPRECATION"""
-class Survey(models.Model):
+class Poll(models.Model):
     """Модель опроса"""
-    id = models.IntegerField(primary_key=True, help_text='Идентификатор опроса')
-    title = models.CharField(max_length=256, help_text='Введите заголовок опроса')
-    text = models.TextField(max_length=4096, help_text='Введите текст опроса')
-    date = models.DateTimeField
-    done = models.BooleanField
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='survey_author')
-    deadline = models.DateField()
-
-
-class SurveyForm(ModelForm):
-    class Meta:
-        model = Survey
-        fields = ['title', 'text', 'deadline']
+    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE)
+    poll_deadline = models.DateField()
 
 
 class Announcement(models.Model):
     """Модель объявления"""
-    id = models.IntegerField(primary_key=True, help_text='Идентификатор объявления')
-    title = models.CharField(max_length=256, help_text='Введите заголовок объявления')
-    text = models.TextField(max_length=4096, help_text='Введите текст объявления')
-    date = models.DateTimeField
-    done = models.BooleanField
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='announcement_author')
-    deadline = models.DateField()
-
-
-class AnnouncementForm(ModelForm):
-    class Meta:
-        model = Announcement
-        fields = ['title', 'text', 'deadline']
+    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE)
+    announcement_is_visible = models.BooleanField(default=False)
+    announcement_auto_invisible_date = models.DateField()
+    ANNOUNCEMENT_CATEGORY = (
+        ('1', 'Placeholder'),
+        ('2', 'Placeholder'),
+        ('3', 'Placeholder'),
+        ('4', 'Placeholder'),
+        ('5', 'Placeholder'),
+    )
+    category = models.CharField(
+        max_length=1,
+        choices=ANNOUNCEMENT_CATEGORY,
+        blank=True,
+        default='1',
+        help_text='Категория заявки',
+    )
 
 
 class Property(models.Model):
     """Модель помещения"""
-    id = models.IntegerField(primary_key=True, help_text='Идентификатор помещения')
-    street = models.CharField(max_length=100, help_text='Улица')
-    building = models.IntegerField(help_text='Номер дома')
-    number = models.IntegerField(help_text='Номер помещения')
-    entrance = models.IntegerField(help_text='Номер подъезда')
-    flat = models.IntegerField(help_text='Номер этажа')
-    area = models.IntegerField(help_text='Площадь помещения')
-    PROPERTY_TYPE = (
+    property_id = models.IntegerField(primary_key=True, help_text='Идентификатор помещения')
+    property_street_name = models.CharField(max_length=100, help_text='Улица')
+    property_building_number = models.IntegerField(help_text='Номер дома')
+    property_entrance_number = models.IntegerField(help_text='Номер подъезда')
+    property_flat_number = models.IntegerField(help_text='Номер этажа')
+    property_room_number = models.IntegerField(help_text='Номер помещения')
+    property_area = models.IntegerField(help_text='Площадь помещения')
+    PROPERTY_TYPES = (
         ('0', 'Жилое'),
         ('1', 'Коммерческое'),
     )
-    priority = models.CharField(
+    property_type = models.CharField(
         max_length=1,
-        choices=PROPERTY_TYPE,
+        choices=PROPERTY_TYPES,
         blank=True,
         default='0',
         help_text='Тип помещения',
@@ -139,16 +137,16 @@ class Ownership(models.Model):
 
 class Comment(models.Model):
     """Модель комментария в заявке на исполнение"""
-    task = models.ForeignKey('Inquiry', on_delete=models.SET_NULL, null=True)
-    text = models.TextField(max_length=4096, help_text='Введите текст комментария')
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    date = models.DateTimeField
+    inquiry = models.ForeignKey('Inquiry', on_delete=models.SET_NULL, null=True)
+    comment_text = models.TextField(max_length=4096, help_text='Введите текст комментария')
+    comment_creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    comment_creation_datetime = models.DateTimeField
 
 
-class Selection(models.Model):
+class VoteOption(models.Model):
     """Модель варианта голосования"""
-    survey = models.ForeignKey('Survey', on_delete=models.CASCADE, null=True)
-    text = models.TextField(max_length=512, help_text='Текст варианта голосования')
+    poll = models.ForeignKey('Poll', on_delete=models.CASCADE, null=True)
+    vote_option_text = models.TextField(max_length=512, help_text='Текст варианта голосования')
 
     def __str__(self):
         return f'{self.text}'
@@ -157,7 +155,7 @@ class Selection(models.Model):
 class Vote(models.Model):
     """Модель голоса"""
     voter = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    selection = models.ForeignKey('Selection', on_delete=models.CASCADE, null=True)
+    selected_option = models.ForeignKey('VoteOption', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f'{self.voter}'
