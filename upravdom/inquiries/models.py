@@ -7,13 +7,13 @@ from django.forms import ModelForm, DateInput
 
 # Create your models here.
 class Inquiry(models.Model):
-    """Модель заявки на исполнение"""
-    inquiry_id = models.IntegerField(primary_key=True, help_text='Идентификатор заявки')
-    inquiry_title = models.CharField(max_length=256, help_text='Введите заголовок заявки')
-    inquiry_text = models.TextField(max_length=4096, help_text='Введите текст заявки')
-    inquiry_creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    inquiry_creation_date = models.DateTimeField
-    inquiry_is_done = models.BooleanField
+    """Модель заявки"""
+    inquiry_id = models.IntegerField(primary_key=True, help_text='Идентификатор заявки', blank=False)
+    inquiry_title = models.CharField(max_length=256, help_text='Заголовок заявки', blank=False)
+    inquiry_text = models.TextField(max_length=4096, help_text='Текст заявки', blank=False)
+    inquiry_creator = models.ForeignKey(User, help_text='Создатель заявки', on_delete=models.SET_NULL, null=True)
+    inquiry_creation_date = models.DateTimeField(blank=False, help_text='Дата создания заявки')
+    inquiry_is_done = models.BooleanField(blank=False, help_text='Признак завершения заявки')
 
 
 class InquiryForm(ModelForm):
@@ -22,8 +22,9 @@ class InquiryForm(ModelForm):
         fields = ['inquiry_title', 'inquiry_text']
 
 
-class ToDo(ModelForm):
-    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE)
+class ToDo(models.Model):
+    """Модель заявки на исполнение"""
+    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Заявка')
     TASK_STATUS = (
         ('n', 'Новая'),
         ('w', 'В работе'),
@@ -49,8 +50,9 @@ class ToDo(ModelForm):
         blank=True,
         default='2',
         help_text='Приоритет заявки',
+        null=False,
     )
-    todo_assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='assignee')
+    todo_assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text='Исполнитель заявки')
     todo_status = models.CharField(
         max_length=1,
         choices=TASK_STATUS,
@@ -64,27 +66,29 @@ class ToDo(ModelForm):
         blank=True,
         default='1',
         help_text='Категория заявки',
+        null=False,
     )
 
 
 class Image(models.Model):
-    """Изображения в заявке"""
-    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, help_text='Заявка')
+    """Изображение в заявке"""
+    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, blank=False, help_text='Заявка')
     image = models.BinaryField(help_text='Изображение')
 
 
-"""DEPRECATION"""
 class Poll(models.Model):
-    """Модель опроса"""
-    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE)
-    poll_deadline = models.DateField()
+    """Модель голосования"""
+    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Заявка')
+    poll_open = models.BooleanField(null=False, help_text='Открытое голосование')
+    poll_preliminary_results = models.BooleanField(null=False, help_text='Предварительные результаты')
+    poll_deadline = models.DateField(null=False, help_text='Дата завершения голосования')
 
 
 class Announcement(models.Model):
     """Модель объявления"""
-    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE)
-    announcement_is_visible = models.BooleanField(default=False)
-    announcement_auto_invisible_date = models.DateField()
+    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Заявка')
+    announcement_is_visible = models.BooleanField(default=False, blank=False, help_text='Признак публикации')
+    announcement_auto_invisible_date = models.DateField(blank=False, help_text='Дата актуальности')
     ANNOUNCEMENT_CATEGORY = (
         ('1', 'Placeholder'),
         ('2', 'Placeholder'),
@@ -95,21 +99,21 @@ class Announcement(models.Model):
     category = models.CharField(
         max_length=1,
         choices=ANNOUNCEMENT_CATEGORY,
-        blank=True,
         default='1',
-        help_text='Категория заявки',
+        help_text='Категория объявления',
+        blank=False,
     )
 
 
 class Property(models.Model):
     """Модель помещения"""
-    property_id = models.IntegerField(primary_key=True, help_text='Идентификатор помещения')
-    property_street_name = models.CharField(max_length=100, help_text='Улица')
-    property_building_number = models.IntegerField(help_text='Номер дома')
-    property_entrance_number = models.IntegerField(help_text='Номер подъезда')
-    property_flat_number = models.IntegerField(help_text='Номер этажа')
-    property_room_number = models.IntegerField(help_text='Номер помещения')
-    property_area = models.IntegerField(help_text='Площадь помещения')
+    property_id = models.IntegerField(primary_key=True, help_text='Идентификатор помещения', blank=False)
+    property_street_name = models.CharField(max_length=100, help_text='Улица', blank=False)
+    property_building_number = models.IntegerField(help_text='Номер дома', blank=False)
+    property_entrance_number = models.IntegerField(help_text='Номер подъезда', blank=False)
+    property_flat_number = models.IntegerField(help_text='Номер этажа', blank=False)
+    property_room_number = models.IntegerField(help_text='Номер помещения', blank=False)
+    property_area = models.IntegerField(help_text='Площадь помещения', blank=False)
     PROPERTY_TYPES = (
         ('0', 'Жилое'),
         ('1', 'Коммерческое'),
@@ -117,9 +121,9 @@ class Property(models.Model):
     property_type = models.CharField(
         max_length=1,
         choices=PROPERTY_TYPES,
-        blank=True,
         default='0',
         help_text='Тип помещения',
+        blank=False
     )
 
     def __str__(self):
@@ -128,8 +132,8 @@ class Property(models.Model):
 
 class Ownership(models.Model):
     """Модель отношения помещение-собственник"""
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    property = models.ForeignKey('Property', on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, help_text='Владелец помещения')
+    property = models.ForeignKey('Property', on_delete=models.CASCADE, blank=False, help_text='Помещение')
 
     def __str__(self):
         return f'{self.owner} - {self.property}'
@@ -137,16 +141,17 @@ class Ownership(models.Model):
 
 class Comment(models.Model):
     """Модель комментария в заявке на исполнение"""
-    inquiry = models.ForeignKey('Inquiry', on_delete=models.SET_NULL, null=True)
-    comment_text = models.TextField(max_length=4096, help_text='Введите текст комментария')
-    comment_creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    comment_creation_datetime = models.DateTimeField
+    comment_id = models.IntegerField(primary_key=True, blank=False, help_text='ID комментария')
+    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, blank=False, help_text='Заявка')
+    comment_text = models.TextField(max_length=4096, help_text='Текст комментария', blank=False)
+    comment_creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text='Автор комментария')
+    comment_creation_datetime = models.DateTimeField(blank=False, help_text='Дата и время комментария')
 
 
 class VoteOption(models.Model):
     """Модель варианта голосования"""
-    poll = models.ForeignKey('Poll', on_delete=models.CASCADE, null=True)
-    vote_option_text = models.TextField(max_length=512, help_text='Текст варианта голосования')
+    poll = models.ForeignKey('Poll', on_delete=models.CASCADE, blank=False, help_text='Голосование')
+    vote_option_text = models.TextField(max_length=512, help_text='Текст варианта голосования', blank=False)
 
     def __str__(self):
         return f'{self.text}'
@@ -154,8 +159,9 @@ class VoteOption(models.Model):
 
 class Vote(models.Model):
     """Модель голоса"""
-    voter = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    selected_option = models.ForeignKey('VoteOption', on_delete=models.CASCADE, null=True)
+    voter = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, help_text='Пользователь')
+    selected_option = models.ForeignKey('VoteOption', on_delete=models.CASCADE, blank=False, help_text='Выбранный '
+                                                                                                       'вариант')
 
     def __str__(self):
         return f'{self.voter}'
@@ -163,14 +169,14 @@ class Vote(models.Model):
 
 class Profile(models.Model):
     """Профиль пользователя системы"""
-    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, verbose_name='Пользователь')
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=150)
-    phone_number = models.CharField(max_length=100)
-    photo = models.BinaryField
-    is_manager = models.BooleanField(default=False)
-    is_blocked = models.BooleanField(default=False)
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Пользователь')
+    first_name = models.CharField(max_length=100, help_text='Имя пользователя')
+    last_name = models.CharField(max_length=100, help_text='Фамилия пользователя')
+    email = models.EmailField(max_length=150, help_text='Адрес электронной почты')
+    phone_number = models.CharField(max_length=100, help_text='Номер телефона')
+    photo = models.BinaryField(null=True, help_text='Фотография пользователя')
+    is_manager = models.BooleanField(default=False, blank=False, help_text='Признак управляющего')
+    is_blocked = models.BooleanField(default=False, blank=False, help_text='Признак блокировки')
 
     class Meta:
         ordering = ['is_manager', 'user']
