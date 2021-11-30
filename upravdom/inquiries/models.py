@@ -2,13 +2,13 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
-from django.forms import ModelForm, DateInput
+from django.forms import ModelForm
 
 
 # Create your models here.
 class Inquiry(models.Model):
     """Модель заявки"""
-    inquiry_id = models.IntegerField(primary_key=True, help_text='Идентификатор заявки', blank=False)
+    inquiry_id = models.AutoField(primary_key=True, help_text='Идентификатор заявки', blank=False)
     inquiry_title = models.CharField(max_length=256, help_text='Заголовок заявки', blank=False)
     inquiry_text = models.TextField(max_length=4096, help_text='Текст заявки', blank=False)
     inquiry_creator = models.ForeignKey(User, help_text='Создатель заявки', on_delete=models.SET_NULL, null=True)
@@ -24,7 +24,8 @@ class InquiryForm(ModelForm):
 
 class ToDo(models.Model):
     """Модель заявки на исполнение"""
-    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Заявка')
+    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False,
+                                   help_text='Заявка')
     TASK_STATUS = (
         ('n', 'Новая'),
         ('w', 'В работе'),
@@ -69,6 +70,26 @@ class ToDo(models.Model):
         null=False,
     )
 
+    def change_assignee(self, person):
+        if self.todo_status == 'w':
+            self.todo_assigned_to = person
+
+    def send_to_review(self):
+        if self.todo_status == 'w':
+            self.todo_status = 'r'
+
+    def accept(self):
+        if self.todo_status == 'r':
+            self.todo_status = 'c'
+            self.todo_assigned_to = models.SET_NULL
+
+    def reject(self):
+        if self.todo_status == 'r':
+            self.todo_status = 'w'
+
+    def assign(self, assignee):
+        self.todo_assigned_to = assignee
+
 
 class Image(models.Model):
     """Изображение в заявке"""
@@ -78,7 +99,8 @@ class Image(models.Model):
 
 class Poll(models.Model):
     """Модель голосования"""
-    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Заявка')
+    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False,
+                                   help_text='Заявка')
     poll_open = models.BooleanField(null=False, help_text='Открытое голосование')
     poll_preliminary_results = models.BooleanField(null=False, help_text='Предварительные результаты')
     poll_deadline = models.DateField(null=False, help_text='Дата завершения голосования')
@@ -86,28 +108,53 @@ class Poll(models.Model):
 
 class Announcement(models.Model):
     """Модель объявления"""
-    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Заявка')
+    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False,
+                                   help_text='Заявка')
     announcement_is_visible = models.BooleanField(default=False, blank=False, help_text='Признак публикации')
     announcement_auto_invisible_date = models.DateField(blank=False, help_text='Дата актуальности')
     ANNOUNCEMENT_CATEGORY = (
+        ('0', 'Placeholder'),
         ('1', 'Placeholder'),
         ('2', 'Placeholder'),
         ('3', 'Placeholder'),
         ('4', 'Placeholder'),
         ('5', 'Placeholder'),
     )
-    category = models.CharField(
+    announcement_category = models.CharField(
         max_length=1,
         choices=ANNOUNCEMENT_CATEGORY,
-        default='1',
+        default='0',
         help_text='Категория объявления',
+        blank=False,
+    )
+
+
+class Notification(models.Model):
+    """Модель уведомления"""
+    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False,
+                                   help_text='Заявка')
+    notification_is_read = models.BooleanField(default=False, blank=False, help_text='Признак прочтения')
+    notification_recipient = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text='Получатель')
+    NOTIFICATION_CATEGORY = (
+        ('0', 'Общее'),
+        ('1', 'Оплата счетов'),
+        ('2', 'Показания счётчиков'),
+        ('3', 'Placeholder'),
+        ('4', 'Placeholder'),
+        ('5', 'Placeholder'),
+    )
+    notification_category = models.CharField(
+        max_length=1,
+        choices=NOTIFICATION_CATEGORY,
+        default='0',
+        help_text='Категория уведомления',
         blank=False,
     )
 
 
 class Property(models.Model):
     """Модель помещения"""
-    property_id = models.IntegerField(primary_key=True, help_text='Идентификатор помещения', blank=False)
+    property_id = models.AutoField(primary_key=True, help_text='Идентификатор помещения', blank=False)
     property_street_name = models.CharField(max_length=100, help_text='Улица', blank=False)
     property_building_number = models.IntegerField(help_text='Номер дома', blank=False)
     property_entrance_number = models.IntegerField(help_text='Номер подъезда', blank=False)
@@ -127,7 +174,7 @@ class Property(models.Model):
     )
 
     def __str__(self):
-        return f'ул. {self.street}, д. {self.building}, кв. {self.number}'
+        return f'ул. {self.property_street_name}, д. {self.property_building_number}, кв. {self.property_room_number}'
 
 
 class Ownership(models.Model):
@@ -141,7 +188,7 @@ class Ownership(models.Model):
 
 class Comment(models.Model):
     """Модель комментария в заявке на исполнение"""
-    comment_id = models.IntegerField(primary_key=True, blank=False, help_text='ID комментария')
+    comment_id = models.AutoField(primary_key=True, blank=False, help_text='ID комментария')
     inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, blank=False, help_text='Заявка')
     comment_text = models.TextField(max_length=4096, help_text='Текст комментария', blank=False)
     comment_creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text='Автор комментария')
@@ -182,7 +229,10 @@ class Profile(models.Model):
         ordering = ['is_manager', 'user']
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        if self.first_name == "" and self.last_name == "":
+            return str(self.user)
+        else:
+            return f'{self.first_name} {self.last_name}'
 
 
 @receiver(post_save, sender=User)
