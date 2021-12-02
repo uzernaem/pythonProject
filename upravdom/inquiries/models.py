@@ -22,10 +22,8 @@ class InquiryForm(ModelForm):
         fields = ['inquiry_title', 'inquiry_text']
 
 
-class ToDo(models.Model):
+class ToDo(Inquiry):
     """Модель заявки на исполнение"""
-    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False,
-                                   help_text='Заявка')
     TASK_STATUS = (
         ('n', 'Новая'),
         ('w', 'В работе'),
@@ -70,6 +68,9 @@ class ToDo(models.Model):
         null=False,
     )
 
+    def __str__(self):
+        return f'Заявка на исполнение: {self.inquiry_creation_date} - {self.inquiry_title}'
+
     def change_assignee(self, person):
         if self.todo_status == 'w':
             self.todo_assigned_to = person
@@ -97,19 +98,18 @@ class Image(models.Model):
     image = models.BinaryField(help_text='Изображение')
 
 
-class Poll(models.Model):
+class Poll(Inquiry):
     """Модель голосования"""
-    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False,
-                                   help_text='Заявка')
     poll_open = models.BooleanField(null=False, help_text='Открытое голосование')
     poll_preliminary_results = models.BooleanField(null=False, help_text='Предварительные результаты')
     poll_deadline = models.DateField(null=False, help_text='Дата завершения голосования')
 
+    def __str__(self):
+        return f'Опрос: {self.inquiry_creation_date} - {self.inquiry_title}'
 
-class Announcement(models.Model):
+
+class Announcement(Inquiry):
     """Модель объявления"""
-    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False,
-                                   help_text='Заявка')
     announcement_is_visible = models.BooleanField(default=False, blank=False, help_text='Признак публикации')
     announcement_auto_invisible_date = models.DateField(blank=False, help_text='Дата актуальности')
     ANNOUNCEMENT_CATEGORY = (
@@ -128,11 +128,12 @@ class Announcement(models.Model):
         blank=False,
     )
 
+    def __str__(self):
+        return f'Объявление: {self.inquiry_creation_date} - {self.inquiry_title}'
 
-class Notification(models.Model):
+
+class Notification(Inquiry):
     """Модель уведомления"""
-    inquiry = models.OneToOneField('Inquiry', primary_key=True, on_delete=models.CASCADE, blank=False,
-                                   help_text='Заявка')
     notification_is_read = models.BooleanField(default=False, blank=False, help_text='Признак прочтения')
     notification_recipient = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text='Получатель')
     NOTIFICATION_CATEGORY = (
@@ -150,6 +151,9 @@ class Notification(models.Model):
         help_text='Категория уведомления',
         blank=False,
     )
+
+    def __str__(self):
+        return f'Уведомление: {self.inquiry_creation_date} - {self.inquiry_title}'
 
 
 class Property(models.Model):

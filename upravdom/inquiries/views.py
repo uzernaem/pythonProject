@@ -1,15 +1,61 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import AnnouncementSerializer
+from rest_framework import viewsets
+from rest_framework import permissions
+from .serializers import AnnouncementSerializer, ToDoSerializer, PollSerializer, NotificationSerializer, \
+    CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer
+from .models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile
 
 
 # Create your views here.
-class AnnouncementViews(APIView):
-    def post(self, request):
-        serializer = AnnouncementSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
-        else:
-            return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+class ToDoViewSet(viewsets.ModelViewSet):
+    queryset = ToDo.objects.all()
+    serializer_class = ToDoSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class AnnouncementViewSet(viewsets.ModelViewSet):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class PollViewSet(viewsets.ModelViewSet):
+    queryset = Poll.objects.all()
+    serializer_class = PollSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class PropertyViewSet(viewsets.ModelViewSet):
+    queryset = Property.objects.all()
+    serializer_class = AnnouncementSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class VoteOptionViewSet(viewsets.ModelViewSet):
+    queryset = VoteOption.objects.all()
+    serializer_class = VoteOptionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class VoteViewSet(viewsets.ModelViewSet):
+    queryset = Vote.objects.all()
+    serializer_class = VoteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
