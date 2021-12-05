@@ -6,14 +6,17 @@ from django.forms import ModelForm
 
 
 # Create your models here.
+from django.utils.datetime_safe import datetime
+
+
 class Inquiry(models.Model):
     """Модель заявки"""
     inquiry_id = models.AutoField(primary_key=True, help_text='Идентификатор заявки', blank=False)
     inquiry_title = models.CharField(max_length=256, help_text='Заголовок заявки', blank=False)
     inquiry_text = models.TextField(max_length=4096, help_text='Текст заявки', blank=False)
     inquiry_creator = models.ForeignKey(User, help_text='Создатель заявки', on_delete=models.SET_NULL, null=True)
-    inquiry_creation_date = models.DateTimeField(blank=False, help_text='Дата создания заявки')
-    inquiry_is_done = models.BooleanField(blank=False, help_text='Признак завершения заявки')
+    inquiry_creation_date = models.DateTimeField(blank=False, default=datetime.now(), help_text='Дата создания заявки')
+    inquiry_is_done = models.BooleanField(blank=False, default=False, help_text='Признак завершения заявки')
 
 
 class InquiryForm(ModelForm):
@@ -51,7 +54,10 @@ class ToDo(Inquiry):
         help_text='Приоритет заявки',
         null=False,
     )
-    todo_assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text='Исполнитель заявки')
+    todo_assigned_to = models.ForeignKey(User,
+                                         on_delete=models.SET_NULL,
+                                         blank=True, null=True,
+                                         help_text='Исполнитель заявки')
     todo_status = models.CharField(
         max_length=1,
         choices=TASK_STATUS,
