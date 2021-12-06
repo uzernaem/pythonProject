@@ -1,8 +1,10 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.contrib.postgres.fields import ArrayField
 
 
 # Create your models here.
@@ -15,8 +17,8 @@ class Inquiry(models.Model):
     inquiry_title = models.CharField(max_length=256, help_text='Заголовок заявки', blank=False)
     inquiry_text = models.TextField(max_length=4096, help_text='Текст заявки', blank=False)
     inquiry_creator = models.ForeignKey(User, help_text='Создатель заявки', on_delete=models.SET_NULL, null=True)
-    inquiry_creation_date = models.DateTimeField(blank=False, default=datetime.now(), help_text='Дата создания заявки')
-    inquiry_is_done = models.BooleanField(blank=False, default=False, help_text='Признак завершения заявки')
+    inquiry_creation_date = models.DateTimeField(auto_now_add=True, help_text='Дата создания заявки')
+    inquiry_is_done = models.BooleanField(blank=True, default=False, help_text='Признак завершения заявки')
 
 
 class InquiryForm(ModelForm):
@@ -100,15 +102,17 @@ class ToDo(Inquiry):
 
 class Image(models.Model):
     """Изображение в заявке"""
-    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, blank=False, help_text='Заявка')
+    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, null=False, help_text='Заявка')
     image = models.BinaryField(help_text='Изображение')
 
 
 class Poll(Inquiry):
     """Модель голосования"""
-    poll_open = models.BooleanField(null=False, help_text='Открытое голосование')
-    poll_preliminary_results = models.BooleanField(null=False, help_text='Предварительные результаты')
+    poll_open = models.BooleanField(blank=True, default=False, help_text='Открытое голосование')
+    poll_preliminary_results = models.BooleanField(blank=True, default=False, help_text='Предварительные результаты')
     poll_deadline = models.DateField(null=False, help_text='Дата завершения голосования')
+    # poll_variants = models.JSONField(help_text='Варианты голосования')
+    # poll_variants = ArrayField(models.CharField(max_length=255), blank=True)
 
     def __str__(self):
         return f'Опрос: {self.inquiry_creation_date} - {self.inquiry_title}'
@@ -116,8 +120,8 @@ class Poll(Inquiry):
 
 class Announcement(Inquiry):
     """Модель объявления"""
-    announcement_is_visible = models.BooleanField(default=False, blank=False, help_text='Признак публикации')
-    announcement_auto_invisible_date = models.DateField(blank=False, help_text='Дата актуальности')
+    announcement_is_visible = models.BooleanField(default=True, blank=False, help_text='Признак публикации')
+    announcement_auto_invisible_date = models.DateField(blank=True, null=True, help_text='Дата актуальности')
     ANNOUNCEMENT_CATEGORY = (
         ('0', 'Placeholder'),
         ('1', 'Placeholder'),
@@ -127,6 +131,7 @@ class Announcement(Inquiry):
         ('5', 'Placeholder'),
     )
     announcement_category = models.CharField(
+        null=False,
         max_length=1,
         choices=ANNOUNCEMENT_CATEGORY,
         default='0',
@@ -140,7 +145,7 @@ class Announcement(Inquiry):
 
 class Notification(Inquiry):
     """Модель уведомления"""
-    notification_is_read = models.BooleanField(default=False, blank=False, help_text='Признак прочтения')
+    notification_is_read = models.BooleanField(default=False, null=False, help_text='Признак прочтения')
     notification_recipient = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text='Получатель')
     NOTIFICATION_CATEGORY = (
         ('0', 'Общее'),
@@ -151,6 +156,7 @@ class Notification(Inquiry):
         ('5', 'Placeholder'),
     )
     notification_category = models.CharField(
+        null=False,
         max_length=1,
         choices=NOTIFICATION_CATEGORY,
         default='0',
@@ -199,8 +205,8 @@ class Ownership(models.Model):
 class Comment(models.Model):
     """Модель комментария в заявке на исполнение"""
     comment_id = models.AutoField(primary_key=True, blank=False, help_text='ID комментария')
-    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, blank=False, help_text='Заявка')
-    comment_text = models.TextField(max_length=4096, help_text='Текст комментария', blank=False)
+    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, blank=False, null=False, help_text='Заявка')
+    comment_text = models.TextField(max_length=4096, help_text='Текст комментария', blank=False, null=False)
     comment_creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text='Автор комментария')
     comment_creation_datetime = models.DateTimeField(blank=False, help_text='Дата и время комментария')
 
@@ -211,7 +217,7 @@ class VoteOption(models.Model):
     vote_option_text = models.TextField(max_length=512, help_text='Текст варианта голосования', blank=False)
 
     def __str__(self):
-        return f'{self.text}'
+        return f'{self.vote_option_text}'
 
 
 class Vote(models.Model):

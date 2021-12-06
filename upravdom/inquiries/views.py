@@ -1,7 +1,5 @@
 from datetime import date
 from django.db.models import Q
-
-from django.db.models.functions import Now
 from rest_framework import viewsets, generics, authentication
 from rest_framework import permissions
 from rest_framework.response import Response

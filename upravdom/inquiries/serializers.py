@@ -1,4 +1,3 @@
-from django.utils.datetime_safe import datetime
 from rest_framework import serializers
 from .models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile
 
@@ -32,17 +31,68 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         model = Announcement
         fields = '__all__'
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        announcement = Announcement(
+            inquiry_title=validated_data['inquiry_title'],
+            inquiry_creator=user,
+            inquiry_text=validated_data['inquiry_text'],
+            announcement_is_visible=validated_data['announcement_is_visible'],
+            announcement_auto_invisible_date=validated_data['announcement_auto_invisible_date'],
+            announcement_category=validated_data['announcement_category']
+        )
+        announcement.save()
+        return announcement
+
+    def update(self, instance, validated_data):
+        instance.inquiry_is_done = validated_data.get('inquiry_is_done', instance.inquiry_is_done)
+        instance.announcement_is_visible = validated_data.get('announcement_is_visible', instance.announcement_is_visible)
+        instance.announcement_auto_invisible_date = validated_data.get('announcement_auto_invisible_date', instance.announcement_auto_invisible_date)
+        instance.save()
+        return instance
+
 
 class PollSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poll
         fields = '__all__'
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        poll = Poll(
+            inquiry_title=validated_data['inquiry_title'],
+            inquiry_creator=user,
+            inquiry_text=validated_data['inquiry_text'],
+            poll_open=validated_data['poll_open'],
+            poll_preliminary_results=validated_data['poll_preliminary_results'],
+            poll_deadline=validated_data['poll_deadline']
+        )
+        poll.save()
+        return poll
+
 
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = '__all__'
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        notification = Notification(
+            inquiry_title=validated_data['inquiry_title'],
+            inquiry_creator=user,
+            inquiry_text=validated_data['inquiry_text'],
+            notification_recipient=validated_data['notification_recipient'],
+            notification_category=validated_data['notification_category']
+        )
+        notification.save()
+        return notification
+
+    def update(self, instance, validated_data):
+        instance.inquiry_is_done = validated_data.get('inquiry_is_done', instance.inquiry_is_done)
+        instance.notification_is_read = validated_data.get('notification_is_read', instance.notification_is_read)
+        instance.save()
+        return instance
 
 
 class PropertySerializer(serializers.ModelSerializer):
