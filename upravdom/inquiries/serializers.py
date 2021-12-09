@@ -70,6 +70,23 @@ class PollSerializer(serializers.ModelSerializer):
         poll.save()
         return poll
 
+    def update(self, instance, validated_data):
+        instance.inquiry_is_done = validated_data.get('inquiry_is_done', instance.inquiry_is_done)
+        instance.save()
+        return instance
+
+
+class VoteOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VoteOption
+        fields = '__all__'
+
+
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = '__all__'
+
 
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -104,18 +121,6 @@ class PropertySerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = '__all__'
-
-
-class VoteOptionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = VoteOption
-        fields = '__all__'
-
-
-class VoteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Vote
         fields = '__all__'
 
 

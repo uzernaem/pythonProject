@@ -1,7 +1,6 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.contrib.postgres.fields import ArrayField
@@ -233,22 +232,19 @@ class Vote(models.Model):
 class Profile(models.Model):
     """Профиль пользователя системы"""
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Пользователь')
-    first_name = models.CharField(max_length=100, help_text='Имя пользователя')
-    last_name = models.CharField(max_length=100, help_text='Фамилия пользователя')
-    email = models.EmailField(max_length=150, help_text='Адрес электронной почты')
-    phone_number = models.CharField(max_length=100, help_text='Номер телефона')
+    # first_name = models.CharField(max_length=100, help_text='Имя пользователя')
+    # last_name = models.CharField(max_length=100, help_text='Фамилия пользователя')
+    # email = models.EmailField(max_length=150, help_text='Адрес электронной почты')
+    # phone_number = models.CharField(max_length=100, help_text='Номер телефона')
     photo = models.BinaryField(null=True, help_text='Фотография пользователя')
     is_manager = models.BooleanField(default=False, blank=False, help_text='Признак управляющего')
-    is_blocked = models.BooleanField(default=False, blank=False, help_text='Признак блокировки')
+    # is_blocked = models.BooleanField(default=False, blank=False, help_text='Признак блокировки')
 
     class Meta:
         ordering = ['is_manager', 'user']
 
     def __str__(self):
-        if self.first_name == "" and self.last_name == "":
-            return str(self.user)
-        else:
-            return f'{self.first_name} {self.last_name}'
+        return {self.user}
 
 
 @receiver(post_save, sender=User)

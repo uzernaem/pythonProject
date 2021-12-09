@@ -1,6 +1,7 @@
 from django.urls import path, include
+from django.conf.urls import url
+from django.views.generic import base
 from rest_framework import routers
-
 from .views import ToDoViewSet, PollViewSet, \
     PropertyViewSet, \
     CommentViewSet, \
@@ -18,7 +19,10 @@ router.register(r'vote_options', VoteOptionViewSet)
 router.register(r'votes', VoteViewSet)
 router.register(r'profiles', ProfileViewSet)
 
+# from .views import todos_list, todos_detail
+
 urlpatterns = [
     path('', include(router.urls)),
+    # url(r'^api/todos/$', todos_list),
+    # url(r'^api/todos/(?P<pk>[0-9]+)$', todos_detail),
 ]
-
