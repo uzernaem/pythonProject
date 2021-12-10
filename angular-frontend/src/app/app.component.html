@@ -1,10 +1,17 @@
-<mat-toolbar color="primary">
-  <h1>
-    ngStore 
-  </h1>
-  <button mat-button routerLink="/">Home</button>
-  <button mat-button routerLink="/about">About</button>
+<div>
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a href="#" class="navbar-brand">Управление домом</a>
+    <div class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a routerLink="todos" class="nav-link">Заявки</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="add" class="nav-link">Добавить</a>
+      </li>
+    </div>
+  </nav>
 
-</mat-toolbar>
-
-<router-outlet></router-outlet>
+  <div class="container mt-3">
+    <router-outlet></router-outlet>
+  </div>
+</div>

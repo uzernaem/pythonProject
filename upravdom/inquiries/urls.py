@@ -19,10 +19,10 @@ router.register(r'vote_options', VoteOptionViewSet)
 router.register(r'votes', VoteViewSet)
 router.register(r'profiles', ProfileViewSet)
 
-# from .views import todos_list, todos_detail
+from .views import todo_list, todo_detail
 
 urlpatterns = [
     path('', include(router.urls)),
-    # url(r'^api/todos/$', todos_list),
-    # url(r'^api/todos/(?P<pk>[0-9]+)$', todos_detail),
+    url(r'^api/todos$', todo_list),
+    url(r'^api/todos/(?P<pk>[0-9]+)$', todo_detail)
 ]

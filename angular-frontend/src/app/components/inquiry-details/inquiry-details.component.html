@@ -1,0 +1,133 @@
+<div *ngIf="viewMode; else editable">
+    <div *ngIf="currentInquiry.inquiry_id">
+      <h4>Заявка</h4>
+      <div>
+        <label><strong>Заголовок:</strong></label> {{ currentInquiry.inquiry_title }}
+      </div>
+      <div>
+        <label><strong>Текст заявки:</strong></label>
+        {{ currentInquiry.inquiry_text }}
+      </div>
+      <div>
+        <label><strong>Категория:</strong></label>
+        {{ currentInquiry.todo_category }}
+      </div>
+      <div>
+        <label><strong>Создатель:</strong></label>
+        {{ currentInquiry.inquiry_creator }}
+      </div>
+      <div>
+        <label><strong>Приоритет:</strong></label>
+        {{ currentInquiry.todo_priority }}
+      </div>
+      <div>
+        <label><strong>Статус:</strong></label>
+        {{ currentInquiry.todo_status }}
+      </div>
+  
+      <a
+        class="badge badge-warning"
+        routerLink="/todos/{{ currentInquiry.inquiry_id }}"
+      >
+        Edit
+      </a>
+    </div>
+  
+    <div *ngIf="!currentInquiry">
+      <br />
+      <p>Выберите заявку...</p>
+    </div>
+  </div>
+  
+  <ng-template #editable>
+    <div *ngIf="currentInquiry.inquiry_id" class="edit-form">
+      <h4>Заявка</h4>
+      <form>
+        <div>
+          <label><strong>Заголовок:</strong></label> {{ currentInquiry.inquiry_title }}
+        </div>
+        <div>
+          <label><strong>Текст заявки:</strong></label>
+          {{ currentInquiry.inquiry_text }}
+        </div>
+        <div>
+          <label><strong>Категория:</strong></label>
+          {{ currentInquiry.todo_category }}
+        </div>
+        <div>
+          <label><strong>Создатель:</strong></label>
+          {{ currentInquiry.inquiry_creator }}
+        </div>
+        <div>
+          <label><strong>Приоритет:</strong></label>
+          {{ currentInquiry.todo_priority }}
+        </div>
+
+        <div class="form-group">
+          <label for="inquiry_title">Завершена</label>
+          <input
+            type="checkbox"
+            class="form-control"
+            id="inquiry_is_done"
+            [(ngModel)]="currentInquiry.inquiry_is_done"
+            name="done"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="todo_assigned_to">Выбрать исполнителя</label>
+          <input
+            type="text"
+            class="form-control"
+            id="todo_assigned_to"
+            [(ngModel)]="currentInquiry.todo_assigned_to"
+            name="assignee"
+          />
+        </div>
+
+        <div class="form-group">
+            <label for="todo_status">Сменить статус заявки</label>
+            <input
+              type="text"
+              class="form-control"
+              id="todo_status"
+              [(ngModel)]="currentInquiry.todo_status"
+              name="status"
+            />
+          </div>
+      </form>
+  
+      <!-- <button
+        class="badge badge-primary mr-2"
+        *ngIf="currentTutorial.published"
+        (click)="updatePublished(false)"
+      >
+        UnPublish
+      </button>
+      <button
+        *ngIf="!currentTutorial.published"
+        class="badge badge-primary mr-2"
+        (click)="updatePublished(true)"
+      >
+        Publish
+      </button> -->
+  
+      <button class="badge badge-danger mr-2" (click)="deleteInquiry()">
+        Удалить
+      </button>
+  
+      <button
+        type="submit"
+        class="badge badge-success mb-2"
+        (click)="updateInquiry()"
+      >
+        Обновить
+      </button>
+      <p>{{ message }}</p>
+    </div>
+  
+    <div *ngIf="!currentInquiry.inquiry_id">
+      <br />
+      <p>Нет доступа к данной заявке...</p>
+    </div>
+  </ng-template>

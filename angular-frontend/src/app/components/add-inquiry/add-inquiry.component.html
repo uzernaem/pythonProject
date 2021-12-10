@@ -1,0 +1,51 @@
+<div>
+    <div class="submit-form">
+      <div *ngIf="!submitted">
+
+        <div class="form-group">
+          <label for="inquiry_title">Заголовок заявки</label>
+          <input
+            type="text"
+            class="form-control"
+            id="inquiry_title"
+            required
+            [(ngModel)]="inquiry.inquiry_title"
+            name="inquiry_title"
+          />
+        </div>
+  
+        <div class="form-group">
+          <label for="inquiry_text">Текст заявки</label>
+          <input
+            class="form-control"
+            id="inquiry_text"
+            required
+            [(ngModel)]="inquiry.inquiry_text"
+            name="inquiry_text"
+          />
+        </div>
+
+        <div class="form-group">
+            <mat-form-field appearance="fill">
+              <mat-label>Категория</mat-label>
+              <mat-select [(ngModel)]="inquiry.todo_category" name="todo_category">
+                <mat-option *ngFor="let category of categories" [value]="category.value">
+                  {{category.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <p> Выбранная категория: {{inquiry.todo_category}} </p>
+        </div>
+  
+        <button (click)="saveInquiry()" class="btn btn-success">Submit</button>
+      </div>
+  
+      <div *ngIf="submitted">
+        <h4>Новая заявка создана!</h4>
+        <button class="btn btn-success" (click)="newInquiry()">Add</button>
+      </div>
+    </div>
+
+
+
+  </div>
