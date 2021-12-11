@@ -26,6 +26,11 @@ class InquiryForm(ModelForm):
         fields = ['inquiry_title', 'inquiry_text']
 
 
+class ToDoCategory(models.Model):
+    category_id = models.AutoField(primary_key=True, help_text='Идентификатор категории', blank=False)
+    category_name = models.CharField(max_length=256, help_text='Имя категории', blank=False)
+
+
 class ToDo(Inquiry):
     """Модель заявки на исполнение"""
     TASK_STATUS = (
@@ -71,8 +76,7 @@ class ToDo(Inquiry):
         choices=TASK_CATEGORY,
         blank=True,
         default='1',
-        help_text='Категория заявки',
-        null=False,
+        help_text='Категория заявки'
     )
 
     def __str__(self):

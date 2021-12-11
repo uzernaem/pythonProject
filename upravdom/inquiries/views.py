@@ -11,9 +11,8 @@ from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser 
 
 from inquiries.serializers import AnnouncementSerializer, ToDoSerializer, PollSerializer, NotificationSerializer, \
-    CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer
-from inquiries.models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile
-
+    CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer
+from inquiries.models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile, ToDoCategory
 # Create your views here.
 @api_view(['GET', 'POST', 'DELETE'])
 def todo_list(request):
@@ -34,6 +33,35 @@ def todo_list(request):
             todo_serializer.save()
             return JsonResponse(todo_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(todo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'POST', 'DELETE'])
+def todocategory_list(request):
+    if request.method == 'GET':
+        categories = ToDoCategory.objects.all()
+        categories_serializer = ToDoCategorySerializer(categories, many=True)
+        return JsonResponse(categories_serializer.data, safe=False)
+    categories_serializer = ToDoCategorySerializer()
+    return JsonResponse(categories_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def todocategory_detail(request, pk):
+    try: 
+        category = ToDoCategory.objects.get(pk=pk) 
+    except ToDoCategory.DoesNotExist: 
+        return JsonResponse({'message': 'Категория не существует'}, status=status.HTTP_404_NOT_FOUND) 
+
+    if request.method == 'GET': 
+        todocategory_serializer = ToDoCategorySerializer(category) 
+        return JsonResponse(todocategory_serializer.data) 
+
+    elif request.method == 'PUT': 
+        todocategory_data = JSONParser().parse(request) 
+        todocategory_serializer = ToDoCategorySerializer(category, data=todocategory_data) 
+        if todocategory_serializer.is_valid(): 
+            todocategory_serializer.save() 
+            return JsonResponse(todocategory_serializer.data) 
+        return JsonResponse(todocategory_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
  
  
 @api_view(['GET', 'PUT', 'DELETE'])

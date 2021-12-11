@@ -10,3 +10,8 @@ export class Inquiry {
     todo_status?: string
     todo_category?: string
 }
+
+export class ToDoCategory {
+    category_id?: number
+    category_name?: string
+}

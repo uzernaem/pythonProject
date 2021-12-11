@@ -29,8 +29,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Категория</mat-label>
               <mat-select [(ngModel)]="inquiry.todo_category" name="todo_category">
-                <mat-option *ngFor="let category of categories" [value]="category.value">
-                  {{category.viewValue}}
+                <mat-option *ngFor="let category of categories" [value]="category.category_name">
+                  {{category.category_name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

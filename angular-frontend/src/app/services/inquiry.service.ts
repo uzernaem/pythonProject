@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Inquiry } from '../models/inquiry.model';
+import { Inquiry, ToDoCategory } from '../models/inquiry.model';
 
 const baseUrl = 'http://127.0.0.1:8000/inquiries/api/todos';
+const categoriesUrl = 'http://127.0.0.1:8000/inquiries/api/todocategories';
 
 
 @Injectable({
@@ -15,6 +16,14 @@ export class InquiryService {
 
   getAll(): Observable<Inquiry[]> {
     return this.http.get<Inquiry[]>(baseUrl);
+  }
+
+  getCategories(): Observable<ToDoCategory[]> {
+    return this.http.get<ToDoCategory[]>(categoriesUrl);
+  }
+
+  getCategory(id: any): Observable<ToDoCategory> {
+    return this.http.get(`${categoriesUrl}/${id}`);
   }
 
   get(id: any): Observable<Inquiry> {

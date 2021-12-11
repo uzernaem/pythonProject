@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Inquiry } from 'src/app/models/inquiry.model';
+import { Inquiry, ToDoCategory } from 'src/app/models/inquiry.model';
 import { InquiryService } from 'src/app/services/inquiry.service';
 
 @Component({
@@ -10,7 +10,9 @@ import { InquiryService } from 'src/app/services/inquiry.service';
 export class InquiriesListComponent implements OnInit {
 
   inquiries?: Inquiry[];
+  categories: ToDoCategory[] = [];
   currentInquiry: Inquiry = {};
+  currentCategory: ToDoCategory = {};
   currentIndex = -1;
   inquiry_title = '';
 
@@ -18,6 +20,7 @@ export class InquiriesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.retrieveInquiries();
+    this.retrieveCategories();
   }
 
   retrieveInquiries(): void {
@@ -31,14 +34,27 @@ export class InquiriesListComponent implements OnInit {
       });
   }
 
+  retrieveCategories(): void {
+    this.inquiryService.getCategories()
+    .subscribe({
+      next: (data) => {
+        this.categories = data;
+        console.log(data);
+      },
+      error: (e) => console.error(e)
+    });
+  }
+
   refreshList(): void {
     this.retrieveInquiries();
     this.currentInquiry = {};
+    this.currentCategory = {};
     this.currentIndex = -1;
   }
 
   setActiveInquiry(inquiry: Inquiry, index: number): void {
     this.currentInquiry = inquiry;
+   // this.currentCategory = this.categories.find(x => (x.category_id == inquiry.todo_category));
     this.currentIndex = index;
   }
 

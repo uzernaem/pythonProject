@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Inquiry } from 'src/app/models/inquiry.model';
+import { Inquiry, ToDoCategory } from 'src/app/models/inquiry.model';
 import { InquiryService } from 'src/app/services/inquiry.service';
-
-interface Category {
-  value: string;
-  viewValue: string;
-}
 
 @Component({
   selector: 'app-add-inquiry',
@@ -16,13 +11,7 @@ interface Category {
 export class AddInquiryComponent implements OnInit {
   selectedValue: string = '';
 
-  categories: Category[] = [
-    {value: '1', viewValue: 'Сантехника'},
-    {value: '2', viewValue: 'Электрика'},
-    {value: '3', viewValue: 'Ремонтные работы'},
-    {value: '4', viewValue: 'Лифт'},
-    {value: '5', viewValue: 'Общедомовая территория'},
-  ];
+ categories?: ToDoCategory[];
 
   inquiry: Inquiry = {
     inquiry_title: '',
@@ -36,8 +25,9 @@ export class AddInquiryComponent implements OnInit {
 
   constructor(private inquiryService: InquiryService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { 
+    this.inquiryService.getCategories().subscribe(cats => {this.categories = cats as ToDoCategory[]})
+   }
 
   saveInquiry(): void {
     const data = {

@@ -1,8 +1,13 @@
 from rest_framework import serializers
-from .models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile
+from rest_framework.fields import ReadOnlyField
+from .models import Announcement, ToDo, Poll, Notification, Property, Comment, ToDoCategory, VoteOption, Vote, Profile
 
 
 class ToDoSerializer(serializers.ModelSerializer):
+    todo_category = serializers.CharField(source='get_todo_category_display')
+    todo_status = serializers.CharField(source='get_todo_status_display')
+    todo_priority = serializers.CharField(source='get_todo_priority_display')
+
     class Meta:
         model = ToDo
         fields = '__all__'
@@ -13,7 +18,9 @@ class ToDoSerializer(serializers.ModelSerializer):
             inquiry_title=validated_data['inquiry_title'],
          #   inquiry_creator=user,
             inquiry_text=validated_data['inquiry_text'],
-            todo_category=validated_data['todo_category']
+            todo_category=validated_data['todo_category'],
+            todo_status = '',
+            todo_priority = '',
         )
         todo.save()
         return todo
@@ -27,6 +34,12 @@ class ToDoSerializer(serializers.ModelSerializer):
         instance.todo_status = validated_data.get('todo_status', instance.todo_status)
         instance.save()
         return instance
+
+
+class ToDoCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ToDoCategory
+        fields = '__all__'
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):

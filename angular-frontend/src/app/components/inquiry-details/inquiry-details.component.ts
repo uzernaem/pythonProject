@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { InquiryService } from 'src/app/services/inquiry.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Inquiry } from 'src/app/models/inquiry.model';
+import { Inquiry, ToDoCategory } from 'src/app/models/inquiry.model';
 
 @Component({
   selector: 'app-inquiry-details',
@@ -9,6 +9,13 @@ import { Inquiry } from 'src/app/models/inquiry.model';
   styleUrls: ['./inquiry-details.component.css']
 })
 export class InquiryDetailsComponent implements OnInit {
+
+  //categories: ToDoCategory[] = [];
+
+  @Input() currentCategory: ToDoCategory = {
+    category_id: 0,
+    category_name: ''    
+  };
 
   @Input() viewMode = false;
 
@@ -40,6 +47,17 @@ export class InquiryDetailsComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.currentInquiry = data;
+
+            this.inquiryService.getCategory(data.todo_category)
+            .subscribe({
+              next: (data) => {
+                this.currentCategory = data;
+                console.log(data);
+              },
+              error: (e) => console.error(e)
+            }); 
+
+
             console.log(data);
           },
           error: (e) => console.error(e)
