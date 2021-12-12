@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Add our new application
     'inquiries.apps.InquiriesConfig', #This object was created for us in /catalog/apps.py
-    'accounts',
+    # 'accounts',
     'rest_framework',
     'corsheaders'
 ]

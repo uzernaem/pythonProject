@@ -14,6 +14,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { HomeComponent } from './home/home.component';
+import { ProfileComponent } from './profile/profile.component';
+
+import { authInterceptorProviders } from './_helpers/auth.interceptor';
+
 
 const modules = [
   MatFormFieldModule,
@@ -32,11 +39,15 @@ const modules = [
     AppComponent,
     AddInquiryComponent,
     InquiryDetailsComponent,
-    InquiriesListComponent
+    InquiriesListComponent,
+    LoginComponent,
+    RegisterComponent,
+    HomeComponent,
+    ProfileComponent
   ],
   imports: [modules],
   exports: [modules],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

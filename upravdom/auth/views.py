@@ -1,10 +1,23 @@
 from .serializers import MyTokenObtainPairSerializer
 from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.models import User
 from .serializers import RegisterSerializer
 from rest_framework import generics
 
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+
+        # Add extra responses here
+        data['username'] = self.user.username
+        # data['groups'] = self.user.groups.values_list('name', flat=True)
+        return data
 
 class MyObtainTokenPairView(TokenObtainPairView):
     permission_classes = (AllowAny,)

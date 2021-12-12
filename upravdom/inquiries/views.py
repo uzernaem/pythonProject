@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 @api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
 def user_list(request):
     if request.method == 'GET':
         users = User.objects.all()
@@ -34,6 +35,7 @@ def user_list(request):
 
 
 @api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
 def todo_list(request):
     if request.method == 'GET':
         todos = ToDo.objects.all()
@@ -54,6 +56,7 @@ def todo_list(request):
         return JsonResponse(todo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
 def todocategory_list(request):
     if request.method == 'GET':
         categories = ToDoCategory.objects.all()
@@ -64,6 +67,7 @@ def todocategory_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
 def todocategory_detail(request, pk):
     try: 
         category = ToDoCategory.objects.get(pk=pk) 
@@ -84,6 +88,7 @@ def todocategory_detail(request, pk):
  
  
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
 def todo_detail(request, pk):
     try: 
         todo = ToDo.objects.get(pk=pk) 
