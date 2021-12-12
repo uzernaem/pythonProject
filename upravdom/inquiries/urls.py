@@ -1,5 +1,6 @@
 from django.urls import path, include
 from django.conf.urls import url
+from django.urls.conf import re_path
 from django.views.generic import base
 from rest_framework import routers
 from .views import ToDoViewSet, PollViewSet, \
@@ -23,8 +24,8 @@ from .views import todo_list, todo_detail
 
 urlpatterns = [
     path('', include(router.urls)),
-    url(r'^api/todos$', todo_list),
-    url(r'^api/todos/(?P<pk>[0-9]+)$', todo_detail),
-    url(r'^api/todocategories$', todocategory_list),
-    url(r'^api/todocategories/(?P<pk>[0-9]+)$', todocategory_detail)
+    re_path(r'^api/todos$', todo_list),
+    re_path(r'^api/todos/(?P<pk>[0-9]+)$', todo_detail),
+    re_path(r'^api/todocategories$', todocategory_list),
+    re_path(r'^api/todocategories/(?P<pk>[0-9]+)$', todocategory_detail)
 ]

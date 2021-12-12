@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { InquiryService } from 'src/app/services/inquiry.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Inquiry, ToDoCategory } from 'src/app/models/inquiry.model';
+import { Inquiry, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model';
 
 @Component({
   selector: 'app-inquiry-details',
@@ -10,7 +10,12 @@ import { Inquiry, ToDoCategory } from 'src/app/models/inquiry.model';
 })
 export class InquiryDetailsComponent implements OnInit {
 
-  //categories: ToDoCategory[] = [];
+  todostatuses: ToDoStatus[] = [
+    {"status_id": "n", "status_name": "Новая"},
+    {"status_id": "w", "status_name": "В работе"},
+    {"status_id": "r", "status_name": "На проверке"},
+    {"status_id": "c", "status_name": "Завершена"}
+  ];
 
   @Input() currentCategory: ToDoCategory = {
     category_id: 0,
@@ -25,7 +30,10 @@ export class InquiryDetailsComponent implements OnInit {
     inquiry_creator: 0,
     todo_category: '',
     todo_priority: '',
-    todo_status: ''
+    todo_status: '',
+    todo_priority_name: '',
+    todo_status_name: '',
+    todo_category_name: ''
   };
 
   message = '';
@@ -47,17 +55,6 @@ export class InquiryDetailsComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.currentInquiry = data;
-
-            this.inquiryService.getCategory(data.todo_category)
-            .subscribe({
-              next: (data) => {
-                this.currentCategory = data;
-                console.log(data);
-              },
-              error: (e) => console.error(e)
-            }); 
-
-
             console.log(data);
           },
           error: (e) => console.error(e)

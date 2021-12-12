@@ -4,9 +4,9 @@ from .models import Announcement, ToDo, Poll, Notification, Property, Comment, T
 
 
 class ToDoSerializer(serializers.ModelSerializer):
-    todo_category = serializers.CharField(source='get_todo_category_display')
-    todo_status = serializers.CharField(source='get_todo_status_display')
-    todo_priority = serializers.CharField(source='get_todo_priority_display')
+    todo_category_name = serializers.CharField(read_only=True, source='get_todo_category_display')
+    todo_status_name = serializers.CharField(read_only=True, source='get_todo_status_display')
+    todo_priority_name = serializers.CharField(read_only=True, source='get_todo_priority_display')
 
     class Meta:
         model = ToDo
@@ -18,9 +18,7 @@ class ToDoSerializer(serializers.ModelSerializer):
             inquiry_title=validated_data['inquiry_title'],
          #   inquiry_creator=user,
             inquiry_text=validated_data['inquiry_text'],
-            todo_category=validated_data['todo_category'],
-            todo_status = '',
-            todo_priority = '',
+            todo_category=validated_data['todo_category']
         )
         todo.save()
         return todo

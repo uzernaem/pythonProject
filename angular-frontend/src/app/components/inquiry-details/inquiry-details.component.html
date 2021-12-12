@@ -10,7 +10,7 @@
       </div>
       <div>
         <label><strong>Категория:</strong></label>
-        {{ currentInquiry.todo_category }}
+        {{ currentInquiry.todo_category_name }}
       </div>
       <div>
         <label><strong>Создатель:</strong></label>
@@ -18,11 +18,11 @@
       </div>
       <div>
         <label><strong>Приоритет:</strong></label>
-        {{ currentInquiry.todo_priority }}
+        {{ currentInquiry.todo_priority_name }}
       </div>
       <div>
         <label><strong>Статус:</strong></label>
-        {{ currentInquiry.todo_status }}
+        {{ currentInquiry.todo_status_name }}
       </div>
   
       <a
@@ -52,7 +52,7 @@
         </div>
         <div>
           <label><strong>Категория:</strong></label>
-          {{ currentInquiry.todo_category }}
+          {{ currentInquiry.todo_category_name }}
         </div>
         <div>
           <label><strong>Создатель:</strong></label>
@@ -60,7 +60,7 @@
         </div>
         <div>
           <label><strong>Приоритет:</strong></label>
-          {{ currentInquiry.todo_priority }}
+          {{ currentInquiry.todo_priority_name }}
         </div>
 
         <div class="form-group">
@@ -86,15 +86,17 @@
         </div>
 
         <div class="form-group">
-            <label for="todo_status">Сменить статус заявки</label>
-            <input
-              type="text"
-              class="form-control"
-              id="todo_status"
-              [(ngModel)]="currentInquiry.todo_status"
-              name="status"
-            />
-          </div>
+          <mat-form-field appearance="fill">
+            <mat-label>Сменить статус заявки</mat-label>
+            <mat-select [(ngModel)]="currentInquiry.todo_status" name="todo_status">
+              <mat-option *ngFor="let status of todostatuses" [value]="status.status_id">
+                {{status.status_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <p> Выбранный статус: {{currentInquiry.todo_status}} </p>
+      </div>
+
       </form>
   
       <!-- <button

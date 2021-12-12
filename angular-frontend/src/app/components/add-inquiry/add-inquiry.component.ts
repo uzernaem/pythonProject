@@ -11,8 +11,14 @@ import { InquiryService } from 'src/app/services/inquiry.service';
 export class AddInquiryComponent implements OnInit {
   selectedValue: string = '';
 
- categories?: ToDoCategory[];
-
+  todocategories: ToDoCategory[] = [
+    {"category_id": 1, "category_name": "Сантехника"},
+    {"category_id": 2, "category_name": "Электрика"},
+    {"category_id": 3, "category_name": "Ремонтные работы"},
+    {"category_id": 4, "category_name": "Лифт"},
+    {"category_id": 5, "category_name": "Общедомовая территория"}
+  ];
+  
   inquiry: Inquiry = {
     inquiry_title: '',
     inquiry_text: '',
@@ -26,7 +32,7 @@ export class AddInquiryComponent implements OnInit {
   constructor(private inquiryService: InquiryService) { }
 
   ngOnInit(): void { 
-    this.inquiryService.getCategories().subscribe(cats => {this.categories = cats as ToDoCategory[]})
+    //this.inquiryService.getCategories().subscribe(cats => {this.categories = cats as ToDoCategory[]})
    }
 
   saveInquiry(): void {
