@@ -13,9 +13,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { MatInputModule } from '@angular/material/input';
 
 const modules = [
   MatFormFieldModule,
+  MatInputModule,
   MatSelectModule,
   BrowserAnimationsModule,
   BrowserModule,

@@ -1,7 +1,13 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.fields import ReadOnlyField
 from .models import Announcement, ToDo, Poll, Notification, Property, Comment, ToDoCategory, VoteOption, Vote, Profile
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = 'id', 'username', 'first_name', 'last_name'
 
 class ToDoSerializer(serializers.ModelSerializer):
     todo_category_name = serializers.CharField(read_only=True, source='get_todo_category_display')

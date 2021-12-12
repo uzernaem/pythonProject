@@ -20,7 +20,7 @@ export class InquiriesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.retrieveInquiries();
-    this.retrieveCategories();
+    //this.retrieveCategories();
   }
 
   retrieveInquiries(): void {
@@ -34,16 +34,16 @@ export class InquiriesListComponent implements OnInit {
       });
   }
 
-  retrieveCategories(): void {
-    this.inquiryService.getCategories()
-    .subscribe({
-      next: (data) => {
-        this.categories = data;
-        console.log(data);
-      },
-      error: (e) => console.error(e)
-    });
-  }
+  // retrieveCategories(): void {
+  //   this.inquiryService.getCategories()
+  //   .subscribe({
+  //     next: (data) => {
+  //       this.categories = data;
+  //       console.log(data);
+  //     },
+  //     error: (e) => console.error(e)
+  //   });
+  //}
 
   refreshList(): void {
     this.retrieveInquiries();

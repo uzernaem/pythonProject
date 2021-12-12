@@ -10,10 +10,29 @@ from rest_framework.views import APIView
 
 from rest_framework.parsers import JSONParser 
 
-from inquiries.serializers import AnnouncementSerializer, ToDoSerializer, PollSerializer, NotificationSerializer, \
+from inquiries.serializers import UserSerializer, AnnouncementSerializer, ToDoSerializer, PollSerializer, NotificationSerializer, \
     CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer
 from inquiries.models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile, ToDoCategory
+from django.contrib.auth.models import User
+
 # Create your views here.
+@api_view(['GET', 'POST', 'DELETE'])
+def user_list(request):
+    if request.method == 'GET':
+        users = User.objects.all()
+
+        users_serializer = UserSerializer(users, many=True)
+        return JsonResponse(users_serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        user_data = JSONParser().parse(request)
+        users_serializer = UserSerializer(data=user_data)
+        if users_serializer.is_valid():
+            users_serializer.save()
+            return JsonResponse(users_serializer.data, status=status.HTTP_201_CREATED) 
+        return JsonResponse(users_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['GET', 'POST', 'DELETE'])
 def todo_list(request):
     if request.method == 'GET':

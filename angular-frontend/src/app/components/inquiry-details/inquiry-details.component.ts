@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { InquiryService } from 'src/app/services/inquiry.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Inquiry, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model';
+import { Inquiry, ToDoCategory, ToDoStatus, User } from 'src/app/models/inquiry.model';
 
 @Component({
   selector: 'app-inquiry-details',
@@ -10,6 +10,8 @@ import { Inquiry, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model'
 })
 export class InquiryDetailsComponent implements OnInit {
 
+  users?: User[];
+  user_name?: string;
   todostatuses: ToDoStatus[] = [
     {"status_id": "n", "status_name": "Новая"},
     {"status_id": "w", "status_name": "В работе"},
@@ -46,6 +48,7 @@ export class InquiryDetailsComponent implements OnInit {
     ngOnInit(): void {
       if (!this.viewMode) {
         this.message = '';
+        this.retrieveUsers();
         this.getInquiry(this.route.snapshot.params["id"]);
       }
     }
@@ -55,6 +58,17 @@ export class InquiryDetailsComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.currentInquiry = data;
+            console.log(data);
+          },
+          error: (e) => console.error(e)
+        });
+    }
+
+    retrieveUsers(): void {
+      this.inquiryService.getUsers()
+        .subscribe({
+          next: (data) => {
+            this.users = data;
             console.log(data);
           },
           error: (e) => console.error(e)

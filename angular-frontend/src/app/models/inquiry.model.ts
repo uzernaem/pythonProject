@@ -14,6 +14,13 @@ export class Inquiry {
     todo_category_name?: string
 }
 
+export class User {
+    id?: number
+    username?: string
+    first_name?: string
+    last_name?: string
+}
+
 export class ToDoCategory {
     category_id?: number
     category_name?: string

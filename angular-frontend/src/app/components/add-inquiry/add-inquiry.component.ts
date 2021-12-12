@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Inquiry, ToDoCategory } from 'src/app/models/inquiry.model';
 import { InquiryService } from 'src/app/services/inquiry.service';
 
+
 @Component({
   selector: 'app-add-inquiry',
   templateUrl: './add-inquiry.component.html',
@@ -18,7 +19,7 @@ export class AddInquiryComponent implements OnInit {
     {"category_id": 4, "category_name": "Лифт"},
     {"category_id": 5, "category_name": "Общедомовая территория"}
   ];
-  
+
   inquiry: Inquiry = {
     inquiry_title: '',
     inquiry_text: '',

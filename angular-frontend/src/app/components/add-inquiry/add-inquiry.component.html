@@ -1,28 +1,26 @@
 <div>
     <div class="submit-form">
       <div *ngIf="!submitted">
+        
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Заголовок заявки</mat-label>
+            <input matInput type="text" placeholder="Введите заголовок" [(ngModel)]="inquiry.inquiry_title" name="inquiry_title">
+          </mat-form-field>
+        </div>
 
         <div class="form-group">
-          <label for="inquiry_title">Заголовок заявки</label>
-          <input
-            type="text"
-            class="form-control"
-            id="inquiry_title"
-            required
-            [(ngModel)]="inquiry.inquiry_title"
-            name="inquiry_title"
-          />
-        </div>
-  
-        <div class="form-group">
-          <label for="inquiry_text">Текст заявки</label>
-          <input
-            class="form-control"
-            id="inquiry_text"
-            required
+          <mat-form-field appearance="fill">
+            <mat-label>Текст заявки</mat-label>
+            <textarea 
+            matInput type="text" 
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="5"
+            cdkAutosizeMaxRows="8"
+            placeholder="Введите текст заявки"
             [(ngModel)]="inquiry.inquiry_text"
-            name="inquiry_text"
-          />
+            name="inquiry_text"></textarea>
+          </mat-form-field>
         </div>
 
         <div class="form-group">
@@ -45,7 +43,4 @@
         <button class="btn btn-success" (click)="newInquiry()">Add</button>
       </div>
     </div>
-
-
-
   </div>
