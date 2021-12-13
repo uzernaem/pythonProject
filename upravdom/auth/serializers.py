@@ -1,3 +1,4 @@
+from rest_framework.fields import JSONField
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from django.contrib.auth.models import User
@@ -13,7 +14,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         # Add custom claims
-        token['user'] = user.username
+        #token['user'] = JSONField.dumps(user)
         return token
 
 

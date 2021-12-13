@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
-import { InquiryService } from 'src/app/services/inquiry.service';
+import { InquiryService } from 'src/app/_services/inquiry.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Inquiry, ToDoCategory, ToDoStatus, User } from 'src/app/models/inquiry.model';
+import { Inquiry, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-inquiry-details',

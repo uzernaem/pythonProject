@@ -5,19 +5,19 @@
       </h3>
     </header>
     <p>
-      <strong>Token:</strong>
-      {{ currentUser.accessToken }}
+      <strong>Имя:</strong>
+      {{ currentUser.first_name }} {{ currentUser.last_name }}
     </p>
     <p>
       <strong>Email:</strong>
       {{ currentUser.email }}
     </p>
-    <strong>Roles:</strong>
+    <!-- <strong>Roles:</strong>
     <ul>
       <li *ngFor="let role of currentUser.roles">
         {{ role }}
       </li>
-    </ul>
+    </ul> -->
   </div>
   
   <ng-template #loggedOut>

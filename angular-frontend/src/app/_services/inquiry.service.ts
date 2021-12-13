@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Inquiry, ToDoCategory, User } from '../models/inquiry.model';
+import { Inquiry, ToDoCategory, } from '../models/inquiry.model';
+import { User } from '../models/user.model';
 
 const baseUrl = 'http://127.0.0.1:8000/inquiries/api/todos';
 const userUrl = 'http://127.0.0.1:8000/inquiries/api/users';

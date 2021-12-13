@@ -26,11 +26,9 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('accounts/', include('accounts.urls')),
     path('auth/', include('auth.urls')),
     # path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # path('accounts/', include('django.contrib.auth.urls')),
     # path('', TemplateView.as_view(template_name='home.html'), name='home'),
 ]
 

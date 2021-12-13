@@ -19,7 +19,7 @@ export class AppComponent {
 
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
-      this.roles = user.roles;
+      //this.roles = user.roles;
 
       this.username = user.username;
     }

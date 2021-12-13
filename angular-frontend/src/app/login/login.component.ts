@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../models/user.model';
 import { AuthService } from '../_services/auth.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   token = '';
   roles: string[] = [];
+  user?: User;
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService) { }
 
@@ -33,7 +35,13 @@ export class LoginComponent implements OnInit {
     this.authService.login(username, password).subscribe({
       next: data => {
         this.tokenStorage.saveToken(data.access);
-        this.tokenStorage.saveUser(data.username);
+        this.user = {
+          username: data.username,
+          first_name: data.first_name,
+          last_name: data.last_name,
+          email: data.email
+        };
+        this.tokenStorage.saveUser(JSON.stringify(this.user));
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;

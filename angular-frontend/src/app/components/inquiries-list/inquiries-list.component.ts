@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Inquiry, ToDoCategory } from 'src/app/models/inquiry.model';
-import { InquiryService } from 'src/app/services/inquiry.service';
+import { InquiryService } from 'src/app/_services/inquiry.service';
 
 @Component({
   selector: 'app-inquiries-list',
