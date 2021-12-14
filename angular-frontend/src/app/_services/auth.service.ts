@@ -21,6 +21,12 @@ export class AuthService {
     }, httpOptions);
   }
 
+  refreshToken(token: string) {
+    return this.http.post(AUTH_API + 'login/refresh/', {
+      refresh: token
+    }, httpOptions);
+  }
+
   register(username: string, email: string, password: string, password2: string, first_name: string, last_name: string): Observable<any> {
     return this.http.post(AUTH_API + 'register/', {
       username,
