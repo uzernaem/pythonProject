@@ -51,7 +51,7 @@ private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
         catchError((err) => {
           this.isRefreshing = false;
           
-          //this.tokenService.signOut();
+          this.tokenService.signOut();
           return throwError(err);
         })
       );
