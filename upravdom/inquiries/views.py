@@ -56,26 +56,22 @@ def todo_list(request):
         return JsonResponse(todo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# @api_view(['GET', 'POST', 'DELETE'])
-# @permission_classes([permissions.IsAuthenticated])
-# def comment_list(request):
-#     if request.method == 'GET':
-#         todos = Comment.objects.all()
-        
-#         title = request.GET.get('inquiry_title', None)
-#         if title is not None:
-#             todos = todos.filter(title__icontains=title)
-        
-#         comments_serializer = CommentSerializer(todos, many=True)
-#         return JsonResponse(comments_serializer.data, safe=False)
+@api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
+def comment_list(request, inquiry_id):
+    if request.method == 'GET':
+        comments = Comment.objects.filter(inquiry_id=inquiry_id)        
+        comments_serializer = CommentSerializer(comments, many=True)
+        return JsonResponse(comments_serializer.data, safe=False)
 
-#     elif request.method == 'POST':
-#         comment_data = JSONParser().parse(request)
-#         comment_serializer = CommentSerializer(data=comment_data)
-#         if comment_serializer.is_valid():
-#             comment_serializer.save()
-#             return JsonResponse(comment_serializer.data, status=status.HTTP_201_CREATED) 
-#         return JsonResponse(comment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'POST':
+        comment_data = JSONParser().parse(request)
+        # comment_data.inquiry_id = inquiry_id
+        comment_serializer = CommentSerializer(data=comment_data)        
+        if comment_serializer.is_valid():
+            comment_serializer.save()
+            return JsonResponse(comment_serializer.data, status=status.HTTP_201_CREATED) 
+        return JsonResponse(comment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -114,13 +110,16 @@ def todocategory_detail(request, pk):
 @permission_classes([permissions.IsAuthenticated])
 def todo_detail(request, pk):
     try: 
-        todo = ToDo.objects.get(pk=pk) 
+        todo = ToDo.objects.get(pk=pk)
+        comments = Comment.objects.filter(inquiry=pk)
     except ToDo.DoesNotExist: 
         return JsonResponse({'message': 'Заявка не существует'}, status=status.HTTP_404_NOT_FOUND) 
 
     if request.method == 'GET': 
-        todo_serializer = ToDoSerializer(todo) 
-        return JsonResponse(todo_serializer.data) 
+        todo_serializer = ToDoSerializer(todo)
+        comments_serializer = CommentSerializer(comments, many=True) 
+        data = JsonResponse(todo_serializer.data)
+        return data 
 
     elif request.method == 'PUT': 
         todo_data = JSONParser().parse(request) 

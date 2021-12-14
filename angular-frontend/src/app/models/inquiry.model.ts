@@ -14,6 +14,14 @@ export class ToDo {
     todo_category_name?: string
 }
 
+export class Comment {
+    comment_id?: number
+    inquiry?: number
+    comment_text?: string
+    comment_creator?: number
+    comment_creation_datetime?: string
+}
+
 export class ToDoCategory {
     category_id?: number
     category_name?: string

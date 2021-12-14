@@ -128,6 +128,20 @@
       </button>
       <p>{{ message }}</p>
     </div>
+
+    <div class="col-md-6">
+      <h4>Комментарии</h4>
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let comment of comments"
+        >
+          <div>{{ comment.comment_creation_datetime }}</div>
+          <div>{{ comment.comment_text }}</div>
+          <div>{{ users[comment.comment_creator].first_name }} {{ users[comment.comment_creator].last_name }}</div>
+        </li>
+      </ul>
+    </div>
   
     <div *ngIf="!currentToDo.inquiry_id">
       <br />

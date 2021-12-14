@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToDo, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model';
+import { ToDo, Comment, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model';
 import { User } from 'src/app/models/user.model';
 
 @Component({
@@ -11,7 +11,8 @@ import { User } from 'src/app/models/user.model';
 })
 export class InquiryDetailsComponent implements OnInit {
 
-  users?: User[];
+  users: User[] = [];
+  comments: Comment[] = [];
   user_name?: string;
   todostatuses: ToDoStatus[] = [
     {"status_id": "n", "status_name": "Новая"},
@@ -51,6 +52,7 @@ export class InquiryDetailsComponent implements OnInit {
         this.message = '';
         this.retrieveUsers();
         this.getInquiry(this.route.snapshot.params["id"]);
+        this.retrieveComments(this.route.snapshot.params["id"]);
       }
     }
 
@@ -70,6 +72,17 @@ export class InquiryDetailsComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.users = data;
+            console.log(data);
+          },
+          error: (e) => console.error(e)
+        });
+    }
+
+    retrieveComments(id: string): void {
+      this.inquiryService.getComments(id)
+        .subscribe({
+          next: (data) => {
+            this.comments = data;
             console.log(data);
           },
           error: (e) => console.error(e)

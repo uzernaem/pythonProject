@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ToDo, ToDoCategory, } from '../models/inquiry.model';
+import { ToDo, ToDoCategory, Comment } from '../models/inquiry.model';
 import { User } from '../models/user.model';
 
-const baseUrl = 'http://127.0.0.1:8000/inquiries/api/todos';
-const userUrl = 'http://127.0.0.1:8000/inquiries/api/users';
-const categoriesUrl = 'http://127.0.0.1:8000/inquiries/api/todocategories';
-
+const baseUrl = 'http://127.0.0.1:8000/inquiries/api/';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +14,11 @@ export class InquiryService {
   constructor(private http: HttpClient) { }
 
   getUsers(): Observable<User[]> {    
-    return this.http.get<User[]>(userUrl);
+    return this.http.get<User[]>(baseUrl + 'users');
   }
 
   getToDos(): Observable<ToDo[]> {
-    return this.http.get<ToDo[]>(baseUrl);
+    return this.http.get<ToDo[]>(baseUrl + 'todos');
   }
 
   // getCategories(): Observable<ToDoCategory[]> {
@@ -29,30 +26,34 @@ export class InquiryService {
   // }
 
   getCategory(id: any): Observable<ToDoCategory> {
-    return this.http.get(`${categoriesUrl}/${id}`);
+    return this.http.get(`${baseUrl + 'categories'}/${id}`);
   }
 
   get(id: any): Observable<ToDo> {
-    return this.http.get(`${baseUrl}/${id}`);
+    return this.http.get(`${baseUrl + 'todos'}/${id}`);
+  }
+
+  getComments(id: any): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${baseUrl + 'comments'}/${id}`);
   }
 
   create(data: any): Observable<any> {
-    return this.http.post(baseUrl, data);
+    return this.http.post(baseUrl + 'todos', data);
   }
 
   update(id: any, data: any): Observable<any> {
-    return this.http.put(`${baseUrl}/${id}`, data);
+    return this.http.put(`${baseUrl + 'todos'}/${id}`, data);
   }
 
   delete(id: any): Observable<any> {
-    return this.http.delete(`${baseUrl}/${id}`);
+    return this.http.delete(`${baseUrl + 'todos'}/${id}`);
   }
 
   deleteAll(): Observable<any> {
-    return this.http.delete(baseUrl);
+    return this.http.delete(baseUrl + 'todos');
   }
 
   findByTitle(title: any): Observable<ToDo[]> {
-    return this.http.get<ToDo[]>(`${baseUrl}?title=${title}`);
+    return this.http.get<ToDo[]>(`${baseUrl + 'todos'}?title=${title}`);
   }
 }

@@ -7,7 +7,7 @@ from .views import ToDoViewSet, PollViewSet, \
     PropertyViewSet, \
     CommentViewSet, \
     VoteOptionViewSet, VoteViewSet, ProfileViewSet, NotificationViewSet, \
-    AnnouncementViewSet, todocategory_detail, todocategory_list, user_list
+    AnnouncementViewSet, comment_list, todocategory_detail, todocategory_list, user_list
 
 router = routers.DefaultRouter()
 router.register(r'announcements', AnnouncementViewSet, basename='Announcements')
@@ -27,6 +27,7 @@ urlpatterns = [
     re_path(r'^api/users$', user_list),
     re_path(r'^api/todos$', todo_list),
     re_path(r'^api/todos/(?P<pk>[0-9]+)$', todo_detail),
+    re_path(r'^api/comments/(?P<inquiry_id>[0-9]+)$', comment_list),
     re_path(r'^api/todocategories$', todocategory_list),
     re_path(r'^api/todocategories/(?P<pk>[0-9]+)$', todocategory_detail)
 ]
