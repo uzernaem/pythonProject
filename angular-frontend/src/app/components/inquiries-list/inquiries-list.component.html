@@ -23,11 +23,11 @@
       <ul class="list-group">
         <li
           class="list-group-item"
-          *ngFor="let inquiry of inquiries; let i = index"
+          *ngFor="let todo of todos; let i = index"
           [class.active]="i == currentIndex"
-          (click)="setActiveInquiry(inquiry, i)"
+          (click)="setActiveInquiry(todo, i)"
         >
-          {{ inquiry.inquiry_title }}
+          {{ todo.inquiry_title }}
         </li>
       </ul>
   
@@ -38,7 +38,7 @@
     <div class="col-md-6">
       <app-inquiry-details
         [viewMode]="true"
-        [currentInquiry]="currentInquiry"
+        [currentToDo]="currentToDo"
       ></app-inquiry-details>
     </div>
   </div>

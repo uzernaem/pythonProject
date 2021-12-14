@@ -1,4 +1,4 @@
-export class Inquiry {
+export class ToDo {
     inquiry_id?: number
     inquiry_title?: string
     inquiry_text?: string

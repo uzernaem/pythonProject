@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Inquiry, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model';
+import { ToDo, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model';
 import { User } from 'src/app/models/user.model';
 
 @Component({
@@ -27,7 +27,7 @@ export class InquiryDetailsComponent implements OnInit {
 
   @Input() viewMode = false;
 
-  @Input() currentInquiry: Inquiry = {
+  @Input() currentToDo: ToDo = {
     inquiry_title: '',
     inquiry_text: '',
     inquiry_creator: 0,
@@ -58,7 +58,7 @@ export class InquiryDetailsComponent implements OnInit {
       this.inquiryService.get(id)
         .subscribe({
           next: (data) => {
-            this.currentInquiry = data;
+            this.currentToDo = data;
             console.log(data);
           },
           error: (e) => console.error(e)
@@ -99,7 +99,7 @@ export class InquiryDetailsComponent implements OnInit {
     updateInquiry(): void {
       this.message = '';
   
-      this.inquiryService.update(this.currentInquiry.inquiry_id, this.currentInquiry)
+      this.inquiryService.update(this.currentToDo.inquiry_id, this.currentToDo)
         .subscribe({
           next: (res) => {
             console.log(res);
@@ -110,7 +110,7 @@ export class InquiryDetailsComponent implements OnInit {
     }
 
     deleteInquiry(): void {
-      this.inquiryService.delete(this.currentInquiry.inquiry_id)
+      this.inquiryService.delete(this.currentToDo.inquiry_id)
         .subscribe({
           next: (res) => {
             console.log(res);

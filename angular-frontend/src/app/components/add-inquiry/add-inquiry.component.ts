@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Inquiry, ToDoCategory } from 'src/app/models/inquiry.model';
+import { ToDo, ToDoCategory } from 'src/app/models/inquiry.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 
 
@@ -20,7 +20,7 @@ export class AddInquiryComponent implements OnInit {
     {"category_id": 5, "category_name": "Общедомовая территория"}
   ];
 
-  inquiry: Inquiry = {
+  todo: ToDo = {
     inquiry_title: '',
     inquiry_text: '',
     inquiry_creator: 0,
@@ -38,9 +38,9 @@ export class AddInquiryComponent implements OnInit {
 
   saveInquiry(): void {
     const data = {
-      inquiry_title: this.inquiry.inquiry_title,
-      inquiry_text: this.inquiry.inquiry_text,
-      todo_category: this.inquiry.todo_category
+      inquiry_title: this.todo.inquiry_title,
+      inquiry_text: this.todo.inquiry_text,
+      todo_category: this.todo.todo_category
     };
 
     this.inquiryService.create(data)
@@ -55,7 +55,7 @@ export class AddInquiryComponent implements OnInit {
 
   newInquiry(): void {
     this.submitted = false;
-    this.inquiry = {
+    this.todo = {
       inquiry_title: '',
       inquiry_text: '',
       inquiry_creator: 0,

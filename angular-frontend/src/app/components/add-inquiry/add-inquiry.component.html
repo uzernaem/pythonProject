@@ -5,7 +5,7 @@
         <div class="form-group">
           <mat-form-field appearance="fill">
             <mat-label>Заголовок заявки</mat-label>
-            <input matInput type="text" placeholder="Введите заголовок" [(ngModel)]="inquiry.inquiry_title" name="inquiry_title">
+            <input matInput type="text" placeholder="Введите заголовок" [(ngModel)]="todo.inquiry_title" name="inquiry_title">
           </mat-form-field>
         </div>
 
@@ -18,7 +18,7 @@
             cdkAutosizeMinRows="5"
             cdkAutosizeMaxRows="8"
             placeholder="Введите текст заявки"
-            [(ngModel)]="inquiry.inquiry_text"
+            [(ngModel)]="todo.inquiry_text"
             name="inquiry_text"></textarea>
           </mat-form-field>
         </div>
@@ -26,13 +26,13 @@
         <div class="form-group">
             <mat-form-field appearance="fill">
               <mat-label>Категория</mat-label>
-              <mat-select [(ngModel)]="inquiry.todo_category" name="todo_category">
+              <mat-select [(ngModel)]="todo.todo_category" name="todo_category">
                 <mat-option *ngFor="let category of todocategories" [value]="category.category_id">
                   {{category.category_name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <p> Выбранная категория: {{inquiry.todo_category}} </p>
+            <p> Выбранная категория: {{todo.todo_category}} </p>
         </div>
   
         <button (click)="saveInquiry()" class="btn btn-success">Submit</button>

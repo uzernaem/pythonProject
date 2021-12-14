@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Inquiry, ToDoCategory } from 'src/app/models/inquiry.model';
+import { ToDo, ToDoCategory } from 'src/app/models/inquiry.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 
 @Component({
@@ -9,9 +9,9 @@ import { InquiryService } from 'src/app/_services/inquiry.service';
 })
 export class InquiriesListComponent implements OnInit {
 
-  inquiries?: Inquiry[];
+  todos?: ToDo[];
   categories: ToDoCategory[] = [];
-  currentInquiry: Inquiry = {};
+  currentToDo: ToDo = {};
   currentCategory: ToDoCategory = {};
   currentIndex = -1;
   inquiry_title = '';
@@ -24,10 +24,10 @@ export class InquiriesListComponent implements OnInit {
   }
 
   retrieveInquiries(): void {
-    this.inquiryService.getAll()
+    this.inquiryService.getToDos()
       .subscribe({
         next: (data) => {
-          this.inquiries = data;
+          this.todos = data;
           console.log(data);
         },
         error: (e) => console.error(e)
@@ -47,14 +47,14 @@ export class InquiriesListComponent implements OnInit {
 
   refreshList(): void {
     this.retrieveInquiries();
-    this.currentInquiry = {};
+    this.currentToDo = {};
     this.currentCategory = {};
     this.currentIndex = -1;
   }
 
-  setActiveInquiry(inquiry: Inquiry, index: number): void {
-    this.currentInquiry = inquiry;
-   // this.currentCategory = this.categories.find(x => (x.category_id == inquiry.todo_category));
+  setActiveInquiry(todo: ToDo, index: number): void {
+    this.currentToDo = todo;
+   // this.currentCategory = this.categories.find(x => (x.category_id == todo.todo_category));
     this.currentIndex = index;
   }
 
@@ -70,12 +70,12 @@ export class InquiriesListComponent implements OnInit {
   }
 
   searchTitle(): void {
-    this.currentInquiry = {};
+    this.currentToDo = {};
     this.currentIndex = -1;
     this.inquiryService.findByTitle(this.inquiry_title)
       .subscribe({
         next: (data) => {
-          this.inquiries = data;
+          this.todos = data;
           console.log(data);
         },
         error: (e) => console.error(e)

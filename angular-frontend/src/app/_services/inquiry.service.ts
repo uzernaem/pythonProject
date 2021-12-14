@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Inquiry, ToDoCategory, } from '../models/inquiry.model';
+import { ToDo, ToDoCategory, } from '../models/inquiry.model';
 import { User } from '../models/user.model';
 
 const baseUrl = 'http://127.0.0.1:8000/inquiries/api/todos';
@@ -20,8 +20,8 @@ export class InquiryService {
     return this.http.get<User[]>(userUrl);
   }
 
-  getAll(): Observable<Inquiry[]> {
-    return this.http.get<Inquiry[]>(baseUrl);
+  getToDos(): Observable<ToDo[]> {
+    return this.http.get<ToDo[]>(baseUrl);
   }
 
   // getCategories(): Observable<ToDoCategory[]> {
@@ -32,7 +32,7 @@ export class InquiryService {
     return this.http.get(`${categoriesUrl}/${id}`);
   }
 
-  get(id: any): Observable<Inquiry> {
+  get(id: any): Observable<ToDo> {
     return this.http.get(`${baseUrl}/${id}`);
   }
 
@@ -52,7 +52,7 @@ export class InquiryService {
     return this.http.delete(baseUrl);
   }
 
-  findByTitle(title: any): Observable<Inquiry[]> {
-    return this.http.get<Inquiry[]>(`${baseUrl}?title=${title}`);
+  findByTitle(title: any): Observable<ToDo[]> {
+    return this.http.get<ToDo[]>(`${baseUrl}?title=${title}`);
   }
 }

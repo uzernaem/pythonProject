@@ -1,66 +1,66 @@
 <div *ngIf="viewMode; else editable">
-    <div *ngIf="currentInquiry.inquiry_id">
+    <div *ngIf="currentToDo.inquiry_id">
       <h4>Заявка</h4>
       <div>
-        <label><strong>Заголовок:</strong></label> {{ currentInquiry.inquiry_title }}
+        <label><strong>Заголовок:</strong></label> {{ currentToDo.inquiry_title }}
       </div>
       <div> 
         <label><strong>Текст заявки:</strong></label>
-        {{ currentInquiry.inquiry_text }}
+        {{ currentToDo.inquiry_text }}
       </div>
       <div>
         <label><strong>Категория:</strong></label>
-        {{ currentInquiry.todo_category_name }}
+        {{ currentToDo.todo_category_name }}
       </div>
       <div>
         <label><strong>Создатель:</strong></label>
-        {{ currentInquiry.inquiry_creator }}
+        {{ currentToDo.inquiry_creator }}
       </div>
       <div>
         <label><strong>Приоритет:</strong></label>
-        {{ currentInquiry.todo_priority_name }}
+        {{ currentToDo.todo_priority_name }}
       </div>
       <div>
         <label><strong>Статус:</strong></label>
-        {{ currentInquiry.todo_status_name }}
+        {{ currentToDo.todo_status_name }}
       </div>
   
       <a
         class="badge badge-warning"
-        routerLink="/todos/{{ currentInquiry.inquiry_id }}"
+        routerLink="/todos/{{ currentToDo.inquiry_id }}"
       >
         Edit
       </a>
     </div>
   
-    <div *ngIf="!currentInquiry">
+    <div *ngIf="!currentToDo">
       <br />
       <p>Выберите заявку...</p>
     </div>
   </div>
   
   <ng-template #editable>
-    <div *ngIf="currentInquiry.inquiry_id" class="edit-form">
+    <div *ngIf="currentToDo.inquiry_id" class="edit-form">
       <h4>Заявка</h4>
       <form>
         <div>
-          <label><strong>Заголовок:</strong></label> {{ currentInquiry.inquiry_title }}
+          <label><strong>Заголовок:</strong></label> {{ currentToDo.inquiry_title }}
         </div>
         <div>
           <label><strong>Текст заявки:</strong></label>
-          {{ currentInquiry.inquiry_text }}
+          {{ currentToDo.inquiry_text }}
         </div>
         <div>
           <label><strong>Категория:</strong></label>
-          {{ currentInquiry.todo_category_name }}
+          {{ currentToDo.todo_category_name }}
         </div>
         <div>
           <label><strong>Создатель:</strong></label>
-          {{ currentInquiry.inquiry_creator }}
+          {{ currentToDo.inquiry_creator }}
         </div>
         <div>
           <label><strong>Приоритет:</strong></label>
-          {{ currentInquiry.todo_priority_name }}
+          {{ currentToDo.todo_priority_name }}
         </div>
 
         <div class="form-group">
@@ -69,7 +69,7 @@
             type="checkbox"
             class="form-control"
             id="inquiry_is_done"
-            [(ngModel)]="currentInquiry.inquiry_is_done"
+            [(ngModel)]="currentToDo.inquiry_is_done"
             name="done"
           />
         </div>
@@ -77,25 +77,25 @@
         <div class="form-group">
           <mat-form-field appearance="fill">
             <mat-label>Выбрать исполнителя</mat-label>
-            <mat-select [(ngModel)]="currentInquiry.todo_assigned_to" name="todo_assigned_to">
+            <mat-select [(ngModel)]="currentToDo.todo_assigned_to" name="todo_assigned_to">
               <mat-option *ngFor="let user of users" [value]="user.id">
                 {{user.first_name}} {{user.last_name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <p> Выбранный исполнитель: {{currentInquiry.todo_assigned_to}} </p>
+          <p> Выбранный исполнитель: {{currentToDo.todo_assigned_to}} </p>
       </div>
 
       <div class="form-group">
           <mat-form-field appearance="fill">
             <mat-label>Сменить статус заявки</mat-label>
-            <mat-select [(ngModel)]="currentInquiry.todo_status" name="todo_status">
+            <mat-select [(ngModel)]="currentToDo.todo_status" name="todo_status">
               <mat-option *ngFor="let status of todostatuses" [value]="status.status_id">
                 {{status.status_name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <p> Выбранный статус: {{currentInquiry.todo_status}} </p>
+          <p> Выбранный статус: {{currentToDo.todo_status}} </p>
       </div>
 
       </form>
@@ -129,7 +129,7 @@
       <p>{{ message }}</p>
     </div>
   
-    <div *ngIf="!currentInquiry.inquiry_id">
+    <div *ngIf="!currentToDo.inquiry_id">
       <br />
       <p>Нет доступа к данной заявке...</p>
     </div>

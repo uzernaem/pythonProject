@@ -40,6 +40,12 @@ class ToDoSerializer(serializers.ModelSerializer):
         return instance
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
 class ToDoCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDoCategory
@@ -135,12 +141,6 @@ class NotificationSerializer(serializers.ModelSerializer):
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
-        fields = '__all__'
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
         fields = '__all__'
 
 
