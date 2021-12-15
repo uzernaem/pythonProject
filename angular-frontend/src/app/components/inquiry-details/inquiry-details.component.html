@@ -138,7 +138,7 @@
         >
           <div>{{ comment.comment_creation_datetime }}</div>
           <div>{{ comment.comment_text }}</div>
-          <div>{{ users[comment.comment_creator].first_name }} {{ users[comment.comment_creator].last_name }}</div>
+          <div>{{ getUser(comment.comment_creator).first_name }} {{ getUser(comment.comment_creator).last_name }}</div>
         </li>
       </ul>
     </div>

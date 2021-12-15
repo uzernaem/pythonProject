@@ -89,6 +89,10 @@ export class InquiryDetailsComponent implements OnInit {
         });
     }
 
+    getUser(id: any): any {
+      return this.users.find(x => (x.id == id))
+    }
+
     // updatePublished(status: boolean): void {
     //   const data = {
     //     title: this.currentTutorial.title,
