@@ -7,14 +7,16 @@ import { InquiryService } from 'src/app/_services/inquiry.service';
   templateUrl: './inquiries-list.component.html',
   styleUrls: ['./inquiries-list.component.css']
 })
+
 export class InquiriesListComponent implements OnInit {
 
   todos?: ToDo[];
+  listedtodos?: ToDo[];
   categories: ToDoCategory[] = [];
   currentToDo: ToDo = {};
   currentCategory: ToDoCategory = {};
   currentIndex = -1;
-  inquiry_title = '';
+  search_title = '';
 
   constructor(private inquiryService: InquiryService) { }
 
@@ -28,6 +30,7 @@ export class InquiriesListComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.todos = data;
+          this.listedtodos = data;
           console.log(data);
         },
         error: (e) => console.error(e)
@@ -58,28 +61,9 @@ export class InquiriesListComponent implements OnInit {
     this.currentIndex = index;
   }
 
-  removeAllInquiries(): void {
-    this.inquiryService.deleteAll()
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          this.refreshList();
-        },
-        error: (e) => console.error(e)
-      });
-  }
-
   searchTitle(): void {
-    this.currentToDo = {};
-    this.currentIndex = -1;
-    this.inquiryService.findByTitle(this.inquiry_title)
-      .subscribe({
-        next: (data) => {
-          this.todos = data;
-          console.log(data);
-        },
-        error: (e) => console.error(e)
-      });
+    if (this.search_title != '')
+      this.listedtodos = this.listedtodos?.filter(x => (x.inquiry_title?.includes(this.search_title)));
+    else this.listedtodos = this.todos;
   }
-
 }

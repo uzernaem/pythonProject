@@ -14,15 +14,27 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
+import {MatCardModule} from '@angular/material/card';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegisterComponent } from './components/register/register.component';
+import {MatButtonModule} from '@angular/material/button';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatIconModule} from '@angular/material/icon';
+
+
 
 
 const modules = [
+  MatIconModule,
+  MatGridListModule,
+  MatExpansionModule,
+  MatButtonModule,
+  MatCardModule,
   MatFormFieldModule,
   MatInputModule,
   MatSelectModule,
@@ -45,7 +57,7 @@ const modules = [
     HomeComponent,
     ProfileComponent
   ],
-  imports: [modules],
+  imports: [modules, BrowserAnimationsModule],
   exports: [modules],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
