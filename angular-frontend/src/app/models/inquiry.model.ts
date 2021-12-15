@@ -4,6 +4,7 @@ export class ToDo {
     inquiry_text?: string
     inquiry_creator?: number
     inquiry_creator_name?: string
+    inquiry_creator_surname?: string
     inquiry_creation_date?: string
     inquiry_is_done?: boolean
     todo_assigned_to?: number

@@ -21,15 +21,23 @@
       {{ todo.todo_status_name }}
     </mat-panel-description>
   </mat-expansion-panel-header>
-
-  <p>
-    
-    {{ todo.todo_priority_name }}</p>
-    <p> {{ todo.inquiry_text }}</p>
-
-  <mat-action-row>
-    <button mat-raised-button color="primary" routerLink="/todos/{{ todo.inquiry_id }}">Открыть</button>
-  </mat-action-row>
+  <mat-card class="inquiry">
+    <mat-card-header>
+      <div mat-card-avatar class="header"></div>
+      <mat-card-title>{{ todo.inquiry_creator_name }} {{ todo.inquiry_creator_surname }}</mat-card-title>
+      <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        {{ todo.inquiry_text }}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" routerLink="/todos/{{ todo.inquiry_id }}">Открыть</button>
+      {{ todo.todo_priority_name }}
+    </mat-card-actions>
+  </mat-card>
+  
 </mat-expansion-panel>
 <br>
 </div>

@@ -13,6 +13,8 @@ class ToDoSerializer(serializers.ModelSerializer):
     todo_category_name = serializers.CharField(read_only=True, source='get_todo_category_display')
     todo_status_name = serializers.CharField(read_only=True, source='get_todo_status_display')
     todo_priority_name = serializers.CharField(read_only=True, source='get_todo_priority_display')
+    inquiry_creator_name = serializers.ReadOnlyField(source='inquiry_creator.first_name')
+    inquiry_creator_surname = serializers.ReadOnlyField(source='inquiry_creator.last_name')
 
     class Meta:
         model = ToDo

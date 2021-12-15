@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToDo, ToDoCategory } from 'src/app/models/inquiry.model';
+import { User } from 'src/app/models/user.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { InquiryService } from 'src/app/_services/inquiry.service';
 export class InquiriesListComponent implements OnInit {
 
   todos?: ToDo[];
+  users?: User[];
   listedtodos?: ToDo[];
   categories: ToDoCategory[] = [];
   currentToDo: ToDo = {};
@@ -22,7 +24,7 @@ export class InquiriesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.retrieveInquiries();
-    //this.retrieveCategories();
+    this.retrieveUsers();
   }
 
   retrieveInquiries(): void {
@@ -31,6 +33,17 @@ export class InquiriesListComponent implements OnInit {
         next: (data) => {
           this.todos = data;
           this.listedtodos = data;
+          console.log(data);
+        },
+        error: (e) => console.error(e)
+      });
+  }
+
+  retrieveUsers(): void {
+    this.inquiryService.getUsers()
+      .subscribe({
+        next: (data) => {
+          this.users = data;
           console.log(data);
         },
         error: (e) => console.error(e)
