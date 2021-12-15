@@ -3,11 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { InquiriesListComponent } from './components/inquiries-list/inquiries-list.component';
 import { InquiryDetailsComponent } from './components/inquiry-details/inquiry-details.component';
 import { AddInquiryComponent } from './components/add-inquiry/add-inquiry.component';
-
-import { RegisterComponent } from './register/register.component';
-import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile.component';
+import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'todos', pathMatch: 'full' },
