@@ -37,6 +37,10 @@ export class InquiryService {
     return this.http.get<Comment[]>(`${baseUrl + 'comments'}/${id}`);
   }
 
+  createComment(data: any, id: any): Observable<any> {
+    return this.http.post(`${baseUrl + 'comments'}/${id}`, data);
+  }
+
   create(data: any): Observable<any> {
     return this.http.post(baseUrl + 'todos', data);
   }

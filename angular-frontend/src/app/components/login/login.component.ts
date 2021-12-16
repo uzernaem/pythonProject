@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
           username: data.username,
           first_name: data.first_name,
           last_name: data.last_name,
-          email: data.email
+          id: data.id
         };
         this.tokenStorage.saveUser(JSON.stringify(this.user));
 

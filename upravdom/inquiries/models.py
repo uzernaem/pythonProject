@@ -211,7 +211,7 @@ class Comment(models.Model):
     inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, blank=False, null=False, help_text='Заявка')
     comment_text = models.TextField(max_length=4096, help_text='Текст комментария', blank=False, null=False)
     comment_creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text='Автор комментария')
-    comment_creation_datetime = models.DateTimeField(blank=False, help_text='Дата и время комментария')
+    comment_creation_datetime = models.DateTimeField(auto_now_add=True, help_text='Дата и время комментария')
 
 
 class VoteOption(models.Model):

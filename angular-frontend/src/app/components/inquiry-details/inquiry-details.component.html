@@ -1,105 +1,53 @@
-<mat-form-field appearance="fill">
-
-<div *ngIf="viewMode; else editable">
-    <div *ngIf="currentToDo.inquiry_id">
-      
-      <h4>Заявка</h4>
-      <div>
-        <label><strong>Заголовок:</strong></label> {{ currentToDo.inquiry_title }}
-      </div>
-      <div> 
-        <label><strong>Текст заявки:</strong></label>
-        {{ currentToDo.inquiry_text }}
-      </div>
-      <div>
-        <label><strong>Категория:</strong></label>
-        {{ currentToDo.todo_category_name }}
-      </div>
-      <div>
-        <label><strong>Создатель:</strong></label>
-        {{ currentToDo.inquiry_creator }}
-      </div>
-      <div>
-        <label><strong>Приоритет:</strong></label>
-        {{ currentToDo.todo_priority_name }}
-      </div>
-      <div>
-        <label><strong>Статус:</strong></label>
-        {{ currentToDo.todo_status_name }}
-      </div>
-  
-      <a
-        class="badge badge-warning"
-        routerLink="/todos/{{ currentToDo.inquiry_id }}"
-      >
-        Edit
-      </a>
-    </div>
-  
-    <div *ngIf="!currentToDo">
-      <br />
-      <p>Выберите заявку...</p>
-    </div>
-  </div></mat-form-field>
-  <mat-form-field appearance="fill">
-  <ng-template #editable>
+<mat-card>
+  <mat-card-content>  
     <div *ngIf="currentToDo.inquiry_id" class="edit-form">
-      <h4>Заявка</h4>
+      <h2>Заявка на исполнение</h2>
       <form>
         <div>
-          <label><strong>Заголовок:</strong></label> {{ currentToDo.inquiry_title }}
+          <label><strong>От:</strong></label>
+          {{ currentToDo.inquiry_creator }}
+        </div>
+        <div>
+          <label><strong>Заголовок:</strong></label>
+          <label>{{ currentToDo.inquiry_title }}</label>
         </div>
         <div>
           <label><strong>Текст заявки:</strong></label>
-          {{ currentToDo.inquiry_text }}
+          <label>{{ currentToDo.inquiry_text }}</label>
         </div>
         <div>
           <label><strong>Категория:</strong></label>
           {{ currentToDo.todo_category_name }}
         </div>
-        <div>
-          <label><strong>Создатель:</strong></label>
-          {{ currentToDo.inquiry_creator }}
-        </div>
+
         <div>
           <label><strong>Приоритет:</strong></label>
           {{ currentToDo.todo_priority_name }}
         </div>
 
-        <div class="form-group">
-          <label for="inquiry_title">Завершена</label>
-          <input
-            type="checkbox"
-            class="form-control"
-            id="inquiry_is_done"
-            [(ngModel)]="currentToDo.inquiry_is_done"
-            name="done"
-          />
+        <div>
+          <label><strong>Выбрать исполнителя:</strong></label>
         </div>
-
-        <div class="form-group">
           <mat-form-field appearance="fill">
-            <mat-label>Выбрать исполнителя</mat-label>
+            <mat-label>Исполнитель</mat-label>
             <mat-select [(ngModel)]="currentToDo.todo_assigned_to" name="todo_assigned_to">
               <mat-option *ngFor="let user of users" [value]="user.id">
                 {{user.first_name}} {{user.last_name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <p> Выбранный исполнитель: {{currentToDo.todo_assigned_to}} </p>
-      </div>
-
-      <div class="form-group">
+          
+          <div>
+            <label><strong>Изменить статус:</strong></label>
+          </div>
           <mat-form-field appearance="fill">
-            <mat-label>Сменить статус заявки</mat-label>
+            <mat-label>Текущий статус</mat-label>
             <mat-select [(ngModel)]="currentToDo.todo_status" name="todo_status">
               <mat-option *ngFor="let status of todostatuses" [value]="status.status_id">
                 {{status.status_name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <p> Выбранный статус: {{currentToDo.todo_status}} </p>
-      </div>
 
       </form>
   
@@ -118,54 +66,51 @@
         Publish
       </button> -->
   
-      <button class="badge badge-danger mr-2" (click)="deleteInquiry()">
-        Удалить
-      </button>
-  
-      <button
+      <button mat-raised-button color="primary"
         type="submit"
-        class="badge badge-success mb-2"
         (click)="updateInquiry()"
       >
-        Обновить
+        Сохранить изменения
       </button>
       <p>{{ message }}</p>
     </div>
 
-   
-    <h4>Комментарии</h4>
+    <div class="form-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Комментарий</mat-label>
+        <textarea 
+        matInput type="text" 
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="5"
+        cdkAutosizeMaxRows="8"
+        placeholder="Введите комментарий"
+        [(ngModel)]="comment.comment_text"
+        name="comment_text"></textarea>
+      </mat-form-field>
+    <div>
+      <button mat-raised-button color="primary"
+      type="submit"
+      (click)="saveComment()"
+    >
+      Опубликовать
+    </button>
+    <p>{{ message }}</p>
+    </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+   <div><h2>Комментарии</h2></div>
       <div *ngFor="let comment of comments"
         ><mat-card>
           <mat-card-subtitle>{{ comment.comment_creation_datetime }}</mat-card-subtitle>
-          <mat-card-content>{{ getUser(comment.comment_creator).first_name }} {{ getUser(comment.comment_creator).last_name }}</mat-card-content>
-          <mat-card-title>{{ comment.comment_text }}</mat-card-title>
+          <label><strong>От: </strong>{{ getUser(comment.comment_creator).first_name }} {{ getUser(comment.comment_creator).last_name }}</label>
+          <div><label>{{ comment.comment_text }}</label></div>
         </mat-card>
       </div>
-
-      <mat-card class="example-card">
-        <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title>Shiba Inu</mat-card-title>
-          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-        </mat-card-header>
-        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-        <mat-card-content>
-          <p>
-            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-            bred for hunting.
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button>LIKE</button>
-          <button mat-button>SHARE</button>
-        </mat-card-actions>
-      </mat-card>
-   
   
     <div *ngIf="!currentToDo.inquiry_id">
       <br />
       <p>Нет доступа к данной заявке...</p>
     </div>
-  </ng-template>
-</mat-form-field>

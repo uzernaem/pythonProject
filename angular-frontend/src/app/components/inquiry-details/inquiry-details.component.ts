@@ -3,6 +3,7 @@ import { InquiryService } from 'src/app/_services/inquiry.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToDo, Comment, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model';
 import { User } from 'src/app/models/user.model';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
   selector: 'app-inquiry-details',
@@ -12,8 +13,12 @@ import { User } from 'src/app/models/user.model';
 export class InquiryDetailsComponent implements OnInit {
 
   users: User[] = [];
-  comments: Comment[] = [];
-  user_name?: string;
+  currentuser?: User;
+  comments!: Comment[];
+  comment: Comment = {
+    comment_text: ''
+  };
+
   todostatuses: ToDoStatus[] = [
     {"status_id": "n", "status_name": "Новая"},
     {"status_id": "w", "status_name": "В работе"},
@@ -45,7 +50,8 @@ export class InquiryDetailsComponent implements OnInit {
   constructor(
     private inquiryService: InquiryService,
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private tokenStorage: TokenStorageService) { }
 
     ngOnInit(): void {
       if (!this.viewMode) {
@@ -82,11 +88,29 @@ export class InquiryDetailsComponent implements OnInit {
       this.inquiryService.getComments(id)
         .subscribe({
           next: (data) => {
-            this.comments = data;
+            this.comments = data.sort((a,b) => b.comment_id! - a.comment_id!);
             console.log(data);
           },
           error: (e) => console.error(e)
         });
+    }
+
+    saveComment(): void {
+      this.currentuser = this.tokenStorage.getUser();
+      const data = {
+        comment_text: this.comment.comment_text,
+        inquiry: this.currentToDo.inquiry_id,
+        comment_creator: this.currentuser?.id
+      };
+  
+      this.inquiryService.createComment(data, this.currentToDo.inquiry_id)
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+          },
+          error: (e) => console.error(e)
+        });
+      window.location.reload();
     }
 
     getUser(id: any): any {
