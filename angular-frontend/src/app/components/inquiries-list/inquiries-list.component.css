@@ -3,3 +3,8 @@
     max-width: 750px;
     margin: auto;
   }
+
+  .text-inside-grid {
+    position: absolute;
+    left: 5px;
+  }
