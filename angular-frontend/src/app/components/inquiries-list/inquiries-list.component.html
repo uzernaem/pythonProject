@@ -16,21 +16,24 @@
 <div class="inquiries" *ngFor="let todo of listedtodos">
 <mat-expansion-panel>
   <mat-expansion-panel-header>
+
     <mat-panel-title>
       {{ todo.inquiry_title }}
     </mat-panel-title>
+
     <mat-panel-description>
       {{ todo.todo_status_name }}
     </mat-panel-description>
+  
   </mat-expansion-panel-header>
-  <mat-grid-list cols="10" rowHeight="64px" >
-    <mat-grid-tile colspan="2" rowspan="2" >      
+  <mat-grid-list cols="10" rowHeight="32px" >
+    <mat-grid-tile colspan="2" rowspan="3" >      
       <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" >
     </mat-grid-tile>
-    <mat-grid-tile colspan="8" rowspan="4" >
-      <mat-card class="text-inside-grid">
+    <mat-grid-tile colspan="8" rowspan="5" >
+      <mat-card fxLayout="row" fxLayoutGap="20px" fxFlexFill>
       {{ todo.inquiry_text }}   
-    </mat-card>
+      </mat-card>
     </mat-grid-tile>
     <mat-grid-tile colspan="2" rowspan="1" >
       {{ todo.inquiry_creator_name }} {{ todo.inquiry_creator_surname }}
