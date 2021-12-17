@@ -10,6 +10,8 @@
 </mat-grid-tile>  
 </mat-grid-list>
 
+<button mat-button (click)="openDialog(32)">Open dialog</button>
+
 <div class="inquiries" *ngFor="let todo of listedtodos">
 <mat-expansion-panel>
   <mat-expansion-panel-header>
@@ -41,7 +43,7 @@
 
 
         <mat-grid-tile colspan="1">
-      <button mat-raised-button color="primary" routerLink="/todos/{{ todo.inquiry_id }}">Открыть</button>
+      <button mat-raised-button color="primary" (click)="openDialog(todo.inquiry_id)">Открыть</button>
     </mat-grid-tile>
       <mat-grid-tile colspan="1">
       {{ todo.todo_priority_name }}

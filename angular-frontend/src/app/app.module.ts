@@ -31,9 +31,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatOptionModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { InquiryModalComponent } from './components/inquiry-modal/inquiry-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 const modules = [
+  MatDialogModule,
   BrowserModule,
   AppRoutingModule,
   FlexLayoutModule,
@@ -68,7 +71,8 @@ const modules = [
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    InquiryModalComponent
   ],
   imports: [modules, BrowserAnimationsModule],
   exports: [modules],

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ToDo, ToDoCategory } from 'src/app/models/inquiry.model';
 import { User } from 'src/app/models/user.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
+import { MatDialog } from '@angular/material/dialog';
+import { InquiryModalComponent } from '../inquiry-modal/inquiry-modal.component';
 
 @Component({
   selector: 'app-inquiries-list',
@@ -20,7 +22,7 @@ export class InquiriesListComponent implements OnInit {
   currentIndex = -1;
   search_title = '';
 
-  constructor(private inquiryService: InquiryService) { }
+  constructor(private inquiryService: InquiryService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.retrieveInquiries();
@@ -79,4 +81,17 @@ export class InquiriesListComponent implements OnInit {
       this.listedtodos = this.listedtodos?.filter(x => (x.inquiry_title?.includes(this.search_title)));
     else this.listedtodos = this.todos;
   }
+
+  openDialog(id?: number) {
+    const dialogRef = this.dialog.open(InquiryModalComponent, {
+      data: {
+        id: id,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
 }
