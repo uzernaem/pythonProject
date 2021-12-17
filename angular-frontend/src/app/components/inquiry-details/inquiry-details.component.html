@@ -1,8 +1,7 @@
-<mat-card>
+<mat-card class="cards">
   <mat-card-content>  
     <div *ngIf="currentToDo.inquiry_id" class="edit-form">
       <h2>Заявка на исполнение</h2>
-      <form>
         <div>
           <label><strong>От:</strong></label>
           {{ currentToDo.inquiry_creator }}
@@ -47,35 +46,22 @@
                 {{status.status_name}}
               </mat-option>
             </mat-select>
-          </mat-form-field>
-
-      </form>
-  
-      <!-- <button
-        class="badge badge-primary mr-2"
-        *ngIf="currentTutorial.published"
-        (click)="updatePublished(false)"
-      >
-        UnPublish
-      </button>
-      <button
-        *ngIf="!currentTutorial.published"
-        class="badge badge-primary mr-2"
-        (click)="updatePublished(true)"
-      >
-        Publish
-      </button> -->
-  
+          </mat-form-field>      
+          <div>
       <button mat-raised-button color="primary"
-        type="submit"
-        (click)="updateInquiry()"
-      >
+              type="submit"
+              (click)="updateInquiry()">
         Сохранить изменения
       </button>
+      </div>
       <p>{{ message }}</p>
     </div>
+  </mat-card-content>
+</mat-card>
 
-    <div class="form-group">
+<div><h2>Комментарии</h2></div>
+<mat-card class="cards">
+  <mat-card-content class="edit-form">
       <mat-form-field appearance="fill">
         <mat-label>Комментарий</mat-label>
         <textarea 
@@ -88,29 +74,23 @@
         name="comment_text"></textarea>
       </mat-form-field>
     <div>
-      <button mat-raised-button color="primary"
-      type="submit"
-      (click)="saveComment()"
-    >
-      Опубликовать
-    </button>
+      <button mat-raised-button color="primary" type="submit" (click)="saveComment()">
+        Опубликовать
+      </button>
     <p>{{ message }}</p>
     </div>
-    </div>
-
   </mat-card-content>
 </mat-card>
 
-   <div><h2>Комментарии</h2></div>
-      <div *ngFor="let comment of comments"
-        ><mat-card>
-          <mat-card-subtitle>{{ comment.comment_creation_datetime }}</mat-card-subtitle>
-          <label><strong>От: </strong>{{ getUser(comment.comment_creator).first_name }} {{ getUser(comment.comment_creator).last_name }}</label>
-          <div><label>{{ comment.comment_text }}</label></div>
-        </mat-card>
-      </div>
-  
-    <div *ngIf="!currentToDo.inquiry_id">
-      <br />
-      <p>Нет доступа к данной заявке...</p>
-    </div>
+<div *ngFor="let comment of comments">
+  <mat-card class="cards">
+    <mat-card-subtitle>{{ comment.comment_creation_datetime }}</mat-card-subtitle>
+    <label><strong>От: </strong>{{ getUser(comment.comment_creator).first_name }} {{ getUser(comment.comment_creator).last_name }}</label>
+    <div><label>{{ comment.comment_text }}</label></div>
+  </mat-card>
+</div>
+
+<div *ngIf="!currentToDo.inquiry_id">
+  <br />
+  <p>Нет доступа к данной заявке...</p>
+</div>

@@ -1,4 +1,5 @@
-<div>
+<mat-card>
+  <mat-card-content>
     <div class="submit-form">
       <div *ngIf="!submitted">
         
@@ -32,15 +33,15 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <p> Выбранная категория: {{todo.todo_category}} </p>
         </div>
   
-        <button (click)="saveInquiry()" class="btn btn-success">Submit</button>
+        <button mat-raised-button color="primary" (click)="saveInquiry()">Создать</button>
       </div>
   
       <div *ngIf="submitted">
         <h4>Новая заявка создана!</h4>
-        <button class="btn btn-success" (click)="newInquiry()">Add</button>
+        <button mat-raised-button color="primary" (click)="newInquiry()">Ок!</button>
       </div>
     </div>
-  </div>
+  </mat-card-content>
+</mat-card>
