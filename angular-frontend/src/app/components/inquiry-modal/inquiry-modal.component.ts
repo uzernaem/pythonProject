@@ -136,7 +136,7 @@ export class InquiryModalComponent implements OnInit {
           },
           error: (e) => console.error(e)
         });
-      window.location.reload();
+        this.retrieveComments(this.data.id);
     }
 
     deleteInquiry(): void {
