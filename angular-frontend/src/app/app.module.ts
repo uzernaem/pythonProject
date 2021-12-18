@@ -33,6 +33,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InquiryModalComponent } from './components/inquiry-modal/inquiry-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AddInquiryModalComponent } from './components/add-inquiry-modal/add-inquiry-modal.component';
 
 
 const modules = [
@@ -72,7 +73,8 @@ const modules = [
     RegisterComponent,
     HomeComponent,
     ProfileComponent,
-    InquiryModalComponent
+    InquiryModalComponent,
+    AddInquiryModalComponent
   ],
   imports: [modules, BrowserAnimationsModule],
   exports: [modules],

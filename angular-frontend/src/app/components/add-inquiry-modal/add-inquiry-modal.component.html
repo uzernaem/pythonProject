@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Новая заявка</h2>
+    <mat-dialog-content class="mat-typography">
+      <div class="submit-form">
+        <div *ngIf="!submitted">
+          
+          <div class="form-group">
+            <mat-form-field appearance="fill">
+              <mat-label>Заголовок заявки</mat-label>
+              <input matInput type="text" placeholder="Введите заголовок" [(ngModel)]="todo.inquiry_title" name="inquiry_title">
+            </mat-form-field>
+          </div>
+  
+          <div class="form-group">
+            <mat-form-field appearance="fill">
+              <mat-label>Текст заявки</mat-label>
+              <textarea 
+              matInput type="text" 
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="5"
+              cdkAutosizeMaxRows="8"
+              placeholder="Введите текст заявки"
+              [(ngModel)]="todo.inquiry_text"
+              name="inquiry_text"></textarea>
+            </mat-form-field>
+          </div>
+  
+          <div class="form-group">
+              <mat-form-field appearance="fill">
+                <mat-label>Категория</mat-label>
+                <mat-select [(ngModel)]="todo.todo_category" name="todo_category">
+                  <mat-option *ngFor="let category of todocategories" [value]="category.category_id">
+                    {{category.category_name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+          </div>
+        </div>
+    
+        <div *ngIf="submitted">
+          <h4>Новая заявка создана!</h4>
+          <button mat-raised-button color="primary" (click)="newInquiry()">Ок!</button>
+        </div>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-raised-button [mat-dialog-close]="true" color="primary" type="submit" (click)="saveInquiry()">Создать</button>     
+        <button mat-button mat-dialog-close>Закрыть</button>
+      </mat-dialog-actions>

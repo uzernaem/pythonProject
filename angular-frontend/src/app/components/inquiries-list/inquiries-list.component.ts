@@ -4,6 +4,7 @@ import { User } from 'src/app/models/user.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { MatDialog } from '@angular/material/dialog';
 import { InquiryModalComponent } from '../inquiry-modal/inquiry-modal.component';
+import { AddInquiryModalComponent } from '../add-inquiry-modal/add-inquiry-modal.component';
 
 @Component({
   selector: 'app-inquiries-list',
@@ -82,12 +83,20 @@ export class InquiriesListComponent implements OnInit {
     else this.listedtodos = this.todos;
   }
 
-  openDialog(id?: number) {
+  newInquiryDialog(id?: number) {
     const dialogRef = this.dialog.open(InquiryModalComponent, {
       data: {
         id: id,
       }
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  addInquiryDialog() {
+    const dialogRef = this.dialog.open(AddInquiryModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);

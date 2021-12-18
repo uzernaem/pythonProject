@@ -57,7 +57,7 @@ export class InquiryModalComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) 
     public data: DialogData,
     private inquiryService: InquiryService,
-    private route: ActivatedRoute,
+    //private route: ActivatedRoute,
     private router: Router,
     private tokenStorage: TokenStorageService) { }
 
