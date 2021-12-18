@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { AddInquiryComponent } from './components/add-inquiry/add-inquiry.component';
 import { InquiryDetailsComponent } from './components/inquiry-details/inquiry-details.component';
 import { InquiriesListComponent } from './components/inquiries-list/inquiries-list.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,6 +37,7 @@ import { AddInquiryModalComponent } from './components/add-inquiry-modal/add-inq
 
 
 const modules = [
+  ReactiveFormsModule,
   MatDialogModule,
   BrowserModule,
   AppRoutingModule,

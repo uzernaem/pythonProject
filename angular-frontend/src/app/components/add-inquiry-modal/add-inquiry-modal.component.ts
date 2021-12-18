@@ -1,9 +1,9 @@
-import { Component, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { InquiryService } from 'src/app/_services/inquiry.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToDo, Comment, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model';
+import { ToDo, ToDoCategory } from 'src/app/models/inquiry.model';
 import { User } from 'src/app/models/user.model';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -13,6 +13,7 @@ import { TokenStorageService } from 'src/app/_services/token-storage.service';
 })
 
 export class AddInquiryModalComponent implements OnInit {
+  inquiryForm!: FormGroup;
   selectedValue: string = '';
   currentuser?: User;
   todocategories: ToDoCategory[] = [
@@ -30,17 +31,22 @@ export class AddInquiryModalComponent implements OnInit {
   constructor(private inquiryService: InquiryService,
     private tokenStorage: TokenStorageService) { }
 
-  ngOnInit(): void { 
-    //this.inquiryService.getCategories().subscribe(cats => {this.categories = cats as ToDoCategory[]})
+  ngOnInit(): void {
+    this.inquiryForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      text: new FormControl('', Validators.required),
+      category: new FormControl('', Validators.required)
+        });
    }
 
-  saveInquiry(): void {    
+  saveInquiry(): void {
+    
     this.currentuser = this.tokenStorage.getUser();
     const data = {
       inquiry_creator: this.currentuser.id,
-      inquiry_title: this.todo.inquiry_title,
-      inquiry_text: this.todo.inquiry_text,
-      todo_category: this.todo.todo_category
+      inquiry_title: this.inquiryForm.value.title,
+      inquiry_text: this.inquiryForm.value.text,
+      todo_category: this.inquiryForm.value.category
     };
 
     this.inquiryService.create(data)
@@ -52,17 +58,5 @@ export class AddInquiryModalComponent implements OnInit {
         error: (e) => console.error(e)
       });
     window.location.reload();
-  }
-
-  newInquiry(): void {
-    this.submitted = false;
-    this.todo = {
-      inquiry_title: '',
-      inquiry_text: '',
-      inquiry_creator: 0,
-      todo_category: 'Сантехника',
-      todo_priority: '',
-      todo_status: ''
-    };
   }
 }
