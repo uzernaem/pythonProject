@@ -1,26 +1,27 @@
+<form [formGroup]="inquiryForm">
 <h2 mat-dialog-title>Заявка</h2>
 <mat-dialog-content class="mat-typography">
 
     <div *ngIf="currentToDo.inquiry_id" class="edit-form">
           <div>
-            <label><strong>От:</strong></label>
-            {{ currentToDo.inquiry_creator }}
+            <label><strong>От: </strong></label>
+            {{ currentToDo.todo_assigned_to }}
           </div>
           <div>
-            <label><strong>Заголовок:</strong></label>
+            <label><strong>Заголовок: </strong></label>
             <label>{{ currentToDo.inquiry_title }}</label>
           </div>
           <div>
-            <label><strong>Текст заявки:</strong></label>
+            <label><strong>Текст заявки: </strong></label>
             <label>{{ currentToDo.inquiry_text }}</label>
           </div>
           <div>
-            <label><strong>Категория:</strong></label>
+            <label><strong>Категория: </strong></label>
             {{ currentToDo.todo_category_name }}
           </div>
   
           <div>
-            <label><strong>Приоритет:</strong></label>
+            <label><strong>Приоритет: </strong></label>
             {{ currentToDo.todo_priority_name }}
           </div>
   
@@ -29,7 +30,7 @@
           </div>
             <mat-form-field appearance="fill">
               <mat-label>Исполнитель</mat-label>
-              <mat-select [(ngModel)]="currentToDo.todo_assigned_to" name="todo_assigned_to">
+              <mat-select formControlName="assignee" name="todo_assigned_to">
                 <mat-option *ngFor="let user of users" [value]="user.id">
                   {{user.first_name}} {{user.last_name}}
                 </mat-option>
@@ -41,7 +42,7 @@
             </div>
             <mat-form-field appearance="fill">
               <mat-label>Текущий статус</mat-label>
-              <mat-select [(ngModel)]="currentToDo.todo_status" name="todo_status">
+              <mat-select formControlName="status" name="todo_status">
                 <mat-option *ngFor="let status of todostatuses" [value]="status.status_id">
                   {{status.status_name}}
                 </mat-option>
@@ -60,11 +61,12 @@
         cdkAutosizeMinRows="5"
         cdkAutosizeMaxRows="8"
         placeholder="Введите комментарий"
-        [(ngModel)]="comment.comment_text"
-        name="comment_text"></textarea>
+        formControlName="comment"
+        name="comment_text"
+        required></textarea>
       </mat-form-field>
     <div>
-      <button mat-raised-button color="primary" (click)="saveComment()">
+      <button mat-raised-button color="primary" (click)="saveComment()" [disabled]="inquiryForm.invalid">
         Опубликовать
       </button>
     <p>{{ message }}</p>
@@ -88,3 +90,4 @@
         </button>        
   <button mat-button mat-dialog-close>Закрыть</button>
 </mat-dialog-actions>
+</form>

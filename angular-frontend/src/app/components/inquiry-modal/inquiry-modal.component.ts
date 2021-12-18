@@ -1,10 +1,11 @@
 import { Component, Inject, Input, OnInit, Output } from '@angular/core';
 import { InquiryService } from 'src/app/_services/inquiry.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToDo, Comment, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model';
 import { User } from 'src/app/models/user.model';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 export interface DialogData {
   id: number;
@@ -18,8 +19,8 @@ export interface DialogData {
 
 export class InquiryModalComponent implements OnInit {
 
-  //id?: number;
-  users: User[] = [];
+  inquiryForm!: FormGroup;
+  users!: User[];
   currentuser?: User;
   comments!: Comment[];
   comment: Comment = {
@@ -40,17 +41,7 @@ export class InquiryModalComponent implements OnInit {
 
   @Input() viewMode = false;
 
-  @Input() currentToDo: ToDo = {
-    inquiry_title: '',
-    inquiry_text: '',
-    inquiry_creator: 0,
-    todo_category: '',
-    todo_priority: '',
-    todo_status: '',
-    todo_priority_name: '',
-    todo_status_name: '',
-    todo_category_name: ''
-  };
+  @Input() currentToDo!: ToDo;
 
   message = '';
 
@@ -62,6 +53,11 @@ export class InquiryModalComponent implements OnInit {
     private tokenStorage: TokenStorageService) { }
 
     ngOnInit(): void {
+      this.inquiryForm = new FormGroup({
+        assignee: new FormControl(),
+        status: new FormControl(),
+        comment: new FormControl('', Validators.required)
+          });
       if (!this.viewMode) {
         this.message = '';
         this.retrieveUsers();
@@ -75,6 +71,10 @@ export class InquiryModalComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.currentToDo = data;
+            this.inquiryForm.patchValue({
+              assignee: data.todo_assigned_to,
+              status: data.todo_status
+            })
             console.log(data);
           },
           error: (e) => console.error(e)
@@ -106,7 +106,7 @@ export class InquiryModalComponent implements OnInit {
     saveComment(): void {
       this.currentuser = this.tokenStorage.getUser();
       const data = {
-        comment_text: this.comment.comment_text,
+        comment_text: this.inquiryForm.value.comment,
         inquiry: this.currentToDo.inquiry_id,
         comment_creator: this.currentuser?.id
       };
@@ -118,6 +118,7 @@ export class InquiryModalComponent implements OnInit {
           },
           error: (e) => console.error(e)
         });
+        
       window.location.reload();
     }
 
@@ -127,7 +128,8 @@ export class InquiryModalComponent implements OnInit {
 
     updateInquiry(): void {
       this.message = '';
-  
+      this.currentToDo.todo_assigned_to = this.inquiryForm.value.assignee;
+      this.currentToDo.todo_status = this.inquiryForm.value.status;
       this.inquiryService.update(this.currentToDo.inquiry_id, this.currentToDo)
         .subscribe({
           next: (res) => {
