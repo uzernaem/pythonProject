@@ -67,7 +67,7 @@ def comment_list(request, inquiry_id):
 
     elif request.method == 'POST':
         comment_data = JSONParser().parse(request)
-        # comment_data.inquiry_id = inquiry_id
+        comment_data['comment_creator'] = request.user.id
         comment_serializer = CommentSerializer(data=comment_data)        
         if comment_serializer.is_valid():
             comment_serializer.save()

@@ -53,6 +53,17 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
 
+    def create(self, validated_data):
+    # user = self.context['request'].user
+        comment = Comment(
+           inquiry=validated_data['inquiry'],
+           comment_text=validated_data['comment_text'],
+           comment_creator=validated_data['comment_creator'],
+           comment_creation_datetime=validated_data['comment_creation_datetime']
+        )
+        comment.save()
+        return comment
+
 
 class ToDoCategorySerializer(serializers.ModelSerializer):
     class Meta:

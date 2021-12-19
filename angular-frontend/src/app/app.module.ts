@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AddInquiryComponent } from './components/add-inquiry/add-inquiry.component';
-import { InquiryDetailsComponent } from './components/inquiry-details/inquiry-details.component';
 import { InquiriesListComponent } from './components/inquiries-list/inquiries-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -67,8 +65,6 @@ const modules = [
 @NgModule({
   declarations: [
     AppComponent,
-    AddInquiryComponent,
-    InquiryDetailsComponent,
     InquiriesListComponent,
     LoginComponent,
     RegisterComponent,
