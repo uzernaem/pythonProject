@@ -98,6 +98,7 @@ export class InquiryModalComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.comments = data.sort((a,b) => b.comment_id! - a.comment_id!);
+            this.comments.forEach(a => (a.comment_creation_datetime = new Date(a.comment_creation_datetime!)))
             console.log(data);
           },
           error: (e) => console.error(e)
@@ -111,8 +112,7 @@ export class InquiryModalComponent implements OnInit {
         comment_text: this.inquiryForm.value.comment,
         inquiry: this.currentToDo.inquiry_id,
         comment_creator: this.currentuser?.id,
-        //comment_creation_datetime: dateTime.
-        datetime_string: dateTime.toLocaleString()
+        comment_creation_datetime: dateTime
       };
   
       this.inquiryService.createComment(data, this.currentToDo.inquiry_id)

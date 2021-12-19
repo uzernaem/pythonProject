@@ -75,7 +75,7 @@
 
       <div *ngFor="let comment of comments" formControlName="commentList">
         <mat-card class="cards">
-          <mat-card-subtitle>{{ comment.datetime_string }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ comment.comment_creation_datetime }}</mat-card-subtitle>
           <label><strong>От: </strong>{{ getUser(comment.comment_creator).first_name }} {{ getUser(comment.comment_creator).last_name }}</label>
           <div><label>{{ comment.comment_text }}</label></div>
         </mat-card>

@@ -43,6 +43,12 @@ class ToDoSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+
+    def to_representation(self, instance):
+            representation = super(CommentSerializer, self).to_representation(instance)
+            representation['comment_creation_datetime'] = instance.comment_creation_datetime.timestamp()*1000
+            return representation
+
     class Meta:
         model = Comment
         fields = '__all__'

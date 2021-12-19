@@ -24,7 +24,6 @@ export class Comment {
     comment_text?: string
     comment_creator?: number
     comment_creation_datetime?: Date
-    datetime_string?: string
 }
 
 export class ToDoCategory {
