@@ -44,4 +44,12 @@
     </mat-card-content>
   </mat-card>
 </form>
+
+<form *ngIf="isLoginFailed" >
+  <mat-card>
+    <mat-card-content>    
+      <h2>{{errorMessage}}</h2>
+    </mat-card-content>
+  </mat-card>
+</form>
 </div>

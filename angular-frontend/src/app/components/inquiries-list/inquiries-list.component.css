@@ -12,3 +12,8 @@
 .inquiries{
   margin-bottom: 10px;
 }
+
+::ng-deep .mat-expansion-panel-header-description {
+  position: absolute;
+  right: 32px;
+}
