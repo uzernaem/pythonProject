@@ -21,10 +21,10 @@ class ToDoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        #user = self.context['request'].user
+        # user = self.context['request'].user
         todo = ToDo(
+            inquiry_creator=validated_data['inquiry_creator'],
             inquiry_title=validated_data['inquiry_title'],
-         #   inquiry_creator=user,
             inquiry_text=validated_data['inquiry_text'],
             todo_category=validated_data['todo_category']
         )

@@ -62,7 +62,7 @@ export class InquiryDetailsComponent implements OnInit {
       }
     }
 
-    getInquiry(id: string): void {
+    getInquiry(id: number): void {
       this.inquiryService.get(id)
         .subscribe({
           next: (data) => {
@@ -84,7 +84,7 @@ export class InquiryDetailsComponent implements OnInit {
         });
     }
 
-    retrieveComments(id: string): void {
+    retrieveComments(id: number): void {
       this.inquiryService.getComments(id)
         .subscribe({
           next: (data) => {

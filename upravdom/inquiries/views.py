@@ -49,6 +49,7 @@ def todo_list(request):
 
     elif request.method == 'POST':
         todo_data = JSONParser().parse(request)
+        todo_data['inquiry_creator'] = request.user.id
         todo_serializer = ToDoSerializer(data=todo_data)
         if todo_serializer.is_valid():
             todo_serializer.save()

@@ -20,9 +20,9 @@ export interface DialogData {
 export class InquiryModalComponent implements OnInit {
 
   inquiryForm!: FormGroup;
-  users!: User[];
+  users: User[] = [];
   currentuser?: User;
-  comments!: Comment[];
+  comments: Comment[] = [];
   comment: Comment = {
     comment_text: ''
   };
@@ -41,7 +41,7 @@ export class InquiryModalComponent implements OnInit {
 
   @Input() viewMode = false;
 
-  @Input() currentToDo!: ToDo;
+  @Input() currentToDo: ToDo = {};
 
   message = '';
 
@@ -56,8 +56,7 @@ export class InquiryModalComponent implements OnInit {
       this.inquiryForm = new FormGroup({
         assignee: new FormControl(),
         status: new FormControl(),
-        comment: new FormControl('', Validators.required),
-        commentList: new FormControl()
+        comment: new FormControl('', Validators.required)
           });
       if (!this.viewMode) {
         this.message = '';
@@ -98,7 +97,7 @@ export class InquiryModalComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.comments = data.sort((a,b) => b.comment_id! - a.comment_id!);
-            this.comments.forEach(a => (a.comment_creation_datetime = new Date(a.comment_creation_datetime!)))
+            this.comments.forEach(a => (a.comment_creation_datetime = new Date(a.comment_creation_datetime!)));
             console.log(data);
           },
           error: (e) => console.error(e)
@@ -123,7 +122,6 @@ export class InquiryModalComponent implements OnInit {
           error: (e) => console.error(e)
         });
         this.comments.unshift(data);
-        //this.retrieveComments(this.data.id);
     }
 
     getUser(id: any): any {

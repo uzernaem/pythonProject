@@ -1,5 +1,9 @@
 <form [formGroup]="inquiryForm">
 <h2 mat-dialog-title>Новая заявка</h2>
+<div>
+  <label><strong>От:</strong></label>
+  {{ currentuser.first_name }} {{ currentuser.last_name }}
+</div>
     <mat-dialog-content class="mat-typography">
       <div class="submit-form">          
           <div class="form-group">

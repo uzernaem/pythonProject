@@ -15,7 +15,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class AddInquiryModalComponent implements OnInit {
   inquiryForm!: FormGroup;
   selectedValue: string = '';
-  currentuser?: User;
+  currentuser: User = { };
   todocategories: ToDoCategory[] = [
     {"category_id": 1, "category_name": "Сантехника"},
     {"category_id": 2, "category_name": "Электрика"},
@@ -31,7 +31,8 @@ export class AddInquiryModalComponent implements OnInit {
   constructor(private inquiryService: InquiryService,
     private tokenStorage: TokenStorageService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+    this.currentuser = this.tokenStorage.getUser();
     this.inquiryForm = new FormGroup({
       title: new FormControl('', Validators.required),
       text: new FormControl('', Validators.required),
@@ -40,10 +41,7 @@ export class AddInquiryModalComponent implements OnInit {
    }
 
   saveInquiry(): void {
-    
-    this.currentuser = this.tokenStorage.getUser();
     const data = {
-      inquiry_creator: this.currentuser.id,
       inquiry_title: this.inquiryForm.value.title,
       inquiry_text: this.inquiryForm.value.text,
       todo_category: this.inquiryForm.value.category
@@ -57,6 +55,5 @@ export class AddInquiryModalComponent implements OnInit {
         },
         error: (e) => console.error(e)
       });
-    window.location.reload();
   }
 }

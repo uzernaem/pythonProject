@@ -99,6 +99,7 @@ export class InquiriesListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddInquiryModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
+      this.refreshList();
       console.log(`Dialog result: ${result}`);
     });
   }
