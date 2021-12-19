@@ -1,3 +1,5 @@
+import { DataRowOutlet } from "@angular/cdk/table"
+
 export class ToDo {
     inquiry_id?: number
     inquiry_title?: string
@@ -21,7 +23,8 @@ export class Comment {
     inquiry?: number
     comment_text?: string
     comment_creator?: number
-    comment_creation_datetime?: string
+    comment_creation_datetime?: Date
+    datetime_string?: string
 }
 
 export class ToDoCategory {

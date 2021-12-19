@@ -34,7 +34,7 @@ export class InquiryService {
   }
 
   getComments(id: any): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${baseUrl + 'comments'}/${id}`);
+    return this.http.get<Comment[]>(`${baseUrl + 'comments'}/${id}`);    
   }
 
   createComment(data: any, id: any): Observable<any> {

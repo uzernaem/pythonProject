@@ -56,7 +56,8 @@ export class InquiryModalComponent implements OnInit {
       this.inquiryForm = new FormGroup({
         assignee: new FormControl(),
         status: new FormControl(),
-        comment: new FormControl('', Validators.required)
+        comment: new FormControl('', Validators.required),
+        commentList: new FormControl()
           });
       if (!this.viewMode) {
         this.message = '';
@@ -105,10 +106,13 @@ export class InquiryModalComponent implements OnInit {
 
     saveComment(): void {
       this.currentuser = this.tokenStorage.getUser();
+      let dateTime = new Date()
       const data = {
         comment_text: this.inquiryForm.value.comment,
         inquiry: this.currentToDo.inquiry_id,
-        comment_creator: this.currentuser?.id
+        comment_creator: this.currentuser?.id,
+        //comment_creation_datetime: dateTime.
+        datetime_string: dateTime.toLocaleString()
       };
   
       this.inquiryService.createComment(data, this.currentToDo.inquiry_id)
@@ -118,8 +122,8 @@ export class InquiryModalComponent implements OnInit {
           },
           error: (e) => console.error(e)
         });
-        
-      window.location.reload();
+        this.comments.unshift(data);
+        //this.retrieveComments(this.data.id);
     }
 
     getUser(id: any): any {
@@ -138,7 +142,6 @@ export class InquiryModalComponent implements OnInit {
           },
           error: (e) => console.error(e)
         });
-        this.retrieveComments(this.data.id);
     }
 
     deleteInquiry(): void {
