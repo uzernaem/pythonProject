@@ -2,13 +2,42 @@
   <mat-grid-tile colspan="9">
   <mat-form-field style="width:100vw" appearance="fill" >
     <mat-label>Поиск заявок</mat-label>
-    <input matInput placeholder="Введите название заявки" [(ngModel)]="search_title" (keydown.enter)="searchTitle()">
+    <input matInput placeholder="Введите название заявки" [(ngModel)]="search_title" (keydown.enter)="applyFilters()">
   </mat-form-field>
 </mat-grid-tile>
 <mat-grid-tile >
-  <button mat-fab color="primary" (click)="searchTitle()" ><mat-icon>search</mat-icon></button>
+  <button mat-fab color="primary" (click)="filterByTitle()" ><mat-icon>search</mat-icon></button>
 </mat-grid-tile>  
 </mat-grid-list>
+
+<section [formGroup]="filters">
+  <mat-grid-list cols="3" rowHeight="32px" >
+    <mat-grid-tile>Статус:</mat-grid-tile>
+    <mat-grid-tile>Категория:</mat-grid-tile>
+    <mat-grid-tile>Приоритет:</mat-grid-tile>
+
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setStatusFilter($event)" formControlName="new" value="n">Новая</mat-checkbox></mat-grid-tile>
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setCategoryFilter($event)" formControlName="category1" value="1">Сантехника</mat-checkbox></mat-grid-tile>
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setPriorityFilter($event)" formControlName="priority0" value="0">Наивысший</mat-checkbox></mat-grid-tile>
+
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setStatusFilter($event)" formControlName="worked" value="w">В работе</mat-checkbox></mat-grid-tile>
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setCategoryFilter($event)" formControlName="category2" value="2">Электрика</mat-checkbox></mat-grid-tile>
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setPriorityFilter($event)" formControlName="priority1" value="1">Высокий</mat-checkbox></mat-grid-tile>
+
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setStatusFilter($event)" formControlName="revision" value="r">На проверке</mat-checkbox></mat-grid-tile>
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setCategoryFilter($event)" formControlName="category3" value="3">Ремонтные работы</mat-checkbox></mat-grid-tile>
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setPriorityFilter($event)" formControlName="priority2" value="2">Средний</mat-checkbox></mat-grid-tile>
+
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setStatusFilter($event)" formControlName="completed" value="c">Завершена</mat-checkbox></mat-grid-tile>
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setCategoryFilter($event)" formControlName="category4" value="4">Лифт</mat-checkbox></mat-grid-tile>
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setPriorityFilter($event)" formControlName="priority3" value="3">Низкий</mat-checkbox></mat-grid-tile>
+    
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile><mat-checkbox class="left-align-forced" (change)="setCategoryFilter($event)" formControlName="category5" value="5">Общедомовая территория </mat-checkbox></mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+
+</mat-grid-list>
+</section>
 
 <button mat-raised-button class="inquiries" color="primary" (click)="addInquiryDialog()">Новая заявка</button>
 

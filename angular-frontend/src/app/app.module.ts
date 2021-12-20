@@ -32,9 +32,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InquiryModalComponent } from './components/inquiry-modal/inquiry-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AddInquiryModalComponent } from './components/add-inquiry-modal/add-inquiry-modal.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 
 const modules = [
+  MatCheckboxModule,
   ReactiveFormsModule,
   MatDialogModule,
   BrowserModule,

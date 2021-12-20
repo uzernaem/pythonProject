@@ -5,6 +5,8 @@ import { InquiryService } from 'src/app/_services/inquiry.service';
 import { MatDialog } from '@angular/material/dialog';
 import { InquiryModalComponent } from '../inquiry-modal/inquiry-modal.component';
 import { AddInquiryModalComponent } from '../add-inquiry-modal/add-inquiry-modal.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-inquiries-list',
@@ -23,11 +25,36 @@ export class InquiriesListComponent implements OnInit {
   currentIndex = -1;
   search_title = '';
 
-  constructor(private inquiryService: InquiryService, public dialog: MatDialog) { }
+  filters!: FormGroup;
+
+  statusFilter: string[] = [];
+  categoryFilter: string[] = [];
+  priorityFilter: string[] = [];
+
+  constructor(private inquiryService: InquiryService, public dialog: MatDialog, fb: FormBuilder) { 
+    this.filters = fb.group({
+      new: true,
+      worked: true,
+      revision: true,
+      completed: false,
+      category1: true,
+      category2: true,
+      category3: true,
+      category4: true,
+      category5: true,
+      priority0: true,
+      priority1: true,
+      priority2: true,
+      priority3: true
+    });
+  }
 
   ngOnInit(): void {
     this.retrieveInquiries();
     this.retrieveUsers();
+    this.statusFilter = ['n', 'w', 'r'];
+    this.categoryFilter = ['1', '2', '3', '4', '5'];
+    this.priorityFilter = ['0', '1', '2', '3'];
   }
 
   retrieveInquiries(): void {
@@ -76,11 +103,41 @@ export class InquiriesListComponent implements OnInit {
    // this.currentCategory = this.categories.find(x => (x.category_id == todo.todo_category));
     this.currentIndex = index;
   }
+  
+  setStatusFilter(event: MatCheckboxChange): void{
+    if(event.source.checked) {
+      this.statusFilter.push(event.source.value);
+    }
+    else {
+      this.statusFilter = this.statusFilter.filter(x => x != event.source.value);
+    }
+    this.applyFilters();
+  }
 
-  searchTitle(): void {
-    if (this.search_title != '')
-      this.listedtodos = this.listedtodos?.filter(x => (x.inquiry_title?.includes(this.search_title)));
-    else this.listedtodos = this.todos;
+  setCategoryFilter(event: MatCheckboxChange): void{
+    if(event.source.checked) {
+      this.categoryFilter.push(event.source.value);
+    }
+    else {
+      this.categoryFilter = this.categoryFilter.filter(x => x != event.source.value);
+    }
+    this.applyFilters();
+  }
+
+  setPriorityFilter(event: MatCheckboxChange): void{
+    if(event.source.checked) {
+      this.priorityFilter.push(event.source.value);
+    }
+    else {
+      this.priorityFilter = this.priorityFilter.filter(x => x != event.source.value);
+    }
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    this.listedtodos = this.todos?.filter(x => (this.statusFilter.includes(x.todo_status!))).filter(x =>
+       (this.categoryFilter.includes(x.todo_category!))).filter(x => 
+        (this.priorityFilter.includes(x.todo_priority!))).filter(x => (x.inquiry_title?.includes(this.search_title)));
   }
 
   newInquiryDialog(id?: number) {
@@ -105,3 +162,4 @@ export class InquiriesListComponent implements OnInit {
   }
 
 }
+
