@@ -20,9 +20,9 @@ export class InquiriesListComponent implements OnInit {
   users?: User[];
   listedtodos?: ToDo[];
   categories: ToDoCategory[] = [];
-  currentToDo: ToDo = {};
-  currentCategory: ToDoCategory = {};
-  currentIndex = -1;
+  // currentToDo: ToDo = {};
+  // currentCategory: ToDoCategory = {};
+  // currentIndex = -1;
   search_title = '';
 
   filters!: FormGroup;
@@ -50,11 +50,11 @@ export class InquiriesListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.retrieveInquiries();
-    this.retrieveUsers();
     this.statusFilter = ['n', 'w', 'r'];
     this.categoryFilter = ['1', '2', '3', '4', '5'];
     this.priorityFilter = ['0', '1', '2', '3'];
+    this.retrieveInquiries();
+    this.retrieveUsers();
   }
 
   retrieveInquiries(): void {
@@ -62,7 +62,9 @@ export class InquiriesListComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.todos = data;
-          this.listedtodos = data;
+          this.listedtodos = data.filter(x => (this.statusFilter.includes(x.todo_status!))).filter(x =>
+            (this.categoryFilter.includes(x.todo_category!))).filter(x => 
+             (this.priorityFilter.includes(x.todo_priority!))).filter(x => (x.inquiry_title?.includes(this.search_title)));
           console.log(data);
         },
         error: (e) => console.error(e)
@@ -91,18 +93,11 @@ export class InquiriesListComponent implements OnInit {
   //   });
   //}
 
-  refreshList(): void {
-    this.retrieveInquiries();
-    this.currentToDo = {};
-    this.currentCategory = {};
-    this.currentIndex = -1;
-  }
-
-  setActiveInquiry(todo: ToDo, index: number): void {
-    this.currentToDo = todo;
-   // this.currentCategory = this.categories.find(x => (x.category_id == todo.todo_category));
-    this.currentIndex = index;
-  }
+  // setActiveInquiry(todo: ToDo, index: number): void {
+  //   this.currentToDo = todo;
+  //  // this.currentCategory = this.categories.find(x => (x.category_id == todo.todo_category));
+  //   this.currentIndex = index;
+  // }
   
   setStatusFilter(event: MatCheckboxChange): void{
     if(event.source.checked) {
@@ -148,6 +143,7 @@ export class InquiriesListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.retrieveInquiries();
       console.log(`Dialog result: ${result}`);
     });
   }
@@ -156,7 +152,7 @@ export class InquiriesListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddInquiryModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      this.refreshList();
+      this.retrieveInquiries();
       console.log(`Dialog result: ${result}`);
     });
   }
