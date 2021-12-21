@@ -1,16 +1,15 @@
 import { DataRowOutlet } from "@angular/cdk/table"
+import { User } from "./user.model"
 
 export class ToDo {
     inquiry_id?: number
     inquiry_title?: string
     inquiry_text?: string
-    inquiry_creator?: number
-    inquiry_creator_name?: string
-    inquiry_creator_surname?: string
+    inquiry_creator?: User
     inquiry_created_at?: string
     inquiry_updated_at?: Date
     inquiry_is_done?: boolean
-    todo_assigned_to?: number
+    todo_assigned_to?: User
     todo_priority?: string
     todo_status?: string
     todo_category?: string
@@ -23,7 +22,7 @@ export class Comment {
     comment_id?: number
     inquiry?: number
     comment_text?: string
-    comment_creator?: number
+    comment_creator?: User
     comment_created_at?: Date
 }
 

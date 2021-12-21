@@ -63,10 +63,10 @@
       </mat-card>
     </mat-grid-tile>
     <mat-grid-tile colspan="2" rowspan="1" >
-      {{ todo.inquiry_creator_name }} {{ todo.inquiry_creator_surname }}
+      {{ todo.inquiry_creator!.first_name }} {{ todo.inquiry_creator!.last_name }}
     </mat-grid-tile>
     <mat-grid-tile colspan="2" rowspan="1" >
-      Phone number
+      ☎️ {{ todo!.inquiry_creator!.phone_number }}
     </mat-grid-tile>
 
 

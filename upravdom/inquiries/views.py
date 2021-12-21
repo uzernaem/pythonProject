@@ -99,7 +99,7 @@ def todocategory_detail(request, pk):
         return JsonResponse(todocategory_serializer.data) 
 
     elif request.method == 'PUT': 
-        todocategory_data = JSONParser().parse(request) 
+        todocategory_data = JSONParser().parse(request)
         todocategory_serializer = ToDoCategorySerializer(category, data=todocategory_data) 
         if todocategory_serializer.is_valid(): 
             todocategory_serializer.save() 
@@ -118,12 +118,13 @@ def todo_detail(request, pk):
 
     if request.method == 'GET': 
         todo_serializer = ToDoSerializer(todo)
-        comments_serializer = CommentSerializer(comments, many=True) 
+        # comments_serializer = CommentSerializer(comments, many=True) 
         data = JsonResponse(todo_serializer.data)
         return data 
 
     elif request.method == 'PUT': 
-        todo_data = JSONParser().parse(request) 
+        todo_data = JSONParser().parse(request)
+        todo_data['todo_assigned_to'] = todo_data['todo_assigned_to']['id']
         todo_serializer = ToDoSerializer(todo, data=todo_data) 
         if todo_serializer.is_valid(): 
             todo_serializer.save() 

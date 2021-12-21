@@ -105,15 +105,14 @@ export class InquiryModalComponent implements OnInit {
     }
 
     saveComment(): void {
-      this.currentuser = this.tokenStorage.getUser();
+      //this.currentuser = this.tokenStorage.getUser();
       let dateTime = new Date()
       const data = {
         comment_text: this.inquiryForm.value.comment,
         inquiry: this.currentToDo.inquiry_id,
-        comment_creator: this.currentuser?.id,
-        comment_created_at: dateTime
+        comment_creator: this.tokenStorage.getUser(),
+        comment_created_at: dateTime        
       };
-  
       this.inquiryService.createComment(data, this.currentToDo.inquiry_id)
         .subscribe({
           next: (res) => {
@@ -124,9 +123,9 @@ export class InquiryModalComponent implements OnInit {
         this.comments.unshift(data);
     }
 
-    getUser(id: any): any {
-      return this.users.find(x => (x.id == id))
-    }
+    // getUser(id: any): any {
+    //   return this.users.find(x => (x.id == id))
+    // }
 
     updateInquiry(): void {
       let dateTime = new Date()
@@ -134,6 +133,7 @@ export class InquiryModalComponent implements OnInit {
       this.currentToDo.todo_assigned_to = this.inquiryForm.value.assignee;
       this.currentToDo.todo_status = this.inquiryForm.value.status;
       this.currentToDo.inquiry_updated_at = dateTime;
+      alert(JSON.stringify(this.currentToDo));
       this.inquiryService.update(this.currentToDo.inquiry_id, this.currentToDo)
         .subscribe({
           next: (res) => {

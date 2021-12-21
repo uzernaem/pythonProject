@@ -17,7 +17,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 export class InquiriesListComponent implements OnInit {
 
   todos?: ToDo[];
-  users?: User[];
+  //users?: User[];
   listedtodos?: ToDo[];
   categories: ToDoCategory[] = [];
   // currentToDo: ToDo = {};
@@ -54,7 +54,7 @@ export class InquiriesListComponent implements OnInit {
     this.categoryFilter = ['1', '2', '3', '4', '5'];
     this.priorityFilter = ['0', '1', '2', '3'];
     this.retrieveInquiries();
-    this.retrieveUsers();
+    //this.retrieveUsers();
   }
 
   retrieveInquiries(): void {
@@ -71,16 +71,16 @@ export class InquiriesListComponent implements OnInit {
       });
   }
 
-  retrieveUsers(): void {
-    this.inquiryService.getUsers()
-      .subscribe({
-        next: (data) => {
-          this.users = data;
-          console.log(data);
-        },
-        error: (e) => console.error(e)
-      });
-  }
+  // retrieveUsers(): void {
+  //   this.inquiryService.getUsers()
+  //     .subscribe({
+  //       next: (data) => {
+  //         this.users = data;
+  //         console.log(data);
+  //       },
+  //       error: (e) => console.error(e)
+  //     });
+  // }
 
   // retrieveCategories(): void {
   //   this.inquiryService.getCategories()
@@ -141,7 +141,6 @@ export class InquiriesListComponent implements OnInit {
         id: id,
       }
     });
-
     dialogRef.afterClosed().subscribe(result => {
       this.retrieveInquiries();
       console.log(`Dialog result: ${result}`);

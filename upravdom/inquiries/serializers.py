@@ -18,8 +18,12 @@ class ToDoSerializer(serializers.ModelSerializer):
     todo_category_name = serializers.CharField(read_only=True, source='get_todo_category_display')
     todo_status_name = serializers.CharField(read_only=True, source='get_todo_status_display')
     todo_priority_name = serializers.CharField(read_only=True, source='get_todo_priority_display')
-    inquiry_creator_name = serializers.ReadOnlyField(source='inquiry_creator.first_name')
-    inquiry_creator_surname = serializers.ReadOnlyField(source='inquiry_creator.last_name')
+
+    def to_representation(self, instance):
+            representation = super(ToDoSerializer, self).to_representation(instance)
+            representation['inquiry_creator'] = UserSerializer(instance.inquiry_creator).data            
+            representation['todo_assigned_to'] = UserSerializer(instance.todo_assigned_to).data
+            return representation    
 
     class Meta:
         model = ToDo
@@ -52,7 +56,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
             representation = super(CommentSerializer, self).to_representation(instance)
-            representation['comment_creation_datetime'] = instance.comment_creation_datetime.timestamp()*1000
+            representation['comment_created_at'] = instance.comment_created_at.timestamp()*1000
+            representation['comment_creator'] = UserSerializer(instance.comment_creator).data
             return representation
 
     class Meta:
@@ -65,7 +70,7 @@ class CommentSerializer(serializers.ModelSerializer):
            inquiry=validated_data['inquiry'],
            comment_text=validated_data['comment_text'],
            comment_creator=validated_data['comment_creator'],
-           comment_creation_datetime=validated_data['comment_creation_datetime']
+           comment_created_at=validated_data['comment_created_at']
         )
         comment.save()
         return comment

@@ -5,7 +5,7 @@
     <div *ngIf="currentToDo.inquiry_id" class="edit-form">
           <div>
             <label><strong>От: </strong></label>
-            {{ currentToDo.inquiry_creator_name }} {{ currentToDo.inquiry_creator_surname }}
+            {{ currentToDo.inquiry_creator!.first_name }} {{ currentToDo.inquiry_creator!.last_name }}
           </div>
           <div>
             <label><strong>Заголовок: </strong></label>
@@ -76,7 +76,7 @@
       <div *ngFor="let comment of comments">
         <mat-card class="cards">
           <mat-card-subtitle>{{ comment.comment_created_at!.toLocaleString() }}</mat-card-subtitle>
-          <label><strong>От: </strong>{{ getUser(comment.comment_creator).first_name }} {{ getUser(comment.comment_creator).last_name }}</label>
+          <label><strong>От: </strong>{{ comment.comment_creator!.first_name }} {{ comment.comment_creator!.last_name }}</label>
           <div><label>{{ comment.comment_text }}</label></div>
         </mat-card>
       </div>
