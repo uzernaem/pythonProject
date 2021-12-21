@@ -241,7 +241,7 @@ class Profile(models.Model):
     # first_name = models.CharField(max_length=100, help_text='Имя пользователя')
     # last_name = models.CharField(max_length=100, help_text='Фамилия пользователя')
     # email = models.EmailField(max_length=150, help_text='Адрес электронной почты')
-    # phone_number = models.CharField(max_length=100, help_text='Номер телефона')
+    phone_number = models.CharField(max_length=100, help_text='Номер телефона')
     photo = models.BinaryField(null=True, help_text='Фотография пользователя')
     is_manager = models.BooleanField(default=False, blank=False, help_text='Признак управляющего')
     # is_blocked = models.BooleanField(default=False, blank=False, help_text='Признак блокировки')
@@ -249,8 +249,8 @@ class Profile(models.Model):
     class Meta:
         ordering = ['is_manager', 'user']
 
-    def __str__(self):
-        return {self.user}
+    # def __str__(self):
+    #     return {self.user.username}
 
 
 @receiver(post_save, sender=User)

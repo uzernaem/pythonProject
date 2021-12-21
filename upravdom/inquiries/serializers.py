@@ -1,13 +1,18 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.fields import ReadOnlyField
+from rest_framework.relations import PrimaryKeyRelatedField
 from .models import Announcement, ToDo, Poll, Notification, Property, Comment, ToDoCategory, VoteOption, Vote, Profile
 
 
 class UserSerializer(serializers.ModelSerializer):
+    is_manager = PrimaryKeyRelatedField(source='profile.is_manager', read_only=True)
+    phone_number = PrimaryKeyRelatedField(source='profile.phone_number', read_only=True)
+
     class Meta:
         model = User
-        fields = 'id', 'username', 'first_name', 'last_name'
+        fields = 'id', 'username', 'first_name', 'last_name', 'phone_number', 'is_manager'
+
 
 class ToDoSerializer(serializers.ModelSerializer):
     todo_category_name = serializers.CharField(read_only=True, source='get_todo_category_display')
