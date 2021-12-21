@@ -75,7 +75,7 @@
 
       <div *ngFor="let comment of comments">
         <mat-card class="cards">
-          <mat-card-subtitle>{{ comment.comment_creation_datetime!.toLocaleString() }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ comment.comment_created_at!.toLocaleString() }}</mat-card-subtitle>
           <label><strong>От: </strong>{{ getUser(comment.comment_creator).first_name }} {{ getUser(comment.comment_creator).last_name }}</label>
           <div><label>{{ comment.comment_text }}</label></div>
         </mat-card>

@@ -7,7 +7,8 @@ export class ToDo {
     inquiry_creator?: number
     inquiry_creator_name?: string
     inquiry_creator_surname?: string
-    inquiry_creation_date?: string
+    inquiry_created_at?: string
+    inquiry_updated_at?: Date
     inquiry_is_done?: boolean
     todo_assigned_to?: number
     todo_priority?: string
@@ -23,7 +24,7 @@ export class Comment {
     inquiry?: number
     comment_text?: string
     comment_creator?: number
-    comment_creation_datetime?: Date
+    comment_created_at?: Date
 }
 
 export class ToDoCategory {

@@ -40,10 +40,6 @@
 
 <button mat-raised-button class="inquiries" color="primary" (click)="addInquiryDialog()">Новая заявка</button>
 
-<div>{{statusFilter | json}}</div>
-<div>{{categoryFilter | json}}</div>
-<div>{{priorityFilter | json}}</div>
-
 <div class="inquiries" *ngFor="let todo of listedtodos">
 <mat-expansion-panel>
   <mat-expansion-panel-header>

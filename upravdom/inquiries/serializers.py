@@ -32,6 +32,7 @@ class ToDoSerializer(serializers.ModelSerializer):
         return todo
 
     def update(self, instance, validated_data):
+        instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)
         instance.inquiry_title = validated_data.get('inquiry_title', instance.inquiry_title)
         instance.inquiry_text = validated_data.get('inquiry_text', instance.inquiry_text)
         instance.todo_category = validated_data.get('todo_category', instance.todo_category)        
@@ -90,6 +91,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         return announcement
 
     def update(self, instance, validated_data):
+        instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)
         instance.inquiry_is_done = validated_data.get('inquiry_is_done', instance.inquiry_is_done)
         instance.announcement_is_visible = validated_data.get('announcement_is_visible', instance.announcement_is_visible)
         instance.announcement_auto_invisible_date = validated_data.get('announcement_auto_invisible_date', instance.announcement_auto_invisible_date)
@@ -116,6 +118,7 @@ class PollSerializer(serializers.ModelSerializer):
         return poll
 
     def update(self, instance, validated_data):
+        instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)
         instance.inquiry_is_done = validated_data.get('inquiry_is_done', instance.inquiry_is_done)
         instance.save()
         return instance
@@ -151,6 +154,7 @@ class NotificationSerializer(serializers.ModelSerializer):
         return notification
 
     def update(self, instance, validated_data):
+        instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)
         instance.inquiry_is_done = validated_data.get('inquiry_is_done', instance.inquiry_is_done)
         instance.notification_is_read = validated_data.get('notification_is_read', instance.notification_is_read)
         instance.save()

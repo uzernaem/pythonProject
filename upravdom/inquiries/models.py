@@ -16,7 +16,8 @@ class Inquiry(models.Model):
     inquiry_title = models.CharField(max_length=256, help_text='Заголовок заявки', blank=False)
     inquiry_text = models.TextField(max_length=4096, help_text='Текст заявки', blank=False)
     inquiry_creator = models.ForeignKey(User, help_text='Создатель заявки', on_delete=models.SET_NULL, null=True)
-    inquiry_creation_date = models.DateTimeField(auto_now_add=True, help_text='Дата создания заявки')
+    inquiry_created_at = models.DateTimeField(auto_now_add=True, help_text='Дата создания заявки')
+    inquiry_updated_at = models.DateTimeField(help_text='Дата обновления заявки', null=True)
     inquiry_is_done = models.BooleanField(blank=True, default=False, help_text='Признак завершения заявки')
 
 
@@ -80,7 +81,7 @@ class ToDo(Inquiry):
     )
 
     def __str__(self):
-        return f'Заявка на исполнение: {self.inquiry_creation_date} - {self.inquiry_title}'
+        return f'Заявка на исполнение: {self.inquiry_created_at} - {self.inquiry_title}'
 
     def change_assignee(self, person):
         if self.todo_status == 'w':
@@ -118,7 +119,7 @@ class Poll(Inquiry):
     # poll_variants = ArrayField(models.CharField(max_length=255), blank=True)
 
     def __str__(self):
-        return f'Опрос: {self.inquiry_creation_date} - {self.inquiry_title}'
+        return f'Опрос: {self.inquiry_created_at} - {self.inquiry_title}'
 
 
 class Announcement(Inquiry):
@@ -143,7 +144,7 @@ class Announcement(Inquiry):
     )
 
     def __str__(self):
-        return f'Объявление: {self.inquiry_creation_date} - {self.inquiry_title}'
+        return f'Объявление: {self.inquiry_created_at} - {self.inquiry_title}'
 
 
 class Notification(Inquiry):
@@ -168,7 +169,7 @@ class Notification(Inquiry):
     )
 
     def __str__(self):
-        return f'Уведомление: {self.inquiry_creation_date} - {self.inquiry_title}'
+        return f'Уведомление: {self.inquiry_created_at} - {self.inquiry_title}'
 
 
 class Property(models.Model):
@@ -211,8 +212,8 @@ class Comment(models.Model):
     inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, blank=False, null=False, help_text='Заявка')
     comment_text = models.TextField(max_length=4096, help_text='Текст комментария', blank=False, null=False)
     comment_creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text='Автор комментария')
-    # comment_creation_datetime = models.DateTimeField(auto_now_add=True, help_text='Дата и время комментария')    
-    comment_creation_datetime = models.DateTimeField(help_text='Дата и время комментария')
+    # comment_created_at = models.DateTimeField(auto_now_add=True, help_text='Дата и время комментария')    
+    comment_created_at = models.DateTimeField(help_text='Дата и время комментария')
 
 
 class VoteOption(models.Model):
