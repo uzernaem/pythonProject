@@ -20,7 +20,7 @@ export interface DialogData {
 export class InquiryModalComponent implements OnInit {
 
   inquiryForm!: FormGroup;
-  users: User[] = [];
+  managers: User[] = [];
   currentuser?: User;
   comments: Comment[] = [];
   comment: Comment = {
@@ -28,7 +28,7 @@ export class InquiryModalComponent implements OnInit {
   };
 
   todostatuses: ToDoStatus[] = [
-    {"status_id": "n", "status_name": "Новая"},
+    //{"status_id": "n", "status_name": "Новая"},
     {"status_id": "w", "status_name": "В работе"},
     {"status_id": "r", "status_name": "На проверке"},
     {"status_id": "c", "status_name": "Завершена"}
@@ -60,7 +60,7 @@ export class InquiryModalComponent implements OnInit {
           });
       if (!this.viewMode) {
         this.message = '';
-        this.retrieveUsers();
+        this.retrieveManagers();
         this.getInquiry(this.data.id);
         this.retrieveComments(this.data.id);
       }
@@ -72,8 +72,8 @@ export class InquiryModalComponent implements OnInit {
           next: (data) => {
             this.currentToDo = data;
             this.inquiryForm.patchValue({
-              assignee: data.todo_assigned_to,
-              status: data.todo_status
+              assignee: data.todo_assigned_to!.id,
+              status: data.todo_status              
             })
             console.log(data);
           },
@@ -81,11 +81,11 @@ export class InquiryModalComponent implements OnInit {
         });
     }
 
-    retrieveUsers(): void {
+    retrieveManagers(): void {
       this.inquiryService.getUsers()
         .subscribe({
           next: (data) => {
-            this.users = data;
+            this.managers = data.filter(x => (x.is_manager==true));
             console.log(data);
           },
           error: (e) => console.error(e)
@@ -133,7 +133,6 @@ export class InquiryModalComponent implements OnInit {
       this.currentToDo.todo_assigned_to = this.inquiryForm.value.assignee;
       this.currentToDo.todo_status = this.inquiryForm.value.status;
       this.currentToDo.inquiry_updated_at = dateTime;
-      alert(JSON.stringify(this.currentToDo));
       this.inquiryService.update(this.currentToDo.inquiry_id, this.currentToDo)
         .subscribe({
           next: (res) => {
@@ -154,5 +153,4 @@ export class InquiryModalComponent implements OnInit {
           error: (e) => console.error(e)
         });
     }
-
 }

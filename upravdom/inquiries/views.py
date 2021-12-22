@@ -124,7 +124,8 @@ def todo_detail(request, pk):
 
     elif request.method == 'PUT': 
         todo_data = JSONParser().parse(request)
-        todo_data['todo_assigned_to'] = todo_data['todo_assigned_to']['id']
+        todo_data['inquiry_creator'] = 1
+        #print(x)
         todo_serializer = ToDoSerializer(todo, data=todo_data) 
         if todo_serializer.is_valid(): 
             todo_serializer.save() 
