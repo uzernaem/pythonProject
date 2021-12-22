@@ -19,6 +19,10 @@ export interface DialogData {
 
 export class InquiryModalComponent implements OnInit {
 
+  workButtonVisible = false;
+  reviewButtonVisible = false;
+  completeButtonVisible = false;
+  revisionButtonVisible = false;
   inquiryForm!: FormGroup;
   managers: User[] = [];
   currentuser?: User;
@@ -28,7 +32,7 @@ export class InquiryModalComponent implements OnInit {
   };
 
   todostatuses: ToDoStatus[] = [
-    //{"status_id": "n", "status_name": "Новая"},
+    {"status_id": "n", "status_name": "Новая"},
     {"status_id": "w", "status_name": "В работе"},
     {"status_id": "r", "status_name": "На проверке"},
     {"status_id": "c", "status_name": "Завершена"}
@@ -73,7 +77,7 @@ export class InquiryModalComponent implements OnInit {
             this.currentToDo = data;
             this.inquiryForm.patchValue({
               assignee: data.todo_assigned_to!.id,
-              status: data.todo_status              
+              status: data.todo_status
             })
             console.log(data);
           },
@@ -127,11 +131,12 @@ export class InquiryModalComponent implements OnInit {
     //   return this.users.find(x => (x.id == id))
     // }
 
-    updateInquiry(): void {
+    updateInquiry(status: string): void {
       let dateTime = new Date()
       this.message = '';
       this.currentToDo.todo_assigned_to = this.inquiryForm.value.assignee;
-      this.currentToDo.todo_status = this.inquiryForm.value.status;
+      //this.currentToDo.todo_status = this.inquiryForm.value.status;
+      this.currentToDo.todo_status = status
       this.currentToDo.inquiry_updated_at = dateTime;
       this.inquiryService.update(this.currentToDo.inquiry_id, this.currentToDo)
         .subscribe({
