@@ -17,6 +17,10 @@ export class InquiryService {
     return this.http.get<User[]>(baseUrl + 'users');
   }
 
+  getUser(): Observable<User> {    
+    return this.http.get<User>(baseUrl + 'user');
+  }
+
   getToDos(): Observable<ToDo[]> {
     return this.http.get<ToDo[]>(baseUrl + 'todos');
   }

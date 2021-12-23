@@ -30,12 +30,12 @@
             {{ currentToDo.todo_status_name }}
           </div>
 
-          <div *ngIf="currentToDo.todo_status!='w'">
+          <div *ngIf="(currentToDo.todo_status!='w') || (!currentuser!.is_manager)">
             <label><strong>Исполнитель по заявке: </strong></label>
             {{ currentToDo.todo_assigned_to!.first_name }} {{ currentToDo.todo_assigned_to!.last_name }}
           </div>
   
-          <div *ngIf="currentToDo.todo_status==='w'">
+          <div *ngIf="(currentToDo.todo_status==='w') &&  (currentuser!.is_manager)">
             <mat-form-field appearance="fill">
               <mat-label>Исполнитель по заявке</mat-label>
               <mat-select formControlName="assignee" name="todo_assigned_to" (selectionChange)="updateInquiry('w')">
@@ -82,14 +82,14 @@
 <mat-dialog-actions align="end">
 <div [ngSwitch]="currentToDo.todo_status">
   <div *ngSwitchCase="'n'">
-    <button mat-raised-button [mat-dialog-close]="true" color="primary" type="submit" (click)="updateInquiry('nw')">Взять в работу</button>
+    <button mat-raised-button [disabled]="(!currentuser!.is_manager)" [mat-dialog-close]="true" color="primary" type="submit" (click)="updateInquiry('nw')">Взять в работу</button>
   </div>
   <div *ngSwitchCase="'w'">
-    <button mat-raised-button [mat-dialog-close]="true" color="primary" type="submit" (click)="updateInquiry('r')">Отправить на проверку</button> 
+    <button mat-raised-button [disabled]="(currentuser!.id != currentToDo.todo_assigned_to!.id) || (!currentuser!.is_manager)" [mat-dialog-close]="true" color="primary" type="submit" (click)="updateInquiry('r')">Отправить на проверку</button> 
   </div>
   <div *ngSwitchCase="'r'">
-    <button mat-raised-button [mat-dialog-close]="true" color="primary" type="submit" (click)="updateInquiry('c')">Завершить заявку</button>  
-    <button mat-raised-button [mat-dialog-close]="true" color="primary" type="submit" (click)="updateInquiry('w')">Вернуть в работу</button> 
+    <button mat-raised-button [disabled]="(currentuser!.is_manager)" [mat-dialog-close]="true" color="primary" type="submit" (click)="updateInquiry('c')">Завершить заявку</button>  
+    <button mat-raised-button [disabled]="(currentuser!.is_manager)" [mat-dialog-close]="true" color="primary" type="submit" (click)="updateInquiry('w')">Вернуть в работу</button> 
   </div>
 </div>
   <button mat-button mat-dialog-close>Закрыть</button>

@@ -19,10 +19,6 @@ export interface DialogData {
 
 export class InquiryModalComponent implements OnInit {
 
-  workButtonVisible = false;
-  reviewButtonVisible = false;
-  completeButtonVisible = false;
-  revisionButtonVisible = false;
   inquiryForm!: FormGroup;
   managers: User[] = [];
   currentuser?: User;
@@ -57,13 +53,15 @@ export class InquiryModalComponent implements OnInit {
     private tokenStorage: TokenStorageService) { }
 
     ngOnInit(): void {
+      this.currentuser = this.tokenStorage.getUser();
       this.inquiryForm = new FormGroup({
         assignee: new FormControl(),
         status: new FormControl(),
         comment: new FormControl('', Validators.required)
           });
       if (!this.viewMode) {
-        this.message = '';
+        this.message = '';        
+        this.retrieveCurrentUser();
         this.retrieveManagers();
         this.getInquiry(this.data.id);
         this.retrieveComments(this.data.id);
@@ -82,14 +80,25 @@ export class InquiryModalComponent implements OnInit {
             console.log(data);
           },
           error: (e) => console.error(e)
-        });
+        });        
     }
 
     retrieveManagers(): void {
       this.inquiryService.getUsers()
         .subscribe({
           next: (data) => {
-            this.managers = data.filter(x => (x.is_manager==true));
+            this.managers = data.filter(x => x.is_manager);
+            console.log(data);
+          },
+          error: (e) => console.error(e)
+        });
+    }
+
+    retrieveCurrentUser(): void {
+      this.inquiryService.getUser()
+        .subscribe({
+          next: (data) => {
+            this.currentuser = data;
             console.log(data);
           },
           error: (e) => console.error(e)
@@ -108,13 +117,12 @@ export class InquiryModalComponent implements OnInit {
         });
     }
 
-    saveComment(): void {
-      //this.currentuser = this.tokenStorage.getUser();
+    saveComment(): void {      
       let dateTime = new Date()
       const data = {
         comment_text: this.inquiryForm.value.comment,
         inquiry: this.currentToDo.inquiry_id,
-        comment_creator: this.tokenStorage.getUser(),
+        comment_creator: this.currentuser,
         comment_created_at: dateTime        
       };
       this.inquiryService.createComment(data, this.currentToDo.inquiry_id)
@@ -136,7 +144,7 @@ export class InquiryModalComponent implements OnInit {
       //this.message = '';
       if (status == "nw")
       {
-        this.currentToDo.todo_assigned_to = this.tokenStorage.getUser().id;
+        this.currentToDo.todo_assigned_to = this.currentuser!.id;
         this.currentToDo.todo_status = "w";
       }
       else
@@ -153,8 +161,7 @@ export class InquiryModalComponent implements OnInit {
             //this.message = res.message ? res.message : 'Заявка обновлена!';
           },
           error: (e) => console.error(e)
-        });        
-      //prompt("Copy to clipboard: Ctrl+C, Enter", JSON.stringify(this.currentToDo));
+        });      
     }
 
     deleteInquiry(): void {

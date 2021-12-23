@@ -12,7 +12,8 @@ from rest_framework.parsers import JSONParser
 
 from inquiries.serializers import UserSerializer, AnnouncementSerializer, ToDoSerializer, PollSerializer, NotificationSerializer, \
     CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer
-from inquiries.models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile, ToDoCategory
+from inquiries.models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile, ToDoCategory, Inquiry
+
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -34,11 +35,25 @@ def user_list(request):
         return JsonResponse(users_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def get_user(request):
+    if request.method == 'GET':
+        user = UserSerializer(request.user)
+        return JsonResponse(user.data, safe=False)
+
+
 @api_view(['GET', 'POST', 'DELETE'])
 @permission_classes([permissions.IsAuthenticated])
 def todo_list(request):
     if request.method == 'GET':
-        todos = ToDo.objects.all()
+        
+        if request.user.profile.is_manager == True:
+            print('True')
+            todos = ToDo.objects.all()
+        else:
+            print('False')
+            todos = ToDo.objects.filter(inquiry_creator=request.user)
         
         title = request.GET.get('inquiry_title', None)
         if title is not None:
