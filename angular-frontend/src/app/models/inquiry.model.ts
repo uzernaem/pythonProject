@@ -9,7 +9,7 @@ export class ToDo {
     inquiry_created_at?: string
     inquiry_updated_at?: Date
     inquiry_is_done?: boolean
-    todo_assigned_to?: User
+    todo_assigned_to?: any
     todo_priority?: string
     todo_status?: string
     todo_category?: string

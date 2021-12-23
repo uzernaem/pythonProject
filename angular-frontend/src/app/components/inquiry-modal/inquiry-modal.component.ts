@@ -133,19 +133,28 @@ export class InquiryModalComponent implements OnInit {
 
     updateInquiry(status: string): void {
       let dateTime = new Date()
-      this.message = '';
-      this.currentToDo.todo_assigned_to = this.inquiryForm.value.assignee;
-      //this.currentToDo.todo_status = this.inquiryForm.value.status;
-      this.currentToDo.todo_status = status
+      //this.message = '';
+      if (status == "nw")
+      {
+        this.currentToDo.todo_assigned_to = this.tokenStorage.getUser().id;
+        this.currentToDo.todo_status = "w";
+      }
+      else
+      {
+        this.currentToDo.todo_assigned_to = this.inquiryForm.value.assignee;
+        //this.currentToDo.todo_status = this.inquiryForm.value.status;
+        this.currentToDo.todo_status = status
+      }
       this.currentToDo.inquiry_updated_at = dateTime;
       this.inquiryService.update(this.currentToDo.inquiry_id, this.currentToDo)
         .subscribe({
           next: (res) => {
             console.log(res);
-            this.message = res.message ? res.message : 'Заявка обновлена!';
+            //this.message = res.message ? res.message : 'Заявка обновлена!';
           },
           error: (e) => console.error(e)
-        });
+        });        
+      //prompt("Copy to clipboard: Ctrl+C, Enter", JSON.stringify(this.currentToDo));
     }
 
     deleteInquiry(): void {
