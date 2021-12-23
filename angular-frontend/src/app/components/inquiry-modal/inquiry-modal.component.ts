@@ -161,7 +161,8 @@ export class InquiryModalComponent implements OnInit {
             //this.message = res.message ? res.message : 'Заявка обновлена!';
           },
           error: (e) => console.error(e)
-        });      
+        });     
+      window.location.reload(); 
     }
 
     deleteInquiry(): void {

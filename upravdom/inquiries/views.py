@@ -49,10 +49,8 @@ def todo_list(request):
     if request.method == 'GET':
         
         if request.user.profile.is_manager == True:
-            print('True')
             todos = ToDo.objects.all()
         else:
-            print('False')
             todos = ToDo.objects.filter(inquiry_creator=request.user)
         
         title = request.GET.get('inquiry_title', None)

@@ -30,20 +30,9 @@
             {{ currentToDo.todo_status_name }}
           </div>
 
-          <div *ngIf="(currentToDo.todo_status!='w') || (!currentuser!.is_manager)">
+          <div>
             <label><strong>Исполнитель по заявке: </strong></label>
             {{ currentToDo.todo_assigned_to!.first_name }} {{ currentToDo.todo_assigned_to!.last_name }}
-          </div>
-  
-          <div *ngIf="(currentToDo.todo_status==='w') &&  (currentuser!.is_manager)">
-            <mat-form-field appearance="fill">
-              <mat-label>Исполнитель по заявке</mat-label>
-              <mat-select formControlName="assignee" name="todo_assigned_to" (selectionChange)="updateInquiry('w')">
-                <mat-option *ngFor="let user of managers" [value]="user.id">
-                  {{user.first_name}} {{user.last_name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
           </div>
 
       </div>
@@ -79,6 +68,23 @@
       </div>
 
 </mat-dialog-content>
+
+<mat-dialog-actions>
+  <div *ngIf="(currentToDo.todo_status==='w') &&  (currentuser!.is_manager)">
+    <div>
+      <label><strong>Изменить исполнителя: </strong></label>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Выберите из списка</mat-label>
+      <mat-select formControlName="assignee" name="todo_assigned_to" (selectionChange)="updateInquiry('w')">
+        <mat-option *ngFor="let user of managers" [value]="user.id">
+          {{user.first_name}} {{user.last_name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  </mat-dialog-actions>
+
 <mat-dialog-actions align="end">
 <div [ngSwitch]="currentToDo.todo_status">
   <div *ngSwitchCase="'n'">
@@ -94,4 +100,5 @@
 </div>
   <button mat-button mat-dialog-close>Закрыть</button>
 </mat-dialog-actions>
+
 </form>
