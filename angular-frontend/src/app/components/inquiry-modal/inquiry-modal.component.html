@@ -1,15 +1,11 @@
 <form [formGroup]="inquiryForm">
-<h2 mat-dialog-title>Заявка</h2>
+<h2 mat-dialog-title>{{ currentToDo.inquiry_title }}</h2>
 <mat-dialog-content class="mat-typography">
 
     <div *ngIf="currentToDo.inquiry_id" class="edit-form">
           <div>
             <label><strong>От: </strong></label>
             {{ currentToDo.inquiry_creator!.first_name }} {{ currentToDo.inquiry_creator!.last_name }}
-          </div>
-          <div>
-            <label><strong>Заголовок: </strong></label>
-            <label>{{ currentToDo.inquiry_title }}</label>
           </div>
           <div>
             <label><strong>Текст заявки: </strong></label>
