@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 
 from rest_framework.parsers import JSONParser 
 
-from inquiries.serializers import UserSerializer, AnnouncementSerializer, ToDoSerializer, PollSerializer, NotificationSerializer, \
+from inquiries.serializers import UserSerializer, AnnouncementSerializer, ToDoSerializer, ToDoUpdateSerializer, PollSerializer, NotificationSerializer, \
     CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer
 from inquiries.models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile, ToDoCategory, Inquiry
 
@@ -22,7 +22,6 @@ from django.contrib.auth.models import User
 def user_list(request):
     if request.method == 'GET':
         users = User.objects.all()
-
         users_serializer = UserSerializer(users, many=True)
         return JsonResponse(users_serializer.data, safe=False)
 
@@ -125,7 +124,7 @@ def todocategory_detail(request, pk):
 def todo_detail(request, pk):
     try: 
         todo = ToDo.objects.get(pk=pk)
-        comments = Comment.objects.filter(inquiry=pk)
+        # comments = Comment.objects.filter(inquiry=pk)
     except ToDo.DoesNotExist: 
         return JsonResponse({'message': 'Заявка не существует'}, status=status.HTTP_404_NOT_FOUND) 
 
@@ -137,9 +136,7 @@ def todo_detail(request, pk):
 
     elif request.method == 'PUT': 
         todo_data = JSONParser().parse(request)
-        todo_data['inquiry_creator'] = 1
-        #print(x)
-        todo_serializer = ToDoSerializer(todo, data=todo_data) 
+        todo_serializer = ToDoUpdateSerializer(todo, data=todo_data) 
         if todo_serializer.is_valid(): 
             todo_serializer.save() 
             return JsonResponse(todo_serializer.data) 

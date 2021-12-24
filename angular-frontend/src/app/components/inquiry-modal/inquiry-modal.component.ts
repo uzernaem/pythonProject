@@ -64,7 +64,7 @@ export class InquiryModalComponent implements OnInit {
         this.retrieveCurrentUser();
         this.retrieveManagers();
         this.getInquiry(this.data.id);
-        this.retrieveComments(this.data.id);
+        //this.retrieveComments(this.data.id);
       }
     }
 
@@ -77,6 +77,8 @@ export class InquiryModalComponent implements OnInit {
               assignee: data.todo_assigned_to!.id,
               status: data.todo_status
             })
+            this.comments = data.comments!.sort((a,b) => b.comment_id! - a.comment_id!);
+            this.comments.forEach(a => (a.comment_created_at = new Date(a.comment_created_at!)));
             console.log(data);
           },
           error: (e) => console.error(e)
@@ -105,17 +107,17 @@ export class InquiryModalComponent implements OnInit {
         });
     }
 
-    retrieveComments(id: number): void {
-      this.inquiryService.getComments(id)
-        .subscribe({
-          next: (data) => {
-            this.comments = data.sort((a,b) => b.comment_id! - a.comment_id!);
-            this.comments.forEach(a => (a.comment_created_at = new Date(a.comment_created_at!)));
-            console.log(data);
-          },
-          error: (e) => console.error(e)
-        });
-    }
+    // retrieveComments(id: number): void {
+    //   this.inquiryService.getComments(id)
+    //     .subscribe({
+    //       next: (data) => {
+    //         this.comments = data.sort((a,b) => b.comment_id! - a.comment_id!);
+    //         this.comments.forEach(a => (a.comment_created_at = new Date(a.comment_created_at!)));
+    //         console.log(data);
+    //       },
+    //       error: (e) => console.error(e)
+    //     });
+    // }
 
     saveComment(): void {      
       let dateTime = new Date()
@@ -161,7 +163,7 @@ export class InquiryModalComponent implements OnInit {
             //this.message = res.message ? res.message : 'Заявка обновлена!';
           },
           error: (e) => console.error(e)
-        });     
+        });
       window.location.reload(); 
     }
 

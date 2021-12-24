@@ -18,7 +18,7 @@ class Inquiry(models.Model):
     inquiry_creator = models.ForeignKey(User, help_text='Создатель заявки', on_delete=models.SET_NULL, null=True)
     inquiry_created_at = models.DateTimeField(auto_now_add=True, help_text='Дата создания заявки')
     inquiry_updated_at = models.DateTimeField(help_text='Дата обновления заявки', null=True)
-    inquiry_is_done = models.BooleanField(blank=True, default=False, help_text='Признак завершения заявки')
+    # inquiry_is_done = models.BooleanField(blank=True, default=False, help_text='Признак завершения заявки')
 
 
 class InquiryForm(ModelForm):

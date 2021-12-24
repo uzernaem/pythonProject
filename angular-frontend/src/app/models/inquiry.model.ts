@@ -8,7 +8,6 @@ export class ToDo {
     inquiry_creator?: User
     inquiry_created_at?: string
     inquiry_updated_at?: Date
-    inquiry_is_done?: boolean
     todo_assigned_to?: any
     todo_priority?: string
     todo_status?: string
@@ -16,6 +15,7 @@ export class ToDo {
     todo_priority_name?: string
     todo_status_name?: string
     todo_category_name?: string
+    comments?: Comment[]
 }
 
 export class Comment {
