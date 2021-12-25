@@ -18,6 +18,21 @@ export class ToDo {
     comments?: Comment[]
 }
 
+export class Announcement {
+    inquiry_id?: number
+    inquiry_title?: string
+    inquiry_text?: string
+    inquiry_creator?: User
+    inquiry_created_at?: string
+    inquiry_updated_at?: Date
+    announcement_is_visible?: boolean
+    announcement_status?: string
+    announcement_auto_invisible_date?: Date
+    announcement_category?: string
+    announcement_category_name?: string
+    comments?: Comment[]
+}
+
 export class Comment {
     comment_id?: number
     inquiry?: number

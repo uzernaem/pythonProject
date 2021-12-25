@@ -127,10 +127,10 @@ class Announcement(Inquiry):
     announcement_is_visible = models.BooleanField(default=True, blank=False, help_text='Признак публикации')
     announcement_auto_invisible_date = models.DateField(blank=True, null=True, help_text='Дата актуальности')
     ANNOUNCEMENT_CATEGORY = (
-        ('0', 'Placeholder'),
-        ('1', 'Placeholder'),
-        ('2', 'Placeholder'),
-        ('3', 'Placeholder'),
+        ('0', 'Купля/продажа'),
+        ('1', 'Аренда'),
+        ('2', 'Ремонтные работы'),
+        ('3', 'Отключение услуг'),
         ('4', 'Placeholder'),
         ('5', 'Placeholder'),
     )

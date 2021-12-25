@@ -91,6 +91,11 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         model = Announcement
         fields = '__all__'
 
+    def to_representation(self, instance):
+            representation = super(AnnouncementSerializer, self).to_representation(instance)
+            representation['inquiry_creator'] = UserSerializer(instance.inquiry_creator).data
+            return representation
+
     def create(self, validated_data):
         user = self.context['request'].user
         announcement = Announcement(
