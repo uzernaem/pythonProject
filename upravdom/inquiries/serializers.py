@@ -85,7 +85,8 @@ class ToDoCategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AnnouncementSerializer(serializers.ModelSerializer):
+class AnnouncementSerializer(serializers.ModelSerializer):    
+    announcement_category_name = serializers.CharField(read_only=True, source='get_announcement_category_display')
     class Meta:
         model = Announcement
         fields = '__all__'
