@@ -8,7 +8,7 @@ from rest_framework import routers
 #     CommentViewSet, \
 #     VoteOptionViewSet, VoteViewSet, ProfileViewSet, NotificationViewSet, \
 #     AnnouncementViewSet
-from .views import announcement_list, comment_list, get_user, todocategory_detail, todocategory_list, user_list
+from .views import announcement_detail, announcement_list, comment_list, get_user, user_list
 
 router = routers.DefaultRouter()
 # router.register(r'announcements', AnnouncementViewSet, basename='Announcements')
@@ -27,10 +27,11 @@ urlpatterns = [
     path('', include(router.urls)),    
     re_path(r'^api/user$', get_user),
     re_path(r'^api/users$', user_list),
-    re_path(r'^api/todos$', todo_list),    
+    re_path(r'^api/todos$', todo_list),
     re_path(r'^api/announcements$', announcement_list),
+    re_path(r'^api/announcements/(?P<pk>[0-9]+)$', announcement_detail),
     re_path(r'^api/todos/(?P<pk>[0-9]+)$', todo_detail),
     re_path(r'^api/comments/(?P<inquiry_id>[0-9]+)$', comment_list),
-    re_path(r'^api/todocategories$', todocategory_list),
-    re_path(r'^api/todocategories/(?P<pk>[0-9]+)$', todocategory_detail)
+    # re_path(r'^api/todocategories$', todocategory_list),
+    # re_path(r'^api/todocategories/(?P<pk>[0-9]+)$', todocategory_detail)
 ]

@@ -3,9 +3,11 @@ import { Announcement } from 'src/app/models/inquiry.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { MatDialog } from '@angular/material/dialog';
 import { InquiryModalComponent } from '../inquiry-modal/inquiry-modal.component';
-import { AddInquiryModalComponent } from '../add-inquiry-modal/add-inquiry-modal.component';
+import { AddInquiryComponent } from '../add-inquiry/add-inquiry.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { AddAnnouncementComponent } from '../add-announcement/add-announcement.component';
+import { AnnouncementModalComponent } from '../announcement-modal/announcement-modal.component';
 
 @Component({
   selector: 'app-announcements-list',
@@ -40,14 +42,15 @@ export class AnnouncementsListComponent implements OnInit {
   ngOnInit(): void {
     this.statusFilter = ['a', 'f'];
     this.categoryFilter = ['0', '1', '2', '3', '4', '5'];
-    this.retrieveInquiries();
+    this.retrieveAnnouncements();
   }
 
-  retrieveInquiries(): void {
+  retrieveAnnouncements(): void {
     this.inquiryService.getAnnouncements()
       .subscribe({
         next: (data) => {
           this.announcements = data;
+          this.announcements.forEach(a => (a.inquiry_created_at = new Date(a.inquiry_created_at!)));
           this.listedannouncements = data.filter(x => (this.statusFilter.includes(x.announcement_status!))).filter(x =>
             (this.categoryFilter.includes(x.announcement_category!))).filter(x => (x.inquiry_title?.includes(this.search_title)));
           console.log(data);
@@ -82,22 +85,22 @@ export class AnnouncementsListComponent implements OnInit {
   }
 
   newInquiryDialog(id?: number) {
-    const dialogRef = this.dialog.open(InquiryModalComponent, {
+    const dialogRef = this.dialog.open(AnnouncementModalComponent, {
       data: {
         id: id,
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.retrieveInquiries();
+      this.retrieveAnnouncements();
       console.log(`Dialog result: ${result}`);
     });
   }
 
   addInquiryDialog() {
-    const dialogRef = this.dialog.open(AddInquiryModalComponent);
+    const dialogRef = this.dialog.open(AddAnnouncementComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      this.retrieveInquiries();
+      this.retrieveAnnouncements();
       console.log(`Dialog result: ${result}`);
     });
   }

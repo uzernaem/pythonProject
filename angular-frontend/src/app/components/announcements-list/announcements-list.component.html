@@ -40,12 +40,12 @@
                 <mat-card-subtitle>{{ announcement.inquiry_creator!.first_name }} {{ announcement.inquiry_creator!.last_name }}</mat-card-subtitle>
                 <mat-card-title>{{ announcement.inquiry_title }}</mat-card-title>
                 <mat-card-content>
-                  <p>{{ announcement.inquiry_text }} </p>
+                  <p>{{ announcement.inquiry_created_at!.toLocaleString() }} </p>
+                  <mat-card-subtitle *ngIf="(announcement.announcement_is_visible==false)">Не опубликовано</mat-card-subtitle>
                 </mat-card-content>
                 <mat-divider inset></mat-divider>
-                <mat-card-actions>
-                  <button mat-button>LIKE</button>
-                  <button mat-button>SHARE</button>
+                <mat-card-actions>                  
+                  <button mat-button color="primary" (click)="newInquiryDialog(announcement.inquiry_id)">Подробнее...</button>
                 </mat-card-actions>
                 <mat-card-footer>
                 </mat-card-footer>

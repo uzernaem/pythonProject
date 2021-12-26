@@ -1,8 +1,8 @@
-from datetime import date
+from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.shortcuts import render
-from django.http.response import JsonResponse
+from django.http.response import HttpResponse, JsonResponse
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -92,7 +92,8 @@ def comment_list(request, inquiry_id):
 def announcement_list(request):
 
     if request.method == 'GET':
-        announcements = Announcement.objects.all()
+
+        announcements = Announcement.objects.filter(Q(announcement_is_visible = True, announcement_auto_invisible_date__gt=datetime.today().date()) | Q(inquiry_creator=request.user))
         title = request.GET.get('inquiry_title', None)
         if title is not None:
             announcements = announcements.filter(title__icontains=title)
@@ -103,43 +104,74 @@ def announcement_list(request):
     elif request.method == 'POST':
         announcement_data = JSONParser().parse(request)
         announcement_data['inquiry_creator'] = request.user.id
+        announcement_data['announcement_auto_invisible_date'] = announcement_data['announcement_auto_invisible_date'][0:10]
         announcements_serializer = AnnouncementSerializer(data=announcement_data)
         if announcements_serializer.is_valid():
             announcements_serializer.save()
             return JsonResponse(announcements_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(announcements_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-@api_view(['GET', 'POST', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated])
-def todocategory_list(request):
-    if request.method == 'GET':
-        categories = ToDoCategory.objects.all()
-        categories_serializer = ToDoCategorySerializer(categories, many=True)
-        return JsonResponse(categories_serializer.data, safe=False)
-    categories_serializer = ToDoCategorySerializer()
-    return JsonResponse(categories_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([permissions.IsAuthenticated])
-def todocategory_detail(request, pk):
+def announcement_detail(request, pk):
     try: 
-        category = ToDoCategory.objects.get(pk=pk) 
-    except ToDoCategory.DoesNotExist: 
-        return JsonResponse({'message': 'Категория не существует'}, status=status.HTTP_404_NOT_FOUND) 
+        announcement = Announcement.objects.get(pk=pk)
+    except Announcement.DoesNotExist: 
+        return JsonResponse({'message': 'Объявление не существует'}, status=status.HTTP_404_NOT_FOUND) 
 
     if request.method == 'GET': 
-        todocategory_serializer = ToDoCategorySerializer(category) 
-        return JsonResponse(todocategory_serializer.data) 
+        announcement_serializer = AnnouncementSerializer(announcement)
+        data = JsonResponse(announcement_serializer.data)
+        return data 
 
     elif request.method == 'PUT': 
-        todocategory_data = JSONParser().parse(request)
-        todocategory_serializer = ToDoCategorySerializer(category, data=todocategory_data) 
-        if todocategory_serializer.is_valid(): 
-            todocategory_serializer.save() 
-            return JsonResponse(todocategory_serializer.data) 
-        return JsonResponse(todocategory_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        if announcement.inquiry_creator == request.user:
+            announcement_data = JSONParser().parse(request)        
+            announcement_data['inquiry_creator'] = request.user.id
+            announcement_serializer = AnnouncementSerializer(announcement, data=announcement_data) 
+            if announcement_serializer.is_valid(): 
+                announcement_serializer.save() 
+                return JsonResponse(announcement_serializer.data) 
+            return JsonResponse(announcement_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    elif request.method == 'DELETE':
+        if announcement.inquiry_creator == request.user:
+            Announcement.objects.filter(pk=pk).delete()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+# @api_view(['GET', 'POST', 'DELETE'])
+# @permission_classes([permissions.IsAuthenticated])
+# def todocategory_list(request):
+#     if request.method == 'GET':
+#         categories = ToDoCategory.objects.all()
+#         categories_serializer = ToDoCategorySerializer(categories, many=True)
+#         return JsonResponse(categories_serializer.data, safe=False)
+#     categories_serializer = ToDoCategorySerializer()
+#     return JsonResponse(categories_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @api_view(['GET', 'PUT', 'DELETE'])
+# @permission_classes([permissions.IsAuthenticated])
+# def todocategory_detail(request, pk):
+#     try: 
+#         category = ToDoCategory.objects.get(pk=pk) 
+#     except ToDoCategory.DoesNotExist: 
+#         return JsonResponse({'message': 'Категория не существует'}, status=status.HTTP_404_NOT_FOUND) 
+
+#     if request.method == 'GET': 
+#         todocategory_serializer = ToDoCategorySerializer(category) 
+#         return JsonResponse(todocategory_serializer.data) 
+
+#     elif request.method == 'PUT': 
+#         todocategory_data = JSONParser().parse(request)
+#         todocategory_serializer = ToDoCategorySerializer(category, data=todocategory_data) 
+#         if todocategory_serializer.is_valid(): 
+#             todocategory_serializer.save() 
+#             return JsonResponse(todocategory_serializer.data) 
+#         return JsonResponse(todocategory_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
  
  
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -158,12 +190,14 @@ def todo_detail(request, pk):
         return data 
 
     elif request.method == 'PUT': 
-        todo_data = JSONParser().parse(request)
-        todo_serializer = ToDoUpdateSerializer(todo, data=todo_data) 
-        if todo_serializer.is_valid(): 
-            todo_serializer.save() 
-            return JsonResponse(todo_serializer.data) 
-        return JsonResponse(todo_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        if todo.inquiry_creator == request.user:
+            todo_data = JSONParser().parse(request)
+            todo_serializer = ToDoUpdateSerializer(todo, data=todo_data) 
+            if todo_serializer.is_valid(): 
+                todo_serializer.save() 
+                return JsonResponse(todo_serializer.data) 
+            return JsonResponse(todo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
+        return Response(status=status.HTTP_403_FORBIDDEN) 
 
 
 # class ToDoViewSet(viewsets.ModelViewSet):

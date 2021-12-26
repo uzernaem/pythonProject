@@ -5,7 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegisterComponent } from './components/register/register.component';
-import { AddInquiryModalComponent } from './components/add-inquiry-modal/add-inquiry-modal.component';
+import { AddInquiryComponent } from './components/add-inquiry/add-inquiry.component';
 import { InquiryModalComponent } from './components/inquiry-modal/inquiry-modal.component';
 import { AnnouncementsListComponent } from './components/announcements-list/announcements-list.component';
 
@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'todos', pathMatch: 'full' },
   { path: 'todos', component: InquiriesListComponent },
   { path: 'todos/:id', component: InquiryModalComponent },
-  { path: 'todos/add', component: AddInquiryModalComponent },  
+  { path: 'todos/add', component: AddInquiryComponent },  
   { path: 'announcements', component: AnnouncementsListComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },

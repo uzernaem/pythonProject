@@ -31,13 +31,19 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InquiryModalComponent } from './components/inquiry-modal/inquiry-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AddInquiryModalComponent } from './components/add-inquiry-modal/add-inquiry-modal.component';
+import { AddInquiryComponent } from './components/add-inquiry/add-inquiry.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AnnouncementsListComponent } from './components/announcements-list/announcements-list.component';
+import { AddAnnouncementComponent } from './components/add-announcement/add-announcement.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { AnnouncementModalComponent } from './components/announcement-modal/announcement-modal.component';
 
 
 
 const modules = [
+  MatNativeDateModule,
+  MatDatepickerModule,
   MatCheckboxModule,
   ReactiveFormsModule,
   MatDialogModule,
@@ -75,8 +81,10 @@ const modules = [
     HomeComponent,
     ProfileComponent,
     InquiryModalComponent,
-    AddInquiryModalComponent,
-    AnnouncementsListComponent
+    AddInquiryComponent,
+    AnnouncementsListComponent,
+    AddAnnouncementComponent,
+    AnnouncementModalComponent
   ],
   imports: [modules, BrowserAnimationsModule],
   exports: [modules],

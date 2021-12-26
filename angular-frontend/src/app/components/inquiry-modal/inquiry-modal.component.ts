@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit, Output } from '@angular/core';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { Router } from '@angular/router';
-import { ToDo, Comment, ToDoCategory, ToDoStatus } from 'src/app/models/inquiry.model';
+import { ToDo, Comment, InquiryCategory, ToDoStatus } from 'src/app/models/inquiry.model';
 import { User } from 'src/app/models/user.model';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -34,7 +34,7 @@ export class InquiryModalComponent implements OnInit {
     {"status_id": "c", "status_name": "Завершена"}
   ];
 
-  @Input() currentCategory: ToDoCategory = {
+  @Input() currentCategory: InquiryCategory = {
     category_id: 0,
     category_name: ''    
   };

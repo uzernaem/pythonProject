@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ToDo, ToDoCategory } from 'src/app/models/inquiry.model';
+import { ToDo, InquiryCategory } from 'src/app/models/inquiry.model';
 import { User } from 'src/app/models/user.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { MatDialog } from '@angular/material/dialog';
 import { InquiryModalComponent } from '../inquiry-modal/inquiry-modal.component';
-import { AddInquiryModalComponent } from '../add-inquiry-modal/add-inquiry-modal.component';
+import { AddInquiryComponent } from '../add-inquiry/add-inquiry.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
@@ -19,7 +19,7 @@ export class InquiriesListComponent implements OnInit {
   todos?: ToDo[];
   //users?: User[];
   listedtodos?: ToDo[];
-  categories: ToDoCategory[] = [];
+  categories: InquiryCategory[] = [];
   // currentToDo: ToDo = {};
   // currentCategory: ToDoCategory = {};
   // currentIndex = -1;
@@ -148,7 +148,7 @@ export class InquiriesListComponent implements OnInit {
   }
 
   addInquiryDialog() {
-    const dialogRef = this.dialog.open(AddInquiryModalComponent);
+    const dialogRef = this.dialog.open(AddInquiryComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       this.retrieveInquiries();

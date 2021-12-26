@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { InquiryService } from 'src/app/_services/inquiry.service';
-import { ToDo, ToDoCategory } from 'src/app/models/inquiry.model';
+import { ToDo, InquiryCategory } from 'src/app/models/inquiry.model';
 import { User } from 'src/app/models/user.model';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
-  selector: 'app-add-inquiry-modal',
-  templateUrl: './add-inquiry-modal.component.html',
-  styleUrls: ['./add-inquiry-modal.component.css']
+  selector: 'app-add-inquiry',
+  templateUrl: './add-inquiry.component.html',
+  styleUrls: ['./add-inquiry.component.css']
 })
 
-export class AddInquiryModalComponent implements OnInit {
+export class AddInquiryComponent implements OnInit {
   inquiryForm!: FormGroup;
   selectedValue: string = '';
   currentuser: User = {};
-  todocategories: ToDoCategory[] = [
+  todocategories: InquiryCategory[] = [
     {"category_id": 1, "category_name": "Сантехника"},
     {"category_id": 2, "category_name": "Электрика"},
     {"category_id": 3, "category_name": "Ремонтные работы"},

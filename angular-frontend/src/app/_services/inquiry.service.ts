@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ToDo, ToDoCategory, Comment, Announcement } from '../models/inquiry.model';
+import { ToDo, InquiryCategory, Comment, Announcement } from '../models/inquiry.model';
 import { User } from '../models/user.model';
 
 const baseUrl = 'http://127.0.0.1:8000/inquiries/api/';
@@ -33,12 +33,16 @@ export class InquiryService {
   //   return this.http.get<ToDoCategory[]>(categoriesUrl);
   // }
 
-  getCategory(id: any): Observable<ToDoCategory> {
+  getCategory(id: any): Observable<InquiryCategory> {
     return this.http.get(`${baseUrl + 'categories'}/${id}`);
   }
 
   get(id: any): Observable<ToDo> {
     return this.http.get(`${baseUrl + 'todos'}/${id}`);
+  }
+
+  getAnnouncement(id: any): Observable<Announcement> {
+    return this.http.get(`${baseUrl + 'announcements'}/${id}`);
   }
 
   getComments(id: any): Observable<Comment[]> {
@@ -57,8 +61,16 @@ export class InquiryService {
     return this.http.put(`${baseUrl + 'todos'}/${id}`, data);
   }
 
+  updateAnnouncement(id: any, data: any): Observable<any> {
+    return this.http.put(`${baseUrl + 'announcements'}/${id}`, data);
+  }
+
   delete(id: any): Observable<any> {
     return this.http.delete(`${baseUrl + 'todos'}/${id}`);
+  }
+
+  deleteAnnouncement(id: any): Observable<any> {
+    return this.http.delete(`${baseUrl + 'announcements'}/${id}`);
   }
 
   deleteAll(): Observable<any> {
@@ -67,5 +79,9 @@ export class InquiryService {
 
   findByTitle(title: any): Observable<ToDo[]> {
     return this.http.get<ToDo[]>(`${baseUrl + 'todos'}?title=${title}`);
+  }
+
+  createAnnouncement(data: any): Observable<Announcement> {
+    return this.http.post<Announcement>(baseUrl + 'announcements', data);
   }
 }

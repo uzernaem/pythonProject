@@ -41,7 +41,7 @@ class CommentSerializer(serializers.ModelSerializer):
 class ToDoSerializer(serializers.ModelSerializer):
     todo_category_name = serializers.CharField(read_only=True, source='get_todo_category_display')
     todo_status_name = serializers.CharField(read_only=True, source='get_todo_status_display')
-    todo_priority_name = serializers.CharField(read_only=True, source='get_todo_priority_display')    
+    todo_priority_name = serializers.CharField(read_only=True, source='get_todo_priority_display')
     comments = CommentSerializer(read_only=True, source='comment_set', many=True)
 
     def to_representation(self, instance):
@@ -87,9 +87,12 @@ class ToDoCategorySerializer(serializers.ModelSerializer):
 
 class AnnouncementSerializer(serializers.ModelSerializer):    
     announcement_category_name = serializers.CharField(read_only=True, source='get_announcement_category_display')
+    comments = CommentSerializer(read_only=True, source='comment_set', many=True)
+    
     class Meta:
         model = Announcement
         fields = '__all__'
+    
 
     def to_representation(self, instance):
             representation = super(AnnouncementSerializer, self).to_representation(instance)
@@ -97,10 +100,9 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             return representation
 
     def create(self, validated_data):
-        user = self.context['request'].user
         announcement = Announcement(
-            inquiry_title=validated_data['inquiry_title'],
-            inquiry_creator=user,
+            inquiry_title=validated_data['inquiry_title'],            
+            inquiry_creator=validated_data['inquiry_creator'],
             inquiry_text=validated_data['inquiry_text'],
             announcement_is_visible=validated_data['announcement_is_visible'],
             announcement_auto_invisible_date=validated_data['announcement_auto_invisible_date'],

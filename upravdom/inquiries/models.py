@@ -114,7 +114,7 @@ class Poll(Inquiry):
     """Модель голосования"""
     poll_open = models.BooleanField(blank=True, default=False, help_text='Открытое голосование')
     poll_preliminary_results = models.BooleanField(blank=True, default=False, help_text='Предварительные результаты')
-    poll_deadline = models.DateField(null=False, help_text='Дата завершения голосования')
+    poll_deadline = models.DateTimeField(null=False, help_text='Дата завершения голосования')
     # poll_variants = models.JSONField(help_text='Варианты голосования')
     # poll_variants = ArrayField(models.CharField(max_length=255), blank=True)
 

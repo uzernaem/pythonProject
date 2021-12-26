@@ -23,7 +23,7 @@ export class Announcement {
     inquiry_title?: string
     inquiry_text?: string
     inquiry_creator?: User
-    inquiry_created_at?: string
+    inquiry_created_at?: Date
     inquiry_updated_at?: Date
     announcement_is_visible?: boolean
     announcement_status?: string
@@ -41,7 +41,7 @@ export class Comment {
     comment_created_at?: Date
 }
 
-export class ToDoCategory {
+export class InquiryCategory {
     category_id?: number
     category_name?: string
 }
