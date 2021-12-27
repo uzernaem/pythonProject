@@ -49,7 +49,7 @@
     </mat-panel-title>
 
     <mat-panel-description align="end">
-      {{ todo.todo_status_name }}
+      <mat-icon>build</mat-icon>{{ todo.todo_status_name }}
     </mat-panel-description>
   
   </mat-expansion-panel-header>
@@ -59,14 +59,14 @@
     </mat-grid-tile>
     <mat-grid-tile colspan="8" rowspan="5" >
       <mat-card fxLayout="row" fxLayoutGap="20px" fxFlexFill>
-      {{ todo.inquiry_text }}   
+        {{ todo.inquiry_text }}   
       </mat-card>
     </mat-grid-tile>
     <mat-grid-tile colspan="2" rowspan="1" >
-      {{ todo.inquiry_creator!.first_name }} {{ todo.inquiry_creator!.last_name }}
+      <mat-icon>person</mat-icon>{{ todo.inquiry_creator!.first_name }} {{ todo.inquiry_creator!.last_name }}
     </mat-grid-tile>
     <mat-grid-tile colspan="2" rowspan="1" >
-      ☎️ {{ todo!.inquiry_creator!.phone_number }}
+      <mat-icon>phone</mat-icon>{{ todo!.inquiry_creator!.phone_number }}
     </mat-grid-tile>
 
 

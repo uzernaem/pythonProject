@@ -38,10 +38,13 @@ import { AddAnnouncementComponent } from './components/add-announcement/add-anno
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AnnouncementModalComponent } from './components/announcement-modal/announcement-modal.component';
+import { MenuComponent } from './components/menu/menu.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 
 
 const modules = [
+  MatSidenavModule,
   MatNativeDateModule,
   MatDatepickerModule,
   MatCheckboxModule,
@@ -84,7 +87,8 @@ const modules = [
     AddInquiryComponent,
     AnnouncementsListComponent,
     AddAnnouncementComponent,
-    AnnouncementModalComponent
+    AnnouncementModalComponent,
+    MenuComponent
   ],
   imports: [modules, BrowserAnimationsModule],
   exports: [modules],

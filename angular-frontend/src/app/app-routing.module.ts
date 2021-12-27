@@ -8,9 +8,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { AddInquiryComponent } from './components/add-inquiry/add-inquiry.component';
 import { InquiryModalComponent } from './components/inquiry-modal/inquiry-modal.component';
 import { AnnouncementsListComponent } from './components/announcements-list/announcements-list.component';
+import { MenuComponent } from './components/menu/menu.component';
 
-const routes: Routes = [
-  { path: '', redirectTo: 'todos', pathMatch: 'full' },
+const routes: Routes = [ 
+  { path: '', component: MenuComponent },
   { path: 'todos', component: InquiriesListComponent },
   { path: 'todos/:id', component: InquiryModalComponent },
   { path: 'todos/add', component: AddInquiryComponent },  
