@@ -16,16 +16,13 @@ export interface DialogData {
   templateUrl: './announcement-modal.component.html',
   styleUrls: ['./announcement-modal.component.css']
 })
-export class AnnouncementModalComponent implements OnInit {  inquiryForm!: FormGroup;
+export class AnnouncementModalComponent implements OnInit {  
+  
+  inquiryForm!: FormGroup;
   currentuser?: User;
   comments: Comment[] = [];
   comment: Comment = {
     comment_text: ''
-  };
-
-  @Input() currentCategory: InquiryCategory = {
-    category_id: 0,
-    category_name: ''    
   };
 
   @Input() viewMode = false;

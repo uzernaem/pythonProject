@@ -5,7 +5,6 @@ from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from rest_framework.parsers import JSONParser 
@@ -158,14 +157,39 @@ def announcement_detail(request, pk):
                 announcement_serializer.save() 
                 return JsonResponse(announcement_serializer.data) 
             return JsonResponse(announcement_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
     elif request.method == 'DELETE':
         if announcement.inquiry_creator == request.user:
             Announcement.objects.filter(pk=pk).delete()
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'message': 'Объявление удалено'}, status=status.HTTP_200_OK)
+        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
+
+@api_view(['GET', 'PUT'])
+@permission_classes([permissions.IsAuthenticated])
+def notification_detail(request, pk):
+    try: 
+        notification = Notification.objects.get(pk=pk)
+    except Notification.DoesNotExist: 
+        return JsonResponse({'message': 'Уведомление не существует'}, status=status.HTTP_404_NOT_FOUND) 
+
+    if request.method == 'GET': 
+        notification_serializer = NotificationSerializer(notification)
+        data = JsonResponse(notification_serializer.data)
+        return data 
+
+    elif request.method == 'PUT': 
+        if notification.notification_recipient == request.user:
+            notification_data = JSONParser().parse(request)        
+            notification_data['inquiry_creator'] = request.user.id
+            notification_data['notification_is_read'] = True
+            notification_serializer = NotificationSerializer(notification, data=notification_data) 
+            if notification_serializer.is_valid(): 
+                notification_serializer.save() 
+                return JsonResponse(notification_serializer.data) 
+            return JsonResponse(notification_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
 # @api_view(['GET', 'POST', 'DELETE'])
 # @permission_classes([permissions.IsAuthenticated])
@@ -222,7 +246,7 @@ def todo_detail(request, pk):
                 todo_serializer.save() 
                 return JsonResponse(todo_serializer.data) 
             return JsonResponse(todo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
-        return Response(status=status.HTTP_403_FORBIDDEN) 
+        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN) 
 
 
 # class ToDoViewSet(viewsets.ModelViewSet):

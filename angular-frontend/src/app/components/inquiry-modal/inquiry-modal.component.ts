@@ -34,11 +34,6 @@ export class InquiryModalComponent implements OnInit {
     {"status_id": "c", "status_name": "Завершена"}
   ];
 
-  @Input() currentCategory: InquiryCategory = {
-    category_id: 0,
-    category_name: ''    
-  };
-
   @Input() viewMode = false;
 
   @Input() currentToDo: ToDo = {};

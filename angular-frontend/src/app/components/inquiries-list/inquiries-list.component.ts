@@ -21,7 +21,6 @@ export class InquiriesListComponent implements OnInit {
   listedtodos?: ToDo[];
   categories: InquiryCategory[] = [];
   // currentToDo: ToDo = {};
-  // currentCategory: ToDoCategory = {};
   // currentIndex = -1;
   search_title = '';
 

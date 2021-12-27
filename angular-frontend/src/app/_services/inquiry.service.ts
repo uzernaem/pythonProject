@@ -49,6 +49,9 @@ export class InquiryService {
     return this.http.get(`${baseUrl + 'announcements'}/${id}`);
   }
 
+  getNotification(id: any): Observable<Notification> {
+    return this.http.get(`${baseUrl + 'notifications'}/${id}`);
+  }
   getComments(id: any): Observable<Comment[]> {
     return this.http.get<Comment[]>(`${baseUrl + 'comments'}/${id}`)
   }
@@ -67,6 +70,10 @@ export class InquiryService {
 
   updateAnnouncement(id: any, data: any): Observable<any> {
     return this.http.put(`${baseUrl + 'announcements'}/${id}`, data);
+  }
+  
+  updateNotification(id: any, data: any): Observable<any> {
+    return this.http.put(`${baseUrl + 'notifications'}/${id}`, data);
   }
 
   delete(id: any): Observable<any> {
