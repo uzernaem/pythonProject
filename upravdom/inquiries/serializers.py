@@ -85,7 +85,7 @@ class ToDoCategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AnnouncementSerializer(serializers.ModelSerializer):    
+class AnnouncementSerializer(serializers.ModelSerializer):
     announcement_category_name = serializers.CharField(read_only=True, source='get_announcement_category_display')
     comments = CommentSerializer(read_only=True, source='comment_set', many=True)
     
@@ -158,6 +158,7 @@ class VoteSerializer(serializers.ModelSerializer):
 
 
 class NotificationSerializer(serializers.ModelSerializer):
+    notification_category_name = serializers.CharField(read_only=True, source='get_notification_category_display')
     class Meta:
         model = Notification
         fields = '__all__'

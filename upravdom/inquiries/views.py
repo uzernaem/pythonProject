@@ -111,6 +111,31 @@ def announcement_list(request):
             return JsonResponse(announcements_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(announcements_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
+def notification_list(request):
+
+    if request.method == 'GET':
+
+        notifications = Notification.objects.filter(notification_recipient=request.user)
+        title = request.GET.get('inquiry_title', None)
+        if title is not None:
+            notifications = notifications.filter(title__icontains=title)
+        
+        notifications_serializer = NotificationSerializer(notifications, many=True)
+        return JsonResponse(notifications_serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        notification_data = JSONParser().parse(request)
+        notification_data['inquiry_creator'] = request.user.id
+        notifications_serializer = NotificationSerializer(data=notification_data)
+        if notifications_serializer.is_valid():
+            notifications_serializer.save()
+            return JsonResponse(notifications_serializer.data, status=status.HTTP_201_CREATED) 
+        return JsonResponse(notifications_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([permissions.IsAuthenticated])
 def announcement_detail(request, pk):

@@ -33,6 +33,19 @@ export class Announcement {
     comments?: Comment[]
 }
 
+export class Notification {
+    inquiry_id?: number
+    inquiry_title?: string
+    inquiry_text?: string
+    inquiry_creator?: User
+    inquiry_created_at?: Date
+    inquiry_updated_at?: Date
+    notification_is_read?: boolean
+    notification_recipient?: User
+    notification_category?: string
+    notification_category_name?: string
+}
+
 export class Comment {
     comment_id?: number
     inquiry?: number

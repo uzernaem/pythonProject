@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ToDo, InquiryCategory, Comment, Announcement } from '../models/inquiry.model';
+import { ToDo, InquiryCategory, Comment, Announcement, Notification } from '../models/inquiry.model';
 import { User } from '../models/user.model';
 
 const baseUrl = 'http://127.0.0.1:8000/inquiries/api/';
@@ -27,6 +27,10 @@ export class InquiryService {
 
   getAnnouncements(): Observable<Announcement[]> {
     return this.http.get<Announcement[]>(baseUrl + 'announcements');
+  }
+
+  getNotifications(): Observable<Notification[]> {
+    return this.http.get<Notification[]>(baseUrl + 'notifications');
   }
 
   // getCategories(): Observable<ToDoCategory[]> {

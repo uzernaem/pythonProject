@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Announcement } from 'src/app/models/inquiry.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { MatDialog } from '@angular/material/dialog';
-import { InquiryModalComponent } from '../inquiry-modal/inquiry-modal.component';
-import { AddInquiryComponent } from '../add-inquiry/add-inquiry.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { AddAnnouncementComponent } from '../add-announcement/add-announcement.component';
@@ -21,15 +19,11 @@ export class AnnouncementsListComponent implements OnInit {
   listedannouncements?: Announcement[];
   search_title = '';
 
-  filters!: FormGroup;
-
-  statusFilter: string[] = [];
+  filters!: FormGroup;  
   categoryFilter: string[] = [];
 
   constructor(private inquiryService: InquiryService, public dialog: MatDialog, fb: FormBuilder) { 
     this.filters = fb.group({
-      active: true,
-      finished: false,
       category0: true,
       category1: true,
       category2: true,
@@ -40,7 +34,6 @@ export class AnnouncementsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.statusFilter = ['a', 'f'];
     this.categoryFilter = ['0', '1', '2', '3', '4', '5'];
     this.retrieveAnnouncements();
   }
@@ -51,22 +44,12 @@ export class AnnouncementsListComponent implements OnInit {
         next: (data) => {
           this.announcements = data;
           this.announcements.forEach(a => (a.inquiry_created_at = new Date(a.inquiry_created_at!)));
-          this.listedannouncements = data.filter(x => (this.statusFilter.includes(x.announcement_status!))).filter(x =>
+          this.listedannouncements = data.filter(x =>
             (this.categoryFilter.includes(x.announcement_category!))).filter(x => (x.inquiry_title?.includes(this.search_title)));
           console.log(data);
         },
         error: (e) => console.error(e)
       });
-  }
-  
-  setStatusFilter(event: MatCheckboxChange): void{
-    if(event.source.checked) {
-      this.statusFilter.push(event.source.value);
-    }
-    else {
-      this.statusFilter = this.statusFilter.filter(x => x != event.source.value);
-    }
-    this.applyFilters();
   }
 
   setCategoryFilter(event: MatCheckboxChange): void{
@@ -80,7 +63,7 @@ export class AnnouncementsListComponent implements OnInit {
   }
 
   applyFilters() {
-    this.listedannouncements = this.announcements?.filter(x => (this.statusFilter.includes(x.announcement_status!))).filter(x =>
+    this.listedannouncements = this.announcements?.filter(x =>
        (this.categoryFilter.includes(x.announcement_category!))).filter(x => (x.inquiry_title?.includes(this.search_title)));
   }
 

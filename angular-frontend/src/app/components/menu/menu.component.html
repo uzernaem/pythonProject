@@ -1,10 +1,12 @@
 <h1>Что бы Вы хотели сделать сегодня?</h1>
-<mat-grid-list cols="2" rowHeight="2:1">
 
-    <mat-grid-tile><a href="/todos" class="nav-link" routerLink="todos"><mat-icon>build</mat-icon><h2>Отправить заявку</h2></a></mat-grid-tile>
-    <mat-grid-tile><a href="/announcements" class="nav-link" routerLink="announcements"><mat-icon>announcement</mat-icon><h2>Написать объявление</h2></a></mat-grid-tile>
-
-    <mat-grid-tile><a href="/todos" class="nav-link" routerLink="todos"><mat-icon>done_all</mat-icon><h2>Провести голосование</h2></a></mat-grid-tile>
-    <mat-grid-tile><a href="/notifications" class="nav-link" routerLink="notifications"><mat-icon>notification_important</mat-icon><h2>Просмотреть уведомления</h2></a></mat-grid-tile>
-
-  </mat-grid-list>
+<div class="menu">
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" class="container"  fxLayoutAlign="center">
+    <div fxLayoutAlign="center center"><a href="/todos" class="nav-link" routerLink="todos"><mat-icon>build</mat-icon><h2>Отправить заявку</h2></a></div>
+    <div fxLayoutAlign="center center"><a href="/announcements" class="nav-link" routerLink="announcements"><mat-icon>announcement</mat-icon><h2>Написать объявление</h2></a></div>
+  </div> 
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" class="container" fxLayoutAlign="center">
+    <div fxLayoutAlign="center center"><a href="/todos" class="nav-link" routerLink="todos"><mat-icon>done_all</mat-icon><h2>Провести голосование</h2></a></div>
+    <div fxLayoutAlign="center center"><a href="/notifications" class="nav-link" routerLink="notifications"><mat-icon>notification_important</mat-icon><h2>Просмотреть уведомления</h2></a></div>
+  </div>
+</div>

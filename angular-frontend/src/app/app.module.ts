@@ -41,6 +41,8 @@ import { AnnouncementModalComponent } from './components/announcement-modal/anno
 import { MenuComponent } from './components/menu/menu.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NotificationsListComponent } from './components/notifications-list/notifications-list.component';
+import { AddNotificationComponent } from './components/add-notification/add-notification.component';
+import { NotificationModalComponent } from './components/notification-modal/notification-modal.component';
 
 
 
@@ -90,7 +92,9 @@ const modules = [
     AddAnnouncementComponent,
     AnnouncementModalComponent,
     MenuComponent,
-    NotificationsListComponent
+    NotificationsListComponent,
+    AddNotificationComponent,
+    NotificationModalComponent
   ],
   imports: [modules, BrowserAnimationsModule],
   exports: [modules],

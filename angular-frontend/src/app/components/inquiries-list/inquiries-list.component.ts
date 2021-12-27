@@ -148,7 +148,8 @@ export class InquiriesListComponent implements OnInit {
   }
 
   addInquiryDialog() {
-    const dialogRef = this.dialog.open(AddInquiryComponent);
+    const dialogRef = this.dialog.open(AddInquiryComponent, {
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       this.retrieveInquiries();
