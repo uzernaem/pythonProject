@@ -40,6 +40,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { AnnouncementModalComponent } from './components/announcement-modal/announcement-modal.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { NotificationsListComponent } from './components/notifications-list/notifications-list.component';
 
 
 
@@ -88,7 +89,8 @@ const modules = [
     AnnouncementsListComponent,
     AddAnnouncementComponent,
     AnnouncementModalComponent,
-    MenuComponent
+    MenuComponent,
+    NotificationsListComponent
   ],
   imports: [modules, BrowserAnimationsModule],
   exports: [modules],

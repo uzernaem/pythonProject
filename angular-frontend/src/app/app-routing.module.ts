@@ -9,13 +9,16 @@ import { AddInquiryComponent } from './components/add-inquiry/add-inquiry.compon
 import { InquiryModalComponent } from './components/inquiry-modal/inquiry-modal.component';
 import { AnnouncementsListComponent } from './components/announcements-list/announcements-list.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { NotificationsListComponent } from './components/notifications-list/notifications-list.component';
 
 const routes: Routes = [ 
   { path: '', component: MenuComponent },
   { path: 'todos', component: InquiriesListComponent },
   { path: 'todos/:id', component: InquiryModalComponent },
   { path: 'todos/add', component: AddInquiryComponent },  
-  { path: 'announcements', component: AnnouncementsListComponent },
+  { path: 'announcements', component: AnnouncementsListComponent },  
+  { path: 'notifications', component: NotificationsListComponent },
+  { path: 'todos', component: InquiriesListComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
