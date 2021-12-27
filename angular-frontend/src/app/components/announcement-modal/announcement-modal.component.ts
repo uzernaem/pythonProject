@@ -66,7 +66,7 @@ export class AnnouncementModalComponent implements OnInit {  inquiryForm!: FormG
             console.log(data);
           },
           error: (e) => console.error(e)
-        });        
+        });
     }
 
     retrieveCurrentUser(): void {

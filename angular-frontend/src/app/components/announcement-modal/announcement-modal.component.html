@@ -12,9 +12,11 @@
               </p>
             </mat-card-content>
             <mat-card-actions>
-              <button *ngIf="(announcement.announcement_is_visible==false)" mat-raised-button color="primary" (click)="updateInquiry(true)">Опубликовать объявление</button>
-              <button *ngIf="(announcement.announcement_is_visible==true)" mat-raised-button color="primary" (click)="updateInquiry(false)">Снять с публикации</button>
-              <button mat-button mat-dialog-close (click)="deleteInquiry()">Удалить</button>
+              <div *ngIf="(announcement.inquiry_creator!.id==currentuser!.id)">
+                <button *ngIf="(announcement.announcement_is_visible==false)" mat-raised-button color="primary" (click)="updateInquiry(true)">Опубликовать объявление</button>
+                <button *ngIf="(announcement.announcement_is_visible==true)" mat-raised-button color="primary" (click)="updateInquiry(false)">Снять с публикации</button>
+                <button mat-button mat-dialog-close (click)="deleteInquiry()">Удалить</button>
+              </div>
             </mat-card-actions>
 
           <div><strong>Обсуждение:</strong></div>

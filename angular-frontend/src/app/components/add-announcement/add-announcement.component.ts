@@ -60,15 +60,14 @@ export class AddAnnouncementComponent implements OnInit {
   }
 
   saveInquiry(): void {
-    date: new Date().toDateString
+    const d = new Date(this.inquiryForm.value.date)
     const data = {
       inquiry_title: this.inquiryForm.value.title,
       inquiry_text: this.inquiryForm.value.text,
       announcement_category: this.inquiryForm.value.category,
-      announcement_auto_invisible_date: this.inquiryForm.value.date,
+      announcement_auto_invisible_date: new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() - d.getTimezoneOffset()).toISOString(),
       announcement_is_visible: this.inquiryForm.value.publish
     };
-    prompt('ctrl+c',JSON.stringify(data.announcement_auto_invisible_date.toString()))
     this.inquiryService.createAnnouncement(data)
       .subscribe({
         next: (res) => {
