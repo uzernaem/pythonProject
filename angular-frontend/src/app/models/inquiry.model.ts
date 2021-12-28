@@ -6,7 +6,7 @@ export class ToDo {
     inquiry_title?: string
     inquiry_text?: string
     inquiry_creator?: User
-    inquiry_created_at?: string
+    inquiry_created_at?: Date
     inquiry_updated_at?: Date
     todo_assigned_to?: any
     todo_priority?: string

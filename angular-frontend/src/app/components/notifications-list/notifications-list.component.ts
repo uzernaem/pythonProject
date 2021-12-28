@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Notification } from 'src/app/models/inquiry.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { AddAnnouncementComponent } from '../add-announcement/add-announcement.component';
 import { AnnouncementModalComponent } from '../announcement-modal/announcement-modal.component';
@@ -22,6 +22,11 @@ export class NotificationsListComponent implements OnInit {
   listednotifications?: Notification[];
   search_title = '';
 
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
+
   filters!: FormGroup;
 
   statusFilter: string[] = [];
@@ -40,9 +45,10 @@ export class NotificationsListComponent implements OnInit {
   retrieveNotifications(): void {
     this.inquiryService.getNotifications()
       .subscribe({
-        next: (data) => {
+        next: (data) => {          
           this.notifications = data;
           this.notifications.forEach(a => (a.inquiry_created_at = new Date(a.inquiry_created_at!)));
+          this.listednotifications = this.notifications;
           console.log(data);
         },
         error: (e) => console.error(e)
@@ -70,7 +76,7 @@ export class NotificationsListComponent implements OnInit {
   }
 
   applyFilters() {
-    this.listednotifications = this.notifications;
+    this.listednotifications = this.notifications!.filter(a => ((a.inquiry_created_at! >= this.range.value.start) && (a.inquiry_created_at! <= this.range.value.end)));
   }
 
   newInquiryDialog(id?: number) {
