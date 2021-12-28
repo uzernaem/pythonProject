@@ -1,7 +1,7 @@
-import { Component, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { Router } from '@angular/router';
-import { ToDo, Comment, InquiryCategory, ToDoStatus } from 'src/app/models/inquiry.model';
+import { ToDo, Comment, ToDoStatus } from 'src/app/models/inquiry.model';
 import { User } from 'src/app/models/user.model';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';

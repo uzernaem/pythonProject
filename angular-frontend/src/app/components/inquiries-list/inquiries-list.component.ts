@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ToDo, InquiryCategory } from 'src/app/models/inquiry.model';
-import { User } from 'src/app/models/user.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { MatDialog } from '@angular/material/dialog';
 import { InquiryModalComponent } from '../inquiry-modal/inquiry-modal.component';
