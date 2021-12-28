@@ -27,7 +27,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatOptionModule } from '@angular/material/core';
+import { DateAdapter, MatOptionModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InquiryModalComponent } from './components/inquiry-modal/inquiry-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -43,6 +43,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NotificationsListComponent } from './components/notifications-list/notifications-list.component';
 import { AddNotificationComponent } from './components/add-notification/add-notification.component';
 import { NotificationModalComponent } from './components/notification-modal/notification-modal.component';
+import { CustomDateAdapter } from './custom-date-adapter';
 
 
 
@@ -98,7 +99,12 @@ const modules = [
   ],
   imports: [modules, BrowserAnimationsModule],
   exports: [modules],
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders, 
+    { provide: DateAdapter, useClass: CustomDateAdapter }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(private dateAdapter: DateAdapter<Date>) {
+    this.dateAdapter.setLocale('ru-RU');
+  }
+}
