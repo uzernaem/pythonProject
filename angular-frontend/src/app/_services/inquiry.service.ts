@@ -95,4 +95,8 @@ export class InquiryService {
   createAnnouncement(data: any): Observable<Announcement> {
     return this.http.post<Announcement>(baseUrl + 'announcements', data);
   }
+  
+  createNotification(data: any): Observable<Notification> {
+    return this.http.post<Notification>(baseUrl + 'notifications', data);
+  }
 }

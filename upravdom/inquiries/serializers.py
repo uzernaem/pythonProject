@@ -164,10 +164,10 @@ class NotificationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        user = self.context['request'].user
+        # user = self.context['request'].user
         notification = Notification(
             inquiry_title=validated_data['inquiry_title'],
-            inquiry_creator=user,
+            # inquiry_creator=user,
             inquiry_text=validated_data['inquiry_text'],
             notification_recipient=validated_data['notification_recipient'],
             notification_category=validated_data['notification_category']
