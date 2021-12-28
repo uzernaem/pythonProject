@@ -75,8 +75,10 @@ export class NotificationsListComponent implements OnInit {
     this.applyFilters();
   }
 
-  applyFilters() {
-    this.listednotifications = this.notifications!.filter(a => ((a.inquiry_created_at! >= this.range.value.start) && (a.inquiry_created_at! <= this.range.value.end)));
+  applyFilters() {    
+    const s = new Date(this.range.value.start + this.range.value.start.getTimezoneOffset());    
+    const e = new Date(this.range.value.end + this.range.value.end.getTimezoneOffset());
+    this.listednotifications = this.notifications!.filter(a => ((a.inquiry_created_at! >= s) && (a.inquiry_created_at! <= e)));
   }
 
   newInquiryDialog(id?: number) {
