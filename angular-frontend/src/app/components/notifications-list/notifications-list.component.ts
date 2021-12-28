@@ -4,8 +4,6 @@ import { InquiryService } from 'src/app/_services/inquiry.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { AddAnnouncementComponent } from '../add-announcement/add-announcement.component';
-import { AnnouncementModalComponent } from '../announcement-modal/announcement-modal.component';
 import { User } from 'src/app/models/user.model';
 import { AddNotificationComponent } from '../add-notification/add-notification.component';
 import { NotificationModalComponent } from '../notification-modal/notification-modal.component';
@@ -78,7 +76,7 @@ export class NotificationsListComponent implements OnInit {
   applyFilters() {    
     const s = new Date(this.range.value.start + this.range.value.start.getTimezoneOffset());    
     const e = new Date(this.range.value.end + this.range.value.end.getTimezoneOffset());
-    this.listednotifications = this.notifications!.filter(a => ((a.inquiry_created_at! >= s) && (a.inquiry_created_at! <= e)));
+    this.listednotifications = this.notifications!.filter(x => ((x.inquiry_created_at! >= s) && (x.inquiry_created_at! <= e)));
   }
 
   newInquiryDialog(id?: number) {

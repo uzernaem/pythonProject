@@ -5,7 +5,7 @@ import { InquiryService } from 'src/app/_services/inquiry.service';
 import { MatDialog } from '@angular/material/dialog';
 import { InquiryModalComponent } from '../inquiry-modal/inquiry-modal.component';
 import { AddInquiryComponent } from '../add-inquiry/add-inquiry.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
@@ -25,6 +25,11 @@ export class InquiriesListComponent implements OnInit {
   search_title = '';
 
   filters!: FormGroup;
+
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
 
   statusFilter: string[] = [];
   categoryFilter: string[] = [];
@@ -60,7 +65,8 @@ export class InquiriesListComponent implements OnInit {
     this.inquiryService.getToDos()
       .subscribe({
         next: (data) => {
-          this.todos = data;
+          this.todos = data;          
+          this.todos.forEach(a => (a.inquiry_created_at = new Date(a.inquiry_created_at!)));
           this.listedtodos = data.filter(x => (this.statusFilter.includes(x.todo_status!))).filter(x =>
             (this.categoryFilter.includes(x.todo_category!))).filter(x => 
              (this.priorityFilter.includes(x.todo_priority!))).filter(x => (x.inquiry_title?.includes(this.search_title)));
@@ -70,34 +76,6 @@ export class InquiriesListComponent implements OnInit {
       });
   }
 
-  // retrieveUsers(): void {
-  //   this.inquiryService.getUsers()
-  //     .subscribe({
-  //       next: (data) => {
-  //         this.users = data;
-  //         console.log(data);
-  //       },
-  //       error: (e) => console.error(e)
-  //     });
-  // }
-
-  // retrieveCategories(): void {
-  //   this.inquiryService.getCategories()
-  //   .subscribe({
-  //     next: (data) => {
-  //       this.categories = data;
-  //       console.log(data);
-  //     },
-  //     error: (e) => console.error(e)
-  //   });
-  //}
-
-  // setActiveInquiry(todo: ToDo, index: number): void {
-  //   this.currentToDo = todo;
-  //  // this.currentCategory = this.categories.find(x => (x.category_id == todo.todo_category));
-  //   this.currentIndex = index;
-  // }
-  
   setStatusFilter(event: MatCheckboxChange): void{
     if(event.source.checked) {
       this.statusFilter.push(event.source.value);
@@ -128,10 +106,12 @@ export class InquiriesListComponent implements OnInit {
     this.applyFilters();
   }
 
-  applyFilters() {
+  applyFilters() {    
+    const s = new Date(this.range.value.start + this.range.value.start.getTimezoneOffset());    
+    const e = new Date(this.range.value.end + this.range.value.end.getTimezoneOffset());
     this.listedtodos = this.todos?.filter(x => (this.statusFilter.includes(x.todo_status!))).filter(x =>
        (this.categoryFilter.includes(x.todo_category!))).filter(x => 
-        (this.priorityFilter.includes(x.todo_priority!))).filter(x => (x.inquiry_title?.includes(this.search_title)));
+        (this.priorityFilter.includes(x.todo_priority!))).filter(x => (x.inquiry_title?.includes(this.search_title))).filter(x => ((x.inquiry_created_at! >= s) && (x.inquiry_created_at! <= e)));
   }
 
   newInquiryDialog(id?: number) {

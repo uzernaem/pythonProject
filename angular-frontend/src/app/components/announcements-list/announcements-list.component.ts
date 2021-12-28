@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Announcement } from 'src/app/models/inquiry.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { AddAnnouncementComponent } from '../add-announcement/add-announcement.component';
 import { AnnouncementModalComponent } from '../announcement-modal/announcement-modal.component';
@@ -18,6 +18,11 @@ export class AnnouncementsListComponent implements OnInit {
   announcements?: Announcement[];
   listedannouncements?: Announcement[];
   search_title = '';
+
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
 
   filters!: FormGroup;  
   categoryFilter: string[] = [];
@@ -63,8 +68,10 @@ export class AnnouncementsListComponent implements OnInit {
   }
 
   applyFilters() {
+    const s = new Date(this.range.value.start + this.range.value.start.getTimezoneOffset());    
+    const e = new Date(this.range.value.end + this.range.value.end.getTimezoneOffset());
     this.listedannouncements = this.announcements?.filter(x =>
-       (this.categoryFilter.includes(x.announcement_category!))).filter(x => (x.inquiry_title?.includes(this.search_title)));
+       (this.categoryFilter.includes(x.announcement_category!))).filter(x => (x.inquiry_title?.includes(this.search_title))).filter(x => ((x.inquiry_created_at! >= s) && (x.inquiry_created_at! <= e)));
   }
 
   newInquiryDialog(id?: number) {
