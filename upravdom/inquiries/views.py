@@ -264,7 +264,7 @@ def todo_detail(request, pk):
         return data 
 
     elif request.method == 'PUT': 
-        if todo.inquiry_creator == request.user:
+        if ((todo.inquiry_creator==request.user) | (request.user.profile.is_manager)):
             todo_data = JSONParser().parse(request)
             todo_serializer = ToDoUpdateSerializer(todo, data=todo_data) 
             if todo_serializer.is_valid(): 
