@@ -1,5 +1,5 @@
 <div class="main-div">
-  <form *ngIf="!isLoggedIn" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+  <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
     <mat-card>
       <mat-card-content>    
         <h2>Вход в систему</h2>
@@ -33,14 +33,6 @@
           </mat-error>
         </mat-form-field>
         <button mat-raised-button color="primary">Login</button>
-      </mat-card-content>
-    </mat-card>
-  </form>
-  
-  <form *ngIf="isLoggedIn" >
-    <mat-card>
-      <mat-card-content>    
-        <h2>Вы вошли в систему!</h2>
       </mat-card-content>
     </mat-card>
   </form>
