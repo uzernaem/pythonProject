@@ -66,7 +66,7 @@ export class InquiriesListComponent implements OnInit {
         next: (data) => {
           this.todos = data;          
           this.todos.forEach(a => (a.inquiry_created_at = new Date(a.inquiry_created_at!)));
-          this.listedtodos = data.filter(x => (this.statusFilter.includes(x.todo_status!))).filter(x =>
+          this.listedtodos = this.todos.filter(x => (this.statusFilter.includes(x.todo_status!))).filter(x =>
             (this.categoryFilter.includes(x.todo_category!))).filter(x => 
              (this.priorityFilter.includes(x.todo_priority!))).filter(x => (x.inquiry_title?.includes(this.search_title)));
           console.log(data);
@@ -105,12 +105,12 @@ export class InquiriesListComponent implements OnInit {
     this.applyFilters();
   }
 
-  applyFilters() {    
+  applyFilters() {
     const s = new Date(this.range.value.start + this.range.value.start.getTimezoneOffset());    
     const e = new Date(this.range.value.end + this.range.value.end.getTimezoneOffset());
     this.listedtodos = this.todos?.filter(x => (this.statusFilter.includes(x.todo_status!))).filter(x =>
        (this.categoryFilter.includes(x.todo_category!))).filter(x => 
-        (this.priorityFilter.includes(x.todo_priority!))).filter(x => (x.inquiry_title?.includes(this.search_title))).filter(x => ((x.inquiry_created_at! >= s) && (x.inquiry_created_at! <= e)));
+        (this.priorityFilter.includes(x.todo_priority!))).filter(x => ((x.inquiry_created_at! >= s) && (x.inquiry_created_at! <= e))).filter(x => (x.inquiry_title?.includes(this.search_title)));
   }
 
   newInquiryDialog(id?: number) {
