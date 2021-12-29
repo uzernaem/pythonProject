@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ToDo, InquiryCategory, Comment, Announcement, Notification } from '../models/inquiry.model';
+import { ToDo, InquiryCategory, Comment, Announcement, Notification, Poll } from '../models/inquiry.model';
 import { User } from '../models/user.model';
 
 const baseUrl = 'http://localhost:8000/inquiries/api/';
@@ -33,6 +33,10 @@ export class InquiryService {
     return this.http.get<Notification[]>(baseUrl + 'notifications');
   }
 
+  getPolls(): Observable<Poll[]> {
+    return this.http.get<Poll[]>(baseUrl + 'polls');
+  }
+
   // getCategories(): Observable<ToDoCategory[]> {
   //   return this.http.get<ToDoCategory[]>(categoriesUrl);
   // }
@@ -52,6 +56,7 @@ export class InquiryService {
   getNotification(id: any): Observable<Notification> {
     return this.http.get(`${baseUrl + 'notifications'}/${id}`);
   }
+  
   getComments(id: any): Observable<Comment[]> {
     return this.http.get<Comment[]>(`${baseUrl + 'comments'}/${id}`)
   }
