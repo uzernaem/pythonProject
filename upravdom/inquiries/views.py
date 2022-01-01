@@ -202,18 +202,12 @@ def notification_detail(request, pk):
     if request.method == 'GET': 
         notification_serializer = NotificationSerializer(notification)
         data = JsonResponse(notification_serializer.data)
-        return data 
+        return data
 
     elif request.method == 'PUT': 
         if notification.notification_recipient == request.user:
-            notification_data = JSONParser().parse(request)        
-            notification_data['inquiry_creator'] = request.user.id
-            notification_data['notification_is_read'] = True
-            notification_serializer = NotificationSerializer(notification, data=notification_data) 
-            if notification_serializer.is_valid(): 
-                notification_serializer.save() 
-                return JsonResponse(notification_serializer.data) 
-            return JsonResponse(notification_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            Notification.objects.filter(pk=pk).update(notification_is_read = True)
+            return JsonResponse({'message': 'Уведомление прочтено получателем'}, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
 # @api_view(['GET', 'POST', 'DELETE'])
