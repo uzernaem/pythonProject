@@ -173,16 +173,14 @@ def announcement_detail(request, pk):
         data = JsonResponse(announcement_serializer.data)
         return data 
 
+
     elif request.method == 'PUT': 
         if announcement.inquiry_creator == request.user:
-            announcement_data = JSONParser().parse(request)        
-            announcement_data['inquiry_creator'] = request.user.id
-            announcement_serializer = AnnouncementSerializer(announcement, data=announcement_data) 
-            if announcement_serializer.is_valid(): 
-                announcement_serializer.save() 
-                return JsonResponse(announcement_serializer.data) 
-            return JsonResponse(announcement_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            announcement_data = JSONParser().parse(request)
+            Announcement.objects.filter(pk=pk).update(announcement_is_visible = announcement_data['announcement_is_visible'])
+            return JsonResponse({'message': 'Статус публикации изменён'}, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
+
 
     elif request.method == 'DELETE':
         if announcement.inquiry_creator == request.user:
