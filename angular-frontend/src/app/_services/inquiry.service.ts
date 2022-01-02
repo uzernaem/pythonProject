@@ -58,9 +58,9 @@ export class InquiryService {
     return this.http.get(`${API_URL + 'notifications'}/${id}`);
   }
   
-  getComments(id: any): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${API_URL + 'comments'}/${id}`)
-  }
+  // getComments(id: any): Observable<Comment[]> {
+  //   return this.http.get<Comment[]>(`${API_URL + 'comments'}/${id}`)
+  // }
 
   createComment(data: any, id: any): Observable<any> {
     return this.http.post(`${API_URL + 'comments'}/${id}`, data);

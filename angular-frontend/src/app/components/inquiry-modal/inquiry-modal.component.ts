@@ -57,7 +57,6 @@ export class InquiryModalComponent implements OnInit {
       if (!this.viewMode) {
         this.message = '';        
         this.retrieveCurrentUser();
-        this.retrieveManagers();
         this.getInquiry(this.data.id);
       }
     }
@@ -73,10 +72,13 @@ export class InquiryModalComponent implements OnInit {
             })
             this.comments = data.comments!.sort((a,b) => b.comment_id! - a.comment_id!);
             this.comments.forEach(a => (a.comment_created_at = new Date(a.comment_created_at!)));
+            if (this.currentuser!.is_manager) {
+              this.retrieveManagers();
+            }
             console.log(data);
           },
           error: (e) => console.error(e)
-        });        
+        });     
     }
 
     retrieveManagers(): void {
