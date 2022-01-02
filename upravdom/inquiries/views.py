@@ -6,13 +6,10 @@ from django.http.response import HttpResponse, JsonResponse
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
-
 from rest_framework.parsers import JSONParser 
-
 from inquiries.serializers import UserSerializer, AnnouncementSerializer, ToDoSerializer, ToDoUpdateSerializer, PollSerializer, NotificationSerializer, \
     CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer
 from inquiries.models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile, ToDoCategory, Inquiry
-
 from django.contrib.auth.models import User
 
 # Create your views here.

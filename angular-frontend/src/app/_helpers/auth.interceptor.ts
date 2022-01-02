@@ -26,11 +26,12 @@ export class AuthInterceptor implements HttpInterceptor {
       if (error instanceof HttpErrorResponse && !authReq.url.includes('auth/login/') && error.status === 401) {
         return this.handle401Error(authReq, next);
       }
-      else if (error instanceof HttpErrorResponse && error.status === 403) { 
-        this.router.navigate(['login']);
-        const err = new Error('error');
-        return throwError(() => err);
-      }
+      // else if (error instanceof HttpErrorResponse && !authReq.url.includes('/auth/login/refresh') && error.status === 401) { 
+      //   alert(JSON.stringify(error.message));
+      //   this.router.navigate(['login']);
+      //   const err = new Error('error');
+      //   return throwError(() => err);
+      // }
       const err = new Error('error');
       return throwError(() => err);
     }));
@@ -47,7 +48,6 @@ export class AuthInterceptor implements HttpInterceptor {
         return this.authService.refreshToken(token).pipe(
           switchMap((token: any) => {
             this.isRefreshing = false;
-
             this.tokenService.saveToken(token.access);
             this.refreshTokenSubject.next(token.access);
             
@@ -55,7 +55,8 @@ export class AuthInterceptor implements HttpInterceptor {
           }),
           catchError((err) => {
             this.isRefreshing = false;            
-            this.tokenService.signOut();
+            this.tokenService.signOut();            
+            this.router.navigate(['login']);
             return throwError(() => err);
           })
         );
