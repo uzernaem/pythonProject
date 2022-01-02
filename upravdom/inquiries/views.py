@@ -79,19 +79,21 @@ def comment_list(request, inquiry_id):
     #     return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
     if request.method == 'POST':
-        if Notification.objects.filter(inquiry_id=inquiry_id):
-            print('Уведомление')
-        if Announcement.objects.filter(inquiry_id=inquiry_id):
-            print('Объявление')
-        if ToDo.objects.filter(inquiry_id=inquiry_id):
-            print('Заявка')
         comment_data = JSONParser().parse(request)
         comment_data['comment_creator'] = request.user.id
-        comment_serializer = CommentSerializer(data=comment_data)        
-        if comment_serializer.is_valid():
-            comment_serializer.save()
-            return JsonResponse(comment_serializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(comment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        comment_serializer = CommentSerializer(data=comment_data) 
+        if Announcement.objects.filter(inquiry_id=inquiry_id).exists():
+            if comment_serializer.is_valid():
+                comment_serializer.save()
+                return JsonResponse(comment_serializer.data, status=status.HTTP_201_CREATED)            
+            return JsonResponse(comment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)      
+        elif ToDo.objects.filter(inquiry_id=inquiry_id).exists():
+            if ((ToDo.objects.get(inquiry_id=inquiry_id).inquiry_creator.id==request.user.id) | request.user.profile.is_manager):
+                if comment_serializer.is_valid():
+                    comment_serializer.save()
+                    return JsonResponse(comment_serializer.data, status=status.HTTP_201_CREATED)
+                return JsonResponse(comment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
 
 @api_view(['GET', 'POST', 'DELETE'])
