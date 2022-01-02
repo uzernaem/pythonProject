@@ -249,26 +249,24 @@ def todo_detail(request, pk):
         return JsonResponse({'message': 'Заявка не существует'}, status=status.HTTP_404_NOT_FOUND) 
 
     if request.method == 'GET': 
-        todo_serializer = ToDoSerializer(todo)
-        data = JsonResponse(todo_serializer.data)
-        return data 
+        if ((todo.inquiry_creator==request.user) | (request.user.profile.is_manager)):
+            todo_serializer = ToDoSerializer(todo)
+            data = JsonResponse(todo_serializer.data)
+            return data         
+        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN) 
 
-    elif ((request.method == 'PUT') & (request.user.profile.is_manager)):
+    elif request.method == 'PUT':        
         if (((todo.todo_status == 'n') | (todo.todo_status == 'w')) &
-         ((todo.todo.todo_assigned_to == request.user) | (todo.todo.todo_assigned_to is None))):
+         ((todo.todo.todo_assigned_to == request.user) | (todo.todo.todo_assigned_to is None)) & (request.user.profile.is_manager)):
             todo_data = JSONParser().parse(request)
             ToDo.objects.filter(pk=pk).update(todo_assigned_to = todo_data['todo_assigned_to'])
             ToDo.objects.filter(pk=pk).update(todo_status = todo_data['todo_status'])
             return JsonResponse({'message': 'Статус заявки и исполнитель обновлены'}, status=status.HTTP_200_OK)
-        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
-
-
-    elif ((request.method == 'PUT') & (todo.inquiry_creator==request.user)):
-        if (todo.todo_status == 'r'):
+        elif ((todo.todo_status == 'r') & (todo.inquiry_creator==request.user)):
             todo_data = JSONParser().parse(request)
             ToDo.objects.filter(pk=pk).update(todo_status = todo_data['todo_status'])
             return JsonResponse({'message': 'Статус заявки обновлён'}, status=status.HTTP_200_OK)
-        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)   
+        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN) 
 
 
 # class ToDoViewSet(viewsets.ModelViewSet):
