@@ -72,11 +72,6 @@ def todo_list(request):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def comment_list(request, inquiry_id):
-    # if request.method == 'GET':
-    #     comments = Comment.objects.filter(inquiry_id=inquiry_id)        
-    #     comments_serializer = CommentSerializer(comments, many=True)
-    #     return JsonResponse(comments_serializer.data, safe=False)        
-    #     return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
     if request.method == 'POST':
         comment_data = JSONParser().parse(request)
@@ -186,7 +181,9 @@ def announcement_detail(request, pk):
     elif request.method == 'PUT': 
         if announcement.inquiry_creator == request.user:
             announcement_data = JSONParser().parse(request)
-            Announcement.objects.filter(pk=pk).update(announcement_is_visible = announcement_data['announcement_is_visible'])
+            Announcement.objects.filter(pk=pk).update(
+                announcement_is_visible = announcement_data['announcement_is_visible'],
+                inquiry_updated_at = datetime.now())
             return JsonResponse({'message': 'Статус публикации изменён'}, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
@@ -213,7 +210,9 @@ def notification_detail(request, pk):
 
     elif request.method == 'PUT': 
         if notification.notification_recipient == request.user:
-            Notification.objects.filter(pk=pk).update(notification_is_read = True)
+            Notification.objects.filter(pk=pk).update(
+                notification_is_read = True,
+                inquiry_updated_at = datetime.now())
             return JsonResponse({'message': 'Уведомление прочтено получателем'}, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
@@ -268,12 +267,15 @@ def todo_detail(request, pk):
         if (((todo.todo_status == 'n') | (todo.todo_status == 'w')) &
          ((todo.todo.todo_assigned_to == request.user) | (todo.todo.todo_assigned_to is None)) & (request.user.profile.is_manager)):
             todo_data = JSONParser().parse(request)
-            ToDo.objects.filter(pk=pk).update(todo_assigned_to = todo_data['todo_assigned_to'])
-            ToDo.objects.filter(pk=pk).update(todo_status = todo_data['todo_status'])
+            ToDo.objects.filter(pk=pk).update(
+                todo_assigned_to = todo_data['todo_assigned_to'],
+                todo_status = todo_data['todo_status'],
+                inquiry_updated_at = datetime.now())
             return JsonResponse({'message': 'Статус заявки и исполнитель обновлены'}, status=status.HTTP_200_OK)
         elif ((todo.todo_status == 'r') & (todo.inquiry_creator==request.user)):
             todo_data = JSONParser().parse(request)
-            ToDo.objects.filter(pk=pk).update(todo_status = todo_data['todo_status'])
+            ToDo.objects.filter(pk=pk).update(todo_status = todo_data['todo_status'],
+                inquiry_updated_at = datetime.now())
             return JsonResponse({'message': 'Статус заявки обновлён'}, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 

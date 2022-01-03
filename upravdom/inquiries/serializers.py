@@ -31,8 +31,7 @@ class CommentSerializer(serializers.ModelSerializer):
         comment = Comment(
            inquiry=validated_data['inquiry'],
            comment_text=validated_data['comment_text'],
-           comment_creator=validated_data['comment_creator'],
-           comment_created_at=validated_data['comment_created_at']
+           comment_creator=validated_data['comment_creator']
         )
         comment.save()
         return comment
@@ -55,7 +54,6 @@ class ToDoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        # user = self.context['request'].user
         todo = ToDo(
             inquiry_creator=validated_data['inquiry_creator'],
             inquiry_title=validated_data['inquiry_title'],
@@ -113,7 +111,6 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)
-        # instance.inquiry_is_done = validated_data.get('inquiry_is_done', instance.inquiry_is_done)
         instance.announcement_is_visible = validated_data.get('announcement_is_visible', instance.announcement_is_visible)
         instance.announcement_auto_invisible_date = validated_data.get('announcement_auto_invisible_date', instance.announcement_auto_invisible_date)
         instance.save()
