@@ -18,7 +18,6 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
             representation = super(CommentSerializer, self).to_representation(instance)
-            representation['comment_created_at'] = instance.comment_created_at.timestamp()*1000
             representation['comment_creator'] = UserSerializer(instance.comment_creator).data
             return representation
 
@@ -27,7 +26,6 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-    # user = self.context['request'].user
         comment = Comment(
            inquiry=validated_data['inquiry'],
            comment_text=validated_data['comment_text'],
@@ -64,17 +62,18 @@ class ToDoSerializer(serializers.ModelSerializer):
         return todo
 
 
-class ToDoUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ToDo
-        fields = 'inquiry_updated_at', 'todo_assigned_to', 'todo_status'
+# class ToDoUpdateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ToDo
+#         fields = 'inquiry_updated_at', 'todo_assigned_to', 'todo_status'
 
-    def update(self, instance, validated_data):
-        instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)
-        instance.todo_assigned_to = validated_data.get('todo_assigned_to', instance.todo_assigned_to)
-        instance.todo_status = validated_data.get('todo_status', instance.todo_status)
-        instance.save()
-        return instance
+#     def update(self, instance, validated_data):
+#         instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)
+#         instance.todo_assigned_to = validated_data.get('todo_assigned_to', instance.todo_assigned_to)
+#         instance.todo_status = validated_data.get('todo_status', instance.todo_status)
+#         print('used')
+#         instance.save()
+#         return instance
 
 
 class ToDoCategorySerializer(serializers.ModelSerializer):

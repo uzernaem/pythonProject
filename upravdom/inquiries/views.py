@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.shortcuts import render
@@ -7,7 +8,7 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser 
-from inquiries.serializers import UserSerializer, AnnouncementSerializer, ToDoSerializer, ToDoUpdateSerializer, PollSerializer, NotificationSerializer, \
+from inquiries.serializers import UserSerializer, AnnouncementSerializer, ToDoSerializer, PollSerializer, NotificationSerializer, \
     CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer
 from inquiries.models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile, ToDoCategory, Inquiry
 from django.contrib.auth.models import User
@@ -97,7 +98,9 @@ def announcement_list(request):
 
     if request.method == 'GET':
 
-        announcements = Announcement.objects.filter(Q(announcement_is_visible = True, announcement_auto_invisible_date__gt=datetime.today().date()) | Q(inquiry_creator=request.user))
+        announcements = Announcement.objects.filter(
+            Q(announcement_is_visible = True, announcement_auto_invisible_date__gt=datetime.today().date()) | 
+            Q(inquiry_creator=request.user))
         title = request.GET.get('inquiry_title', None)
         if title is not None:
             announcements = announcements.filter(title__icontains=title)
@@ -183,7 +186,7 @@ def announcement_detail(request, pk):
             announcement_data = JSONParser().parse(request)
             Announcement.objects.filter(pk=pk).update(
                 announcement_is_visible = announcement_data['announcement_is_visible'],
-                inquiry_updated_at = datetime.now())
+                inquiry_updated_at = timezone.now())
             return JsonResponse({'message': 'Статус публикации изменён'}, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
@@ -212,9 +215,42 @@ def notification_detail(request, pk):
         if notification.notification_recipient == request.user:
             Notification.objects.filter(pk=pk).update(
                 notification_is_read = True,
-                inquiry_updated_at = datetime.now())
+                inquiry_updated_at = timezone.now())
             return JsonResponse({'message': 'Уведомление прочтено получателем'}, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
+
+ 
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
+def todo_detail(request, pk):
+    try:
+        todo = ToDo.objects.get(pk=pk)
+    except ToDo.DoesNotExist:
+        return JsonResponse({'message': 'Заявка не существует'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        if ((todo.inquiry_creator==request.user) | (request.user.profile.is_manager)):
+            todo_serializer = ToDoSerializer(todo)
+            data = JsonResponse(todo_serializer.data)
+            return data
+        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
+
+    elif request.method == 'PUT':
+        if (((todo.todo_status == 'n') | (todo.todo_status == 'w')) &
+         ((todo.todo.todo_assigned_to == request.user) | (todo.todo.todo_assigned_to is None)) & (request.user.profile.is_manager)):
+            todo_data = JSONParser().parse(request)
+            ToDo.objects.filter(pk=pk).update(
+                todo_assigned_to = todo_data['todo_assigned_to'],
+                todo_status = todo_data['todo_status'],
+                inquiry_updated_at = timezone.now())
+            return JsonResponse({'message': 'Статус заявки и исполнитель обновлены'}, status=status.HTTP_200_OK)
+        elif ((todo.todo_status == 'r') & (todo.inquiry_creator==request.user)):
+            todo_data = JSONParser().parse(request)
+            ToDo.objects.filter(pk=pk).update(todo_status = todo_data['todo_status'],
+                inquiry_updated_at = timezone.now())
+            return JsonResponse({'message': 'Статус заявки обновлён'}, status=status.HTTP_200_OK)
+        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
+
 
 # @api_view(['GET', 'POST', 'DELETE'])
 # @permission_classes([permissions.IsAuthenticated])
@@ -246,38 +282,6 @@ def notification_detail(request, pk):
 #             todocategory_serializer.save() 
 #             return JsonResponse(todocategory_serializer.data) 
 #         return JsonResponse(todocategory_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
- 
- 
-@api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated])
-def todo_detail(request, pk):
-    try:
-        todo = ToDo.objects.get(pk=pk)
-    except ToDo.DoesNotExist:
-        return JsonResponse({'message': 'Заявка не существует'}, status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        if ((todo.inquiry_creator==request.user) | (request.user.profile.is_manager)):
-            todo_serializer = ToDoSerializer(todo)
-            data = JsonResponse(todo_serializer.data)
-            return data
-        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
-
-    elif request.method == 'PUT':
-        if (((todo.todo_status == 'n') | (todo.todo_status == 'w')) &
-         ((todo.todo.todo_assigned_to == request.user) | (todo.todo.todo_assigned_to is None)) & (request.user.profile.is_manager)):
-            todo_data = JSONParser().parse(request)
-            ToDo.objects.filter(pk=pk).update(
-                todo_assigned_to = todo_data['todo_assigned_to'],
-                todo_status = todo_data['todo_status'],
-                inquiry_updated_at = datetime.now())
-            return JsonResponse({'message': 'Статус заявки и исполнитель обновлены'}, status=status.HTTP_200_OK)
-        elif ((todo.todo_status == 'r') & (todo.inquiry_creator==request.user)):
-            todo_data = JSONParser().parse(request)
-            ToDo.objects.filter(pk=pk).update(todo_status = todo_data['todo_status'],
-                inquiry_updated_at = datetime.now())
-            return JsonResponse({'message': 'Статус заявки обновлён'}, status=status.HTTP_200_OK)
-        return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
 
 # class ToDoViewSet(viewsets.ModelViewSet):

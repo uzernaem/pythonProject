@@ -11186,3 +11186,6 @@ node_modules/zone.js/lib/zone-spec/task-tracking.d.ts
 node_modules/zone.js/lib/zone-spec/task-tracking.js
 node_modules/zone.js/lib/zone-spec/wtf.d.ts
 node_modules/zone.js/lib/zone-spec/wtf.js
+upravdom/inquiries/__pycache__/serializers.cpython-310.pyc
+upravdom/inquiries/__pycache__/views.cpython-310.pyc
+upravdom/inquiries/migrations/__pycache__/0006_auto_20220103_1146.cpython-310.pyc
