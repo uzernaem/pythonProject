@@ -108,12 +108,12 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         announcement.save()
         return announcement
 
-    def update(self, instance, validated_data):
-        instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)
-        instance.announcement_is_visible = validated_data.get('announcement_is_visible', instance.announcement_is_visible)
-        instance.announcement_auto_invisible_date = validated_data.get('announcement_auto_invisible_date', instance.announcement_auto_invisible_date)
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)
+    #     instance.announcement_is_visible = validated_data.get('announcement_is_visible', instance.announcement_is_visible)
+    #     instance.announcement_auto_invisible_date = validated_data.get('announcement_auto_invisible_date', instance.announcement_auto_invisible_date)
+    #     instance.save()
+    #     return instance
         
 
 class PollSerializer(serializers.ModelSerializer):
@@ -162,10 +162,8 @@ class NotificationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        # user = self.context['request'].user
         notification = Notification(
             inquiry_title=validated_data['inquiry_title'],
-            # inquiry_creator=user,
             inquiry_text=validated_data['inquiry_text'],
             notification_recipient=validated_data['notification_recipient'],
             notification_category=validated_data['notification_category']
@@ -173,12 +171,12 @@ class NotificationSerializer(serializers.ModelSerializer):
         notification.save()
         return notification
 
-    def update(self, instance, validated_data):
-        instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)
-        # instance.inquiry_is_done = validated_data.get('inquiry_is_done', instance.inquiry_is_done)
-        instance.notification_is_read = validated_data.get('notification_is_read', instance.notification_is_read)
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)
+    #     # instance.inquiry_is_done = validated_data.get('inquiry_is_done', instance.inquiry_is_done)
+    #     instance.notification_is_read = validated_data.get('notification_is_read', instance.notification_is_read)
+    #     instance.save()
+    #     return instance
 
 
 class PropertySerializer(serializers.ModelSerializer):

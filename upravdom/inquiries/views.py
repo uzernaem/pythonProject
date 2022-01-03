@@ -184,8 +184,10 @@ def announcement_detail(request, pk):
     elif request.method == 'PUT': 
         if announcement.inquiry_creator == request.user:
             announcement_data = JSONParser().parse(request)
+            print(announcement_data)
             Announcement.objects.filter(pk=pk).update(
                 announcement_is_visible = announcement_data['announcement_is_visible'],
+                announcement_auto_invisible_date = announcement_data['announcement_auto_invisible_date'],
                 inquiry_updated_at = timezone.now())
             return JsonResponse({'message': 'Статус публикации изменён'}, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)

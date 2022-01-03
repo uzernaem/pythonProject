@@ -27,13 +27,11 @@ urlpatterns = [
     re_path(r'^user$', get_user),
     re_path(r'^users$', user_list),
     re_path(r'^todos$', todo_list),
-    re_path(r'^announcements$', announcement_list),
-    re_path(r'^notifications$', notification_list),
-    re_path(r'^polls$', poll_list),
-    re_path(r'^announcements/(?P<pk>[0-9]+)$', announcement_detail),
-    re_path(r'^notifications/(?P<pk>[0-9]+)$', notification_detail),
     re_path(r'^todos/(?P<pk>[0-9]+)$', todo_detail),
+    re_path(r'^announcements$', announcement_list),
+    re_path(r'^announcements/(?P<pk>[0-9]+)$', announcement_detail),
+    re_path(r'^notifications$', notification_list),
+    re_path(r'^notifications/(?P<pk>[0-9]+)$', notification_detail),
     re_path(r'^comments/(?P<inquiry_id>[0-9]+)$', comment_list),
-    # re_path(r'^todocategories$', todocategory_list),
-    # re_path(r'^todocategories/(?P<pk>[0-9]+)$', todocategory_detail)
+    re_path(r'^polls$', poll_list),
 ]
