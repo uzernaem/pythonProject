@@ -7,15 +7,16 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { User } from 'src/app/models/user.model';
 import { AddNotificationComponent } from '../add-notification/add-notification.component';
 import { NotificationModalComponent } from '../notification-modal/notification-modal.component';
+import { BaseInquiryComponent } from '../base-inquiry/base-inquiry.component';
 
 @Component({
   selector: 'app-notifications-list',
   templateUrl: './notifications-list.component.html',
   styleUrls: ['./notifications-list.component.css']
 })
-export class NotificationsListComponent implements OnInit {
+export class NotificationsListComponent extends BaseInquiryComponent implements OnInit {
 
-  currentuser: User = {};
+  //currentuser: User = {};
   notifications?: Notification[];
   listednotifications?: Notification[];
   search_title = '';
@@ -30,7 +31,8 @@ export class NotificationsListComponent implements OnInit {
   statusFilter: string[] = [];
   categoryFilter: string[] = [];
 
-  constructor(private inquiryService: InquiryService, public dialog: MatDialog, fb: FormBuilder) { 
+  constructor(inquiryService: InquiryService, public dialog: MatDialog, fb: FormBuilder) {
+    super(inquiryService);
     this.filters = fb.group({
     });
   }
@@ -104,16 +106,5 @@ export class NotificationsListComponent implements OnInit {
       this.retrieveNotifications();
       console.log(`Dialog result: ${result}`);
     });
-  }
-
-  retrieveCurrentUser(): void {
-    this.inquiryService.getUser()
-      .subscribe({
-        next: (data) => {
-          this.currentuser = data;
-          console.log(data);
-        },
-        error: (e) => console.error(e)
-      });
   }
 }

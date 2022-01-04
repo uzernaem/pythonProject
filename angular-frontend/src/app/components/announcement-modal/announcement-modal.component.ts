@@ -2,10 +2,10 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { Router } from '@angular/router';
 import { Comment, Announcement } from 'src/app/models/inquiry.model';
-import { User } from 'src/app/models/user.model';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BaseInquiryComponent } from '../base-inquiry/base-inquiry.component';
 
 export interface DialogData {
   id: number;
@@ -16,10 +16,9 @@ export interface DialogData {
   templateUrl: './announcement-modal.component.html',
   styleUrls: ['./announcement-modal.component.css']
 })
-export class AnnouncementModalComponent implements OnInit {  
+export class AnnouncementModalComponent extends BaseInquiryComponent implements OnInit {  
   
   inquiryForm!: FormGroup;
-  currentuser?: User;
   comments: Comment[] = [];
   comment: Comment = {
     comment_text: ''
@@ -33,12 +32,14 @@ export class AnnouncementModalComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
     public data: DialogData,
-    private inquiryService: InquiryService,
     private router: Router,
-    private tokenStorage: TokenStorageService) { }
+    private tokenStorage: TokenStorageService,
+    inquiryService: InquiryService) {
+    super(inquiryService);
+  }
 
     ngOnInit(): void {
-      this.currentuser = this.tokenStorage.getUser();
+      //this.currentuser = this.tokenStorage.getUser();
       this.inquiryForm = new FormGroup({
         comment: new FormControl('', Validators.required)
           });
@@ -56,17 +57,6 @@ export class AnnouncementModalComponent implements OnInit {
             this.announcement = data;
             this.comments = data.comments!.sort((a,b) => b.comment_id! - a.comment_id!);
             this.comments.forEach(a => (a.comment_created_at = new Date(a.comment_created_at!)));
-            console.log(data);
-          },
-          error: (e) => console.error(e)
-        });
-    }
-
-    retrieveCurrentUser(): void {
-      this.inquiryService.getUser()
-        .subscribe({
-          next: (data) => {
-            this.currentuser = data;
             console.log(data);
           },
           error: (e) => console.error(e)

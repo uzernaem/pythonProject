@@ -45,6 +45,7 @@ import { PollsListComponent } from './components/polls-list/polls-list.component
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegisterComponent } from './components/register/register.component';
 import { RouterModule } from '@angular/router';
+import { BaseInquiryComponent } from './components/base-inquiry/base-inquiry.component';
 
 
 const modules = [
@@ -97,6 +98,7 @@ const modules = [
     PollsListComponent,
     ProfileComponent,
     RegisterComponent,
+    BaseInquiryComponent,
   ],
   imports: [modules, BrowserAnimationsModule],
   exports: [modules],

@@ -6,6 +6,7 @@ import { User } from 'src/app/models/user.model';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BaseInquiryComponent } from '../base-inquiry/base-inquiry.component';
 
 export interface DialogData {
   id: number;
@@ -17,11 +18,10 @@ export interface DialogData {
   styleUrls: ['./inquiry-modal.component.css']
 })
 
-export class InquiryModalComponent implements OnInit {
+export class InquiryModalComponent extends BaseInquiryComponent implements OnInit {
 
   inquiryForm!: FormGroup;
   managers: User[] = [];
-  currentuser?: User;
   comments: Comment[] = [];
   comment: Comment = {
     comment_text: ''
@@ -42,10 +42,10 @@ export class InquiryModalComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
     public data: DialogData,
-    private inquiryService: InquiryService,
-    //private route: ActivatedRoute,
+    inquiryService: InquiryService,
     private router: Router,
-    private tokenStorage: TokenStorageService) { }
+    private tokenStorage: TokenStorageService) {
+      super(inquiryService); }
 
     ngOnInit(): void {
       this.currentuser = this.tokenStorage.getUser();
@@ -87,17 +87,6 @@ export class InquiryModalComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.managers = data.filter(x => x.is_manager);
-            console.log(data);
-          },
-          error: (e) => console.error(e)
-        });
-    }
-
-    retrieveCurrentUser(): void {
-      this.inquiryService.getUser()
-        .subscribe({
-          next: (data) => {
-            this.currentuser = data;
             console.log(data);
           },
           error: (e) => console.error(e)
