@@ -17,9 +17,7 @@ export interface DialogData {
   styleUrls: ['./announcement-modal.component.css']
 })
 export class AnnouncementModalComponent extends BaseInquiryComponent implements OnInit {  
-  
-  inquiryForm!: FormGroup;
-  comments: Comment[] = [];
+
   comment: Comment = {
     comment_text: ''
   };
@@ -61,24 +59,6 @@ export class AnnouncementModalComponent extends BaseInquiryComponent implements 
           },
           error: (e) => console.error(e)
         });
-    }
-
-    saveComment(): void {      
-      let dateTime = new Date()
-      const data = {
-        comment_text: this.inquiryForm.value.comment,
-        inquiry: this.announcement.inquiry_id,
-        comment_creator: this.currentuser,
-        comment_created_at: dateTime     
-      };
-      this.inquiryService.createComment(data, this.announcement.inquiry_id)
-        .subscribe({
-          next: (res) => {
-            console.log(res);
-          },
-          error: (e) => console.error(e)
-        });
-        this.comments.unshift(data);
     }
 
     updateInquiry(publish: boolean): void {

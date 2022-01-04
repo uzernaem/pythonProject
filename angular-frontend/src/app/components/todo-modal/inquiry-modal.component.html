@@ -48,13 +48,12 @@
         required></textarea>
       </mat-form-field>
     <div>
-      <button mat-raised-button color="primary" (click)="saveComment()" [disabled]="inquiryForm.invalid">
+      <button mat-raised-button color="primary" (click)="saveComment(currentToDo.inquiry_id)" [disabled]="inquiryForm.invalid">
         Опубликовать
       </button>
     <p>{{ message }}</p>
     </div>
 </div>
-
       <div *ngFor="let comment of comments">
         <mat-card class="cards">
           <mat-card-subtitle>{{ comment.comment_created_at!.toLocaleString() }}</mat-card-subtitle>

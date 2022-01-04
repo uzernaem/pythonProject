@@ -20,9 +20,7 @@ export interface DialogData {
 
 export class InquiryModalComponent extends BaseInquiryComponent implements OnInit {
 
-  inquiryForm!: FormGroup;
   managers: User[] = [];
-  comments: Comment[] = [];
   comment: Comment = {
     comment_text: ''
   };
@@ -57,8 +55,7 @@ export class InquiryModalComponent extends BaseInquiryComponent implements OnIni
       if (!this.viewMode) {
         this.message = '';
         this.retrieveCurrentUser()
-        this.getInquiry(this.data.id);        
-        alert(JSON.stringify(this.currentuser));
+        this.getInquiry(this.data.id);
       }
     }
 
@@ -91,24 +88,6 @@ export class InquiryModalComponent extends BaseInquiryComponent implements OnIni
           },
           error: (e) => console.error(e)
         });
-    }
-
-    saveComment(): void {      
-      let dateTime = new Date()
-      const data = {
-        comment_text: this.inquiryForm.value.comment,
-        inquiry: this.currentToDo.inquiry_id,
-        comment_creator: this.currentuser,
-        comment_created_at: dateTime        
-      };
-      this.inquiryService.createComment(data, this.currentToDo.inquiry_id)
-        .subscribe({
-          next: (res) => {
-            console.log(res);
-          },
-          error: (e) => console.error(e)
-        });
-        this.comments.unshift(data);
     }
 
     updateInquiry(status: string): void {
