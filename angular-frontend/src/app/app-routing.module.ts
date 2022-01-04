@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { InquiriesListComponent } from './components/todos-list/inquiries-list.component';
+import { ToDosListComponent } from './components/todos-list/todos-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -12,7 +12,7 @@ import { PollsListComponent } from './components/polls-list/polls-list.component
 
 const routes: Routes = [ 
   { path: '', component: MenuComponent },
-  { path: 'todos', component: InquiriesListComponent },
+  { path: 'todos', component: ToDosListComponent },
   { path: 'announcements', component: AnnouncementsListComponent },
   { path: 'notifications', component: NotificationsListComponent },
   { path: 'polls', component: PollsListComponent },

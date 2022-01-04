@@ -8,12 +8,12 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'app-inquiries-list',
-  templateUrl: './inquiries-list.component.html',
-  styleUrls: ['./inquiries-list.component.css']
+  selector: 'app-todos-list',
+  templateUrl: './todos-list.component.html',
+  styleUrls: ['./todos-list.component.css']
 })
 
-export class InquiriesListComponent implements OnInit {
+export class ToDosListComponent implements OnInit {
 
   todos?: ToDo[];
   listedtodos?: ToDo[];

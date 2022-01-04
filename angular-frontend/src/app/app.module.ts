@@ -14,7 +14,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
-import { InquiriesListComponent } from './components/todos-list/inquiries-list.component';
+import { ToDosListComponent } from './components/todos-list/todos-list.component';
 import { InquiryModalComponent } from './components/todo-modal/inquiry-modal.component';
 import { LoginComponent } from './components/login/login.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -89,7 +89,7 @@ const modules = [
     AnnouncementsListComponent,
     AppComponent,
     HomeComponent,
-    InquiriesListComponent,
+    ToDosListComponent,
     InquiryModalComponent,
     LoginComponent,
     MenuComponent,
