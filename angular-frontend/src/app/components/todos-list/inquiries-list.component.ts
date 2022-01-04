@@ -111,7 +111,7 @@ export class InquiriesListComponent implements OnInit {
         (this.priorityFilter.includes(x.todo_priority!))).filter(x => ((x.inquiry_created_at! >= s) && (x.inquiry_created_at! <= e))).filter(x => (x.inquiry_title?.includes(this.search_title)));
   }
 
-  newInquiryDialog(id?: number) {
+  inquiryDialog(id?: number) {
     const dialogRef = this.dialog.open(InquiryModalComponent, {
       data: {
         id: id,

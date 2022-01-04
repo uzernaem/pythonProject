@@ -47,8 +47,8 @@ export class NotificationsListComponent extends BaseInquiryComponent implements 
   }
 
   retrieveNotifications(): void {    
-    const s = new Date(this.range.value.start + this.range.value.start.getTimezoneOffset());    
-    const e = new Date(this.range.value.end + this.range.value.end.getTimezoneOffset());
+    // const s = new Date(this.range.value.start + this.range.value.start.getTimezoneOffset());    
+    // const e = new Date(this.range.value.end + this.range.value.end.getTimezoneOffset());
     this.inquiryService.getNotifications()
       .subscribe({
         next: (data) => {          
@@ -87,7 +87,7 @@ export class NotificationsListComponent extends BaseInquiryComponent implements 
     this.listednotifications = this.notifications!.filter(x => ((x.inquiry_created_at! >= s) && (x.inquiry_created_at! <= e))).filter(x => (x.inquiry_title?.includes(this.search_title)));
   }
 
-  newInquiryDialog(id?: number) {
+  inquiryDialog(id?: number) {
     const dialogRef = this.dialog.open(NotificationModalComponent, {
       data: {
         id: id,
