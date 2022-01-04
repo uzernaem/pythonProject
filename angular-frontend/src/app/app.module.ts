@@ -1,5 +1,5 @@
 import { AddAnnouncementComponent } from './components/add-announcement/add-announcement.component';
-import { AddInquiryComponent } from './components/add-inquiry/add-inquiry.component';
+import { AddInquiryComponent } from './components/add-todo/add-inquiry.component';
 import { AddNotificationComponent } from './components/add-notification/add-notification.component';
 import { AnnouncementModalComponent } from './components/announcement-modal/announcement-modal.component';
 import { AnnouncementsListComponent } from './components/announcements-list/announcements-list.component';
@@ -14,8 +14,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
-import { InquiriesListComponent } from './components/inquiries-list/inquiries-list.component';
-import { InquiryModalComponent } from './components/inquiry-modal/inquiry-modal.component';
+import { InquiriesListComponent } from './components/todos-list/inquiries-list.component';
+import { InquiryModalComponent } from './components/todo-modal/inquiry-modal.component';
 import { LoginComponent } from './components/login/login.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';

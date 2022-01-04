@@ -55,9 +55,10 @@ export class InquiryModalComponent implements OnInit {
         comment: new FormControl('', Validators.required)
           });
       if (!this.viewMode) {
-        this.message = '';        
-        this.retrieveCurrentUser();
-        this.getInquiry(this.data.id);
+        this.message = '';
+        this.retrieveCurrentUser()
+        this.getInquiry(this.data.id);        
+        alert(JSON.stringify(this.currentuser));
       }
     }
 
