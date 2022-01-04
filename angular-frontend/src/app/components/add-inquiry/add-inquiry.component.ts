@@ -57,7 +57,7 @@ export class AddInquiryComponent implements OnInit {
       inquiry_text: this.inquiryForm.value.text,
       todo_category: this.inquiryForm.value.category
     };
-    this.inquiryService.create(data)
+    this.inquiryService.createToDo(data)
       .subscribe({
         next: (res) => {
           console.log(res);

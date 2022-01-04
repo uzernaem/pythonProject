@@ -62,7 +62,7 @@ export class InquiryModalComponent implements OnInit {
     }
 
     getInquiry(id: number): void {
-      this.inquiryService.get(id)
+      this.inquiryService.getToDo(id)
         .subscribe({
           next: (data) => {
             this.currentToDo = data;
@@ -134,7 +134,7 @@ export class InquiryModalComponent implements OnInit {
         this.currentToDo.todo_status = status
       }
       this.currentToDo.inquiry_updated_at = dateTime;
-      this.inquiryService.update(this.currentToDo.inquiry_id, this.currentToDo)
+      this.inquiryService.updateToDo(this.currentToDo.inquiry_id, this.currentToDo)
         .subscribe({
           next: (res) => {
             console.log(res);
@@ -145,7 +145,7 @@ export class InquiryModalComponent implements OnInit {
     }
 
     deleteInquiry(): void {
-      this.inquiryService.delete(this.currentToDo.inquiry_id)
+      this.inquiryService.deleteToDo(this.currentToDo.inquiry_id)
         .subscribe({
           next: (res) => {
             console.log(res);
