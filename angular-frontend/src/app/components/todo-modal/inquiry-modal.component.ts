@@ -25,12 +25,12 @@ export class InquiryModalComponent extends BaseInquiryComponent implements OnIni
     comment_text: ''
   };
 
-  todostatuses: ToDoStatus[] = [
-    {"status_id": "n", "status_name": "Новая"},
-    {"status_id": "w", "status_name": "В работе"},
-    {"status_id": "r", "status_name": "На проверке"},
-    {"status_id": "c", "status_name": "Завершена"}
-  ];
+  // todostatuses: ToDoStatus[] = [
+  //   {"status_id": "n", "status_name": "Новая"},
+  //   {"status_id": "w", "status_name": "В работе"},
+  //   {"status_id": "r", "status_name": "На проверке"},
+  //   {"status_id": "c", "status_name": "Завершена"}
+  // ];
 
   @Input() viewMode = false;
 
@@ -92,16 +92,11 @@ export class InquiryModalComponent extends BaseInquiryComponent implements OnIni
 
     updateInquiry(status: string): void {
       let dateTime = new Date()
-      if (status == "nw")
-      {
+      if (this.currentToDo.todo_assigned_to.username=="")
         this.currentToDo.todo_assigned_to = this.currentuser!.id;
-        this.currentToDo.todo_status = "w";
-      }
       else
-      {
         this.currentToDo.todo_assigned_to = this.inquiryForm.value.assignee;
-        this.currentToDo.todo_status = status
-      }
+      this.currentToDo.todo_status = status;
       this.currentToDo.inquiry_updated_at = dateTime;
       this.inquiryService.updateToDo(this.currentToDo.inquiry_id, this.currentToDo)
         .subscribe({

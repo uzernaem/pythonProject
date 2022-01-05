@@ -65,7 +65,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <div *ngIf="(currentToDo.todo_status==='w') &&  (currentToDo.todo_assigned_to!.id===currentuser!.id)">
+  <div *ngIf="(currentToDo.todo_assigned_to!.id===currentuser!.id)">
     <div>
       <label><strong>Изменить исполнителя: </strong></label>
     </div>
@@ -83,7 +83,7 @@
 <mat-dialog-actions align="end">
 <div [ngSwitch]="currentToDo.todo_status">
   <div *ngSwitchCase="'n'">
-    <button mat-raised-button [disabled]="(!currentuser!.is_manager)" [mat-dialog-close]="true" color="primary" type="submit" (click)="updateInquiry('nw')">Взять в работу</button>
+    <button mat-raised-button [disabled]="(!currentuser!.is_manager)" [mat-dialog-close]="true" color="primary" type="submit" (click)="updateInquiry('w')">Взять в работу</button>
   </div>
   <div *ngSwitchCase="'w'">
     <button mat-raised-button [disabled]="(currentuser!.id != currentToDo.todo_assigned_to!.id) || (!currentuser!.is_manager)" [mat-dialog-close]="true" color="primary" type="submit" (click)="updateInquiry('r')">Отправить на проверку</button> 
