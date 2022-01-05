@@ -13,9 +13,9 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-inquiry-modal',
-  templateUrl: './inquiry-modal.component.html',
-  styleUrls: ['./inquiry-modal.component.css']
+  selector: 'app-todo-modal',
+  templateUrl: './todo-modal.component.html',
+  styleUrls: ['./todo-modal.component.css']
 })
 
 export class InquiryModalComponent extends BaseInquiryComponent implements OnInit {
