@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls.conf import re_path
 from django.views.generic.base import TemplateView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -25,9 +24,9 @@ from rest_framework_simplejwt.views import (
 )
 
 
-urlpatterns = [    
-    re_path(r'^admin/', include(admin.site.urls)),
-    re_path(r'^auth/', include('auth.urls')),
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('auth/', include('auth.urls')),
     # path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     # path('', TemplateView.as_view(template_name='home.html'), name='home'),
