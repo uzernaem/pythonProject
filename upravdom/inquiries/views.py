@@ -70,6 +70,26 @@ def todo_list(request):
         return JsonResponse(todo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
+def voteoption_list(request):
+
+    if request.method == 'GET':
+        voteoptions = VoteOption.objects.all()
+        voteoption_serializer = VoteOptionSerializer(voteoptions, many=True)
+        return JsonResponse(voteoption_serializer.data, safe=False)
+
+    if request.method == 'POST':
+        voteoption_data = JSONParser().parse(request)
+        voteoption_serializer = VoteOptionSerializer(data=voteoption_data, many=True) 
+        print(voteoption_serializer)
+        if voteoption_serializer.is_valid():
+            voteoption_serializer.save()
+            return JsonResponse(voteoption_serializer.data, status=status.HTTP_201_CREATED, safe=False)
+        return JsonResponse(voteoption_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
+
+
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def comment_list(request, inquiry_id):
@@ -81,8 +101,8 @@ def comment_list(request, inquiry_id):
         if Announcement.objects.filter(inquiry_id=inquiry_id).exists():
             if comment_serializer.is_valid():
                 comment_serializer.save()
-                return JsonResponse(comment_serializer.data, status=status.HTTP_201_CREATED)            
-            return JsonResponse(comment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)      
+                return JsonResponse(comment_serializer.data, status=status.HTTP_201_CREATED)
+            return JsonResponse(comment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         elif ToDo.objects.filter(inquiry_id=inquiry_id).exists():
             if ((ToDo.objects.get(inquiry_id=inquiry_id).inquiry_creator.id==request.user.id) | request.user.profile.is_manager):
                 if comment_serializer.is_valid():

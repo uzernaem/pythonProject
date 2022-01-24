@@ -111,7 +111,7 @@ class Image(models.Model):
 
 class Poll(Inquiry):
     """Модель голосования"""
-    poll_open = models.BooleanField(blank=True, default=False, help_text='Открытое голосование')
+    # poll_open = models.BooleanField(blank=True, default=False, help_text='Открытое голосование')
     poll_preliminary_results = models.BooleanField(blank=True, default=False, help_text='Предварительные результаты')
     poll_deadline = models.DateTimeField(null=False, help_text='Дата завершения голосования')
     # poll_variants = models.JSONField(help_text='Варианты голосования')

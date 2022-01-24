@@ -114,10 +114,23 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     #     instance.announcement_auto_invisible_date = validated_data.get('announcement_auto_invisible_date', instance.announcement_auto_invisible_date)
     #     instance.save()
     #     return instance
+
+class VoteOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VoteOption
+        fields = '__all__'
+
+    def create(self, validated_data):
+        voteoption = VoteOption(
+           vote_option_text=validated_data['vote_option_text'],
+           poll=validated_data['poll']
+        )
+        voteoption.save()
+        return voteoption
         
 
 class PollSerializer(serializers.ModelSerializer):
-    vote_options = PrimaryKeyRelatedField(source='voteoption.vote_option_text', read_only=True, many=True)
+    vote_options = VoteOptionSerializer(read_only=True, source='voteoption_set', many=True)
 
     class Meta:
         model = Poll
@@ -141,12 +154,6 @@ class PollSerializer(serializers.ModelSerializer):
         # instance.inquiry_is_done = validated_data.get('inquiry_is_done', instance.inquiry_is_done)
         instance.save()
         return instance
-
-
-class VoteOptionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = VoteOption
-        fields = '__all__'
 
 
 class VoteSerializer(serializers.ModelSerializer):
