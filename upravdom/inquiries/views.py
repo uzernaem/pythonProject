@@ -158,7 +158,8 @@ def poll_list(request):
         # polls_data['poll_deadline'] = polls_data['poll_deadline'][0:10]
         polls_serializer = PollSerializer(data=polls_data)
         if polls_serializer.is_valid():
-            polls_serializer.save()
+            poll = polls_serializer.save()
+            print(poll.inquiry_id)
             return JsonResponse(polls_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(polls_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
