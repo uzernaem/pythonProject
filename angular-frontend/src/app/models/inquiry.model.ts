@@ -38,7 +38,7 @@ export class Notification extends Inquiry {
 }
 
 export class Poll extends Inquiry {
-    poll_open?: boolean
+    //poll_open?: boolean
     poll_preliminary_results?: boolean
     poll_deadline?: Date
 }

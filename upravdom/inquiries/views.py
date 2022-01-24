@@ -81,8 +81,7 @@ def voteoption_list(request):
 
     if request.method == 'POST':
         voteoption_data = JSONParser().parse(request)
-        voteoption_serializer = VoteOptionSerializer(data=voteoption_data, many=True) 
-        print(voteoption_serializer)
+        voteoption_serializer = VoteOptionSerializer(data=voteoption_data, many=True)
         if voteoption_serializer.is_valid():
             voteoption_serializer.save()
             return JsonResponse(voteoption_serializer.data, status=status.HTTP_201_CREATED, safe=False)
@@ -155,8 +154,8 @@ def poll_list(request):
 
     elif request.method == 'POST':
         polls_data = JSONParser().parse(request)
-        polls_data['inquiry_creator'] = request.user.id
-        polls_data['poll_deadline'] = polls_data['poll_deadline'][0:10]
+        polls_data['inquiry_creator'] = request.user.id        
+        # polls_data['poll_deadline'] = polls_data['poll_deadline'][0:10]
         polls_serializer = PollSerializer(data=polls_data)
         if polls_serializer.is_valid():
             polls_serializer.save()
@@ -204,7 +203,6 @@ def announcement_detail(request, pk):
     elif request.method == 'PUT': 
         if announcement.inquiry_creator == request.user:
             announcement_data = JSONParser().parse(request)
-            print(announcement_data)
             Announcement.objects.filter(pk=pk).update(
                 announcement_is_visible = announcement_data['announcement_is_visible'],
                 announcement_auto_invisible_date = announcement_data['announcement_auto_invisible_date'],

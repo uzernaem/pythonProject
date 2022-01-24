@@ -127,7 +127,7 @@ class VoteOptionSerializer(serializers.ModelSerializer):
         )
         voteoption.save()
         return voteoption
-        
+
 
 class PollSerializer(serializers.ModelSerializer):
     vote_options = VoteOptionSerializer(read_only=True, source='voteoption_set', many=True)
@@ -137,12 +137,12 @@ class PollSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        user = self.context['request'].user
+        # user = self.context['request'].user
         poll = Poll(
-            inquiry_title=validated_data['inquiry_title'],
-            inquiry_creator=user,
+            inquiry_title=validated_data['inquiry_title'],            
+            inquiry_creator=validated_data['inquiry_creator'],
             inquiry_text=validated_data['inquiry_text'],
-            poll_open=validated_data['poll_open'],
+            # poll_open=validated_data['poll_open'],
             poll_preliminary_results=validated_data['poll_preliminary_results'],
             poll_deadline=validated_data['poll_deadline']
         )

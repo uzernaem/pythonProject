@@ -5,7 +5,7 @@ from .models import Profile, ToDo, Poll, Announcement, Notification, Comment, Vo
 admin.site.register(Profile)
 # admin.site.register(ToDo)
 admin.site.register(Poll)
-# admin.site.register(Announcement)
+admin.site.register(Announcement)
 # admin.site.register(Notification)
 # admin.site.register(Comment)
 admin.site.register(VoteOption)
