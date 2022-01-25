@@ -154,12 +154,16 @@ def poll_list(request):
 
     elif request.method == 'POST':
         polls_data = JSONParser().parse(request)
-        polls_data['inquiry_creator'] = request.user.id        
-        # polls_data['poll_deadline'] = polls_data['poll_deadline'][0:10]
+        polls_data['inquiry_creator'] = request.user.id
         polls_serializer = PollSerializer(data=polls_data)
+        print(polls_data)
         if polls_serializer.is_valid():
             poll = polls_serializer.save()
-            print(poll.inquiry_id)
+            for option in polls_data['vote_options']:
+                option['poll'] = poll.inquiry_id
+            vote_options = VoteOptionSerializer(data=polls_data['vote_options'], many=True)
+            if vote_options.is_valid():
+                vote_options.save()
             return JsonResponse(polls_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(polls_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

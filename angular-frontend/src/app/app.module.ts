@@ -46,6 +46,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { RegisterComponent } from './components/register/register.component';
 import { RouterModule } from '@angular/router';
 import { BaseInquiryComponent } from './components/base-inquiry/base-inquiry.component';
+import { AddPollComponent } from './components/add-poll/add-poll.component';
 
 
 const modules = [
@@ -99,6 +100,7 @@ const modules = [
     ProfileComponent,
     RegisterComponent,
     BaseInquiryComponent,
+    AddPollComponent,
   ],
   imports: [modules, BrowserAnimationsModule],
   exports: [modules],

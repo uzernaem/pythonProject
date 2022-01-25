@@ -99,4 +99,8 @@ export class InquiryService {
   createNotification(data: any): Observable<Notification> {
     return this.http.post<Notification>(serverUrl + 'notifications', data);
   }
+
+  createPoll(data: any): Observable<Poll> {
+    return this.http.post<Poll>(serverUrl + 'polls', data);
+  }
 }

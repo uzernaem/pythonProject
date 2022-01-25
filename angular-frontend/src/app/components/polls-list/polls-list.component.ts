@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AddAnnouncementComponent } from '../add-announcement/add-announcement.component';
 import { AnnouncementModalComponent } from '../announcement-modal/announcement-modal.component';
+import { AddPollComponent } from '../add-poll/add-poll.component';
 
 @Component({
   selector: 'app-polls-list',
@@ -66,7 +67,7 @@ export class PollsListComponent implements OnInit {
   }
 
   addInquiryDialog() {
-    const dialogRef = this.dialog.open(AddAnnouncementComponent);
+    const dialogRef = this.dialog.open(AddPollComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       this.retrievePolls();

@@ -41,6 +41,12 @@ export class Poll extends Inquiry {
     //poll_open?: boolean
     poll_preliminary_results?: boolean
     poll_deadline?: Date
+    vote_options?: VoteOption[]
+}
+
+export class VoteOption {
+    poll?: number
+    vote_option_text?: string
 }
 
 export class Comment {
