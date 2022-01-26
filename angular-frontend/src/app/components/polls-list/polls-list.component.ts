@@ -6,6 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { AddAnnouncementComponent } from '../add-announcement/add-announcement.component';
 import { AnnouncementModalComponent } from '../announcement-modal/announcement-modal.component';
 import { AddPollComponent } from '../add-poll/add-poll.component';
+import { PollModalComponent } from '../poll-modal/poll-modal.component';
 
 @Component({
   selector: 'app-polls-list',
@@ -34,7 +35,7 @@ export class PollsListComponent implements OnInit {
   }
 
   retrievePolls(): void {
-    const s = new Date(this.range.value.start + this.range.value.start.getTimezoneOffset());    
+    const s = new Date(this.range.value.start + this.range.value.start.getTimezoneOffset());
     const e = new Date(this.range.value.end + this.range.value.end.getTimezoneOffset());
     this.inquiryService.getPolls()
       .subscribe({
@@ -55,7 +56,7 @@ export class PollsListComponent implements OnInit {
   }
 
   inquiryDialog(id?: number) {
-    const dialogRef = this.dialog.open(AnnouncementModalComponent, {
+    const dialogRef = this.dialog.open(PollModalComponent, {
       data: {
         id: id,
       }

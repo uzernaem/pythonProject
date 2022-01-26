@@ -24,3 +24,27 @@
     <div>
       <button mat-button class="inquiries" color="primary" (click)="addInquiryDialog()"><mat-icon>create</mat-icon> Новое голосование</button>
     </div>
+
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let poll of polls">
+        <div fxLayout="column" fxLayout.xs="column" fxLayoutGap="10px" class="container"  fxLayoutAlign="left">
+          <mat-card>
+            <mat-card-subtitle>
+              <div fxLayout="row wrap" fxLayoutGap="20px">
+                <div class="icon-text"><mat-icon>person</mat-icon>{{ poll.inquiry_creator!.first_name }} {{ poll.inquiry_creator!.last_name }}</div>
+              </div>
+            </mat-card-subtitle>
+            <mat-card-title>{{ poll.inquiry_title }}</mat-card-title>
+            <mat-card-content>
+              
+            </mat-card-content>
+            <mat-divider inset></mat-divider>
+            <mat-card-actions>                  
+              <button mat-button color="primary" (click)="inquiryDialog(poll.inquiry_id)">Подробнее...</button>
+            </mat-card-actions>
+            <mat-card-footer>
+            </mat-card-footer>
+          </mat-card>
+        </div>
+      </div>
+      </div>

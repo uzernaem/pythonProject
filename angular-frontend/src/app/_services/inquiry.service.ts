@@ -56,6 +56,10 @@ export class InquiryService {
     return this.http.get(`${serverUrl + 'notifications'}/${id}`);
   }
 
+  getPoll(id: any): Observable<Poll> {
+    return this.http.get(`${serverUrl + 'polls'}/${id}`);
+  }
+
   createComment(data: any, id: any): Observable<any> {
     return this.http.post(`${serverUrl + 'comments'}/${id}`, data);
   }

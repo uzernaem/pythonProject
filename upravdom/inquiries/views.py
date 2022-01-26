@@ -91,6 +91,25 @@ def voteoption_list(request):
 
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
+def post_vote(request):
+
+    if request.method == 'POST':
+        vote_data = JSONParser().parse(request)
+        vote_data['voter'] = request.user.id
+        vote_option = VoteOption.objects.get(pk=vote_data['selected_option'])
+        options = vote_option.poll.voteoption_set.all()
+
+        print(options)
+        vote_serializer = VoteSerializer(data=vote_data)
+        if vote_serializer.is_valid():
+            vote_serializer.save()
+            return JsonResponse(vote_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(vote_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
 def comment_list(request, inquiry_id):
 
     if request.method == 'POST':
@@ -222,6 +241,20 @@ def announcement_detail(request, pk):
             return JsonResponse({'message': 'Объявление удалено'}, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
+def poll_detail(request, pk):
+    try: 
+        poll = Poll.objects.get(pk=pk)
+    except Poll.DoesNotExist: 
+        return JsonResponse({'message': 'Голосование не существует'}, status=status.HTTP_404_NOT_FOUND) 
+
+    if request.method == 'GET': 
+        poll_serializer = PollSerializer(poll)
+        data = JsonResponse(poll_serializer.data)
+        return data
+        
 
 @api_view(['GET', 'PUT'])
 @permission_classes([permissions.IsAuthenticated])

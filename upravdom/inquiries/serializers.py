@@ -115,7 +115,15 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     #     instance.save()
     #     return instance
 
-class VoteOptionSerializer(serializers.ModelSerializer):
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = '__all__'
+
+
+class VoteOptionSerializer(serializers.ModelSerializer):    
+    votes = VoteSerializer(read_only=True, source='vote_set', many=True)
+
     class Meta:
         model = VoteOption
         fields = '__all__'
@@ -136,6 +144,11 @@ class PollSerializer(serializers.ModelSerializer):
         model = Poll
         fields = '__all__'
 
+    def to_representation(self, instance):
+            representation = super(PollSerializer, self).to_representation(instance)
+            representation['inquiry_creator'] = UserSerializer(instance.inquiry_creator).data
+            return representation
+
     def create(self, validated_data):
         # user = self.context['request'].user
         poll = Poll(
@@ -154,12 +167,6 @@ class PollSerializer(serializers.ModelSerializer):
         # instance.inquiry_is_done = validated_data.get('inquiry_is_done', instance.inquiry_is_done)
         instance.save()
         return instance
-
-
-class VoteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Vote
-        fields = '__all__'
 
 
 class NotificationSerializer(serializers.ModelSerializer):

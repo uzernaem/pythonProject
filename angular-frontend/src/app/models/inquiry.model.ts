@@ -45,8 +45,14 @@ export class Poll extends Inquiry {
 }
 
 export class VoteOption {
-    poll?: number
+    poll?: Poll
     vote_option_text?: string
+    votes?: Vote[]
+}
+
+export class Vote {
+    voter?: User
+    selected_option?: VoteOption
 }
 
 export class Comment {

@@ -47,7 +47,6 @@ export class AddPollComponent implements OnInit {
       poll_preliminary_results: this.inquiryForm.value.preliminary_results,
       vote_options: this.voteoptions_list
     };
-    alert(JSON.stringify(data));
     this.inquiryService.createPoll(data)
       .subscribe({
         next: (res) => {
