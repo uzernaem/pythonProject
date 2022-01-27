@@ -14,7 +14,7 @@
             </mat-card-actions>          
     
             <div *ngFor="let vote_option of vote_options">
-                <div><label><strong>{{ vote_option.vote_option_text }}</strong></label></div>
+                <div><button mat-button (click)="vote(vote_option.id!)"><strong>{{ vote_option.vote_option_text }}</strong></button></div>
                 <div><label>Голосов: {{ vote_option.votes!.length }}</label></div>
             </div>
 

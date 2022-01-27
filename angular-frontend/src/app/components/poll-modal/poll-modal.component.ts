@@ -21,6 +21,7 @@ export class PollModalComponent  extends BaseInquiryComponent implements OnInit 
 
   vote_options: VoteOption[] = [];
   votes: Vote[] = [];
+  vote_enabled: boolean = true;
   
   constructor(@Inject(MAT_DIALOG_DATA) 
     public data: DialogData,
@@ -48,6 +49,19 @@ export class PollModalComponent  extends BaseInquiryComponent implements OnInit 
         },
         error: (e) => console.error(e)
       });
+  }
+
+  vote(id: number): void {
+    const data = {
+      selected_option: id
+    }
+    this.inquiryService.vote(data)
+    .subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (e) => console.error(e)
+    });
   }
 
 }

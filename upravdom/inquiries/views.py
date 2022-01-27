@@ -96,10 +96,12 @@ def post_vote(request):
     if request.method == 'POST':
         vote_data = JSONParser().parse(request)
         vote_data['voter'] = request.user.id
-        vote_option = VoteOption.objects.get(pk=vote_data['selected_option'])
-        options = vote_option.poll.voteoption_set.all()
 
-        print(options)
+        vote_options = VoteOption.objects.get(pk=vote_data['selected_option']).poll.voteoption_set.all()
+        for option in vote_options:
+            if option.vote_set.values().filter(voter_id=request.user.id):
+                return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
+
         vote_serializer = VoteSerializer(data=vote_data)
         if vote_serializer.is_valid():
             vote_serializer.save()
