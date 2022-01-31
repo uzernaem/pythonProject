@@ -48,6 +48,9 @@ import { RouterModule } from '@angular/router';
 import { BaseInquiryComponent } from './components/base-inquiry/base-inquiry.component';
 import { AddPollComponent } from './components/add-poll/add-poll.component';
 import { PollModalComponent } from './components/poll-modal/poll-modal.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 
 
 const modules = [
@@ -80,6 +83,8 @@ const modules = [
   MatToolbarModule,
   ReactiveFormsModule,
   RouterModule,
+  MatRadioModule,
+  MatProgressBarModule
 ];
 
 @NgModule({

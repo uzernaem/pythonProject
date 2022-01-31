@@ -10,13 +10,15 @@
               </p>
             </mat-card-content>
             <mat-card-actions>
+            </mat-card-actions>
 
-            </mat-card-actions>          
-    
             <div *ngFor="let vote_option of vote_options">
-                <div><button mat-button (click)="vote(vote_option.id!)"><strong>{{ vote_option.vote_option_text }}</strong></button></div>
-                <div><label>Голосов: {{ vote_option.votes!.length }}</label></div>
-            </div>
+                <div><button mat-flat-button (click)="vote(vote_option.id!)">{{ vote_option.vote_option_text }}</button></div>
+                <mat-progress-bar mode="determinate" [value]="vote_option.percentage"></mat-progress-bar>
+                <div><label>{{vote_option.percentage}}%</label></div>
+            </div>            
+            <div>{{message}}</div>
+            <div>Всего голосов: {{vote_sum}}</div>
 
 
     </mat-dialog-content>

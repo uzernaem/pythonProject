@@ -49,6 +49,7 @@ export class VoteOption {
     poll?: Poll
     vote_option_text?: string
     votes?: Vote[]
+    percentage?: number
 }
 
 export class Vote {

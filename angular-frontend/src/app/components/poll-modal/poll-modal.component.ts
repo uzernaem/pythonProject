@@ -20,8 +20,11 @@ export class PollModalComponent  extends BaseInquiryComponent implements OnInit 
   @Input() poll: Poll = {};
 
   vote_options: VoteOption[] = [];
-  votes: Vote[] = [];
+  vote_sum: number = 0;
   vote_enabled: boolean = true;
+  message = '';
+
+  public customOption: string = 'customOption';
   
   constructor(@Inject(MAT_DIALOG_DATA) 
     public data: DialogData,
@@ -45,6 +48,16 @@ export class PollModalComponent  extends BaseInquiryComponent implements OnInit 
         next: (data) => {
           this.poll = data;
           this.vote_options = data.vote_options!;
+          this.vote_options.forEach(x => {this.vote_sum += x.votes!.length;
+            x.votes?.forEach(y => { 
+              if (y.voter==this.currentuser.id)
+                this.vote_enabled=false;
+              }
+            )});
+          if (this.vote_sum == 0)
+            this.vote_options.forEach(x => {x.percentage = 0});
+          else
+            this.vote_options.forEach(x => {x.percentage = Math.round(x.votes!.length / this.vote_sum * 100)});
           console.log(data);
         },
         error: (e) => console.error(e)
@@ -52,16 +65,25 @@ export class PollModalComponent  extends BaseInquiryComponent implements OnInit 
   }
 
   vote(id: number): void {
-    const data = {
-      selected_option: id
+    if (this.vote_enabled){
+      const data = {
+        selected_option: id
+      }
+      this.inquiryService.vote(data)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          this.vote_options.find(x => x.id === id)!.votes!.push(new Vote())        
+          this.vote_sum++;  
+          this.vote_options.forEach(x => {x.percentage = Math.round(x.votes!.length / this.vote_sum * 100)});
+          this.vote_enabled = false;
+        },
+        error: (e) => {
+          console.error(e);
+          this.message = "Вы уже проголосовали!"
+        }
+      });
     }
-    this.inquiryService.vote(data)
-    .subscribe({
-      next: (res) => {
-        console.log(res);
-      },
-      error: (e) => console.error(e)
-    });
+    else this.message = "Вы уже проголосовали!"
   }
-
 }
