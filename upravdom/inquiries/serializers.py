@@ -61,6 +61,20 @@ class ToDoSerializer(serializers.ModelSerializer):
         todo.save()
         return todo
 
+class ToDoListSerializer(serializers.ModelSerializer):
+    todo_category_name = serializers.CharField(read_only=True, source='get_todo_category_display')
+    todo_status_name = serializers.CharField(read_only=True, source='get_todo_status_display')
+    todo_priority_name = serializers.CharField(read_only=True, source='get_todo_priority_display')
+
+    def to_representation(self, instance):
+            representation = super(ToDoListSerializer, self).to_representation(instance)
+            representation['inquiry_creator'] = UserSerializer(instance.inquiry_creator).data
+            return representation
+
+    class Meta:
+        model = ToDo
+        fields = '__all__'
+
 
 # class ToDoUpdateSerializer(serializers.ModelSerializer):
 #     class Meta:
@@ -107,6 +121,21 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         )
         announcement.save()
         return announcement
+
+
+class AnnouncementListSerializer(serializers.ModelSerializer):
+    announcement_category_name = serializers.CharField(read_only=True, source='get_announcement_category_display')
+    
+    class Meta:
+        model = Announcement
+        fields = '__all__'
+    
+
+    def to_representation(self, instance):
+            representation = super(AnnouncementListSerializer, self).to_representation(instance)
+            representation['inquiry_creator'] = UserSerializer(instance.inquiry_creator).data
+            return representation
+
 
     # def update(self, instance, validated_data):
     #     instance.inquiry_updated_at = validated_data.get('inquiry_updated_at', instance.inquiry_updated_at)

@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser 
 from inquiries.serializers import UserSerializer, AnnouncementSerializer, ToDoSerializer, PollSerializer, NotificationSerializer, \
-    CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer, InfoSerializer
+    CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer, InfoSerializer, ToDoListSerializer, AnnouncementListSerializer
 from inquiries.models import Announcement, ToDo, Poll, Notification, Info, Property, Comment, VoteOption, Vote, Profile, ToDoCategory, Inquiry
 from django.contrib.auth.models import User
 
@@ -57,7 +57,8 @@ def todo_list(request):
         if title is not None:
             todos = todos.filter(title__icontains=title)
         
-        todos_serializer = ToDoSerializer(todos, many=True)
+        print(todos)
+        todos_serializer = ToDoListSerializer(todos, many=True)
         return JsonResponse(todos_serializer.data, safe=False)
 
     elif request.method == 'POST':
@@ -145,7 +146,7 @@ def announcement_list(request):
         if title is not None:
             announcements = announcements.filter(title__icontains=title)
         
-        announcements_serializer = AnnouncementSerializer(announcements, many=True)
+        announcements_serializer = AnnouncementListSerializer(announcements, many=True)
         return JsonResponse(announcements_serializer.data, safe=False)
 
     elif request.method == 'POST':
