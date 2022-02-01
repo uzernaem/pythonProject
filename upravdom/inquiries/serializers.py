@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.fields import ReadOnlyField
 from rest_framework.relations import PrimaryKeyRelatedField
-from .models import Announcement, ToDo, Poll, Notification, Property, Comment, ToDoCategory, VoteOption, Vote, Profile
+from .models import Announcement, ToDo, Poll, Notification, Property, Comment, ToDoCategory, VoteOption, Vote, Profile, Info
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -196,6 +196,12 @@ class NotificationSerializer(serializers.ModelSerializer):
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
+        fields = '__all__'
+
+
+class InfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Info
         fields = '__all__'
 
 

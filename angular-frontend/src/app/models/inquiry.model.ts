@@ -74,3 +74,8 @@ export class ToDoStatus {
     status_id?: string
     status_name?: string
 }
+
+export class Info {
+    info_title?: string
+    info_text?: string
+}

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ToDo, InquiryCategory, Announcement, Notification, Poll, Vote } from '../models/inquiry.model';
+import { ToDo, InquiryCategory, Announcement, Notification, Poll, Vote, Info } from '../models/inquiry.model';
 import { User } from '../models/user.model';
 import { serverUrl } from '../_services/baseurl';
 
@@ -9,6 +9,10 @@ import { serverUrl } from '../_services/baseurl';
   providedIn: 'root'
 })
 export class InquiryService {
+
+  getInfo() {
+    return this.http.get<Info[]>(serverUrl + 'info');
+  }
 
   constructor(private http: HttpClient) { }
 

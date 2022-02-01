@@ -50,6 +50,7 @@ import { AddPollComponent } from './components/add-poll/add-poll.component';
 import { PollModalComponent } from './components/poll-modal/poll-modal.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { InfoPanelComponent } from './components/info-panel/info-panel.component';
 
 
 
@@ -108,6 +109,7 @@ const modules = [
     BaseInquiryComponent,
     AddPollComponent,
     PollModalComponent,
+    InfoPanelComponent,
   ],
   imports: [modules, BrowserAnimationsModule],
   exports: [modules],

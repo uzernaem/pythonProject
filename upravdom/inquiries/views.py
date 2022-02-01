@@ -9,8 +9,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser 
 from inquiries.serializers import UserSerializer, AnnouncementSerializer, ToDoSerializer, PollSerializer, NotificationSerializer, \
-    CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer
-from inquiries.models import Announcement, ToDo, Poll, Notification, Property, Comment, VoteOption, Vote, Profile, ToDoCategory, Inquiry
+    CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer, InfoSerializer
+from inquiries.models import Announcement, ToDo, Poll, Notification, Info, Property, Comment, VoteOption, Vote, Profile, ToDoCategory, Inquiry
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -210,6 +210,18 @@ def notification_list(request):
             notifications_serializer.save()
             return JsonResponse(notifications_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(notifications_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def info_panel(request):
+
+    if request.method == 'GET':
+        infos = Info.objects.all()
+
+        
+        infos_serializer = InfoSerializer(infos, many=True)
+        return JsonResponse(infos_serializer.data, safe=False)
         
 
 @api_view(['GET', 'PUT', 'DELETE'])
