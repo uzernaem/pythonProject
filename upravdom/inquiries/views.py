@@ -7,9 +7,10 @@ from django.http.response import HttpResponse, JsonResponse
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
-from rest_framework.parsers import JSONParser 
+from rest_framework.parsers import JSONParser, FileUploadParser
 from inquiries.serializers import UserSerializer, AnnouncementSerializer, ToDoSerializer, PollSerializer, NotificationSerializer, \
-    CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer, InfoSerializer, ToDoListSerializer, AnnouncementListSerializer
+    CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer, InfoSerializer, ToDoListSerializer, AnnouncementListSerializer, \
+    FileSerializer
 from inquiries.models import Announcement, ToDo, Poll, Notification, Info, Property, Comment, VoteOption, Vote, Profile, ToDoCategory, Inquiry
 from django.contrib.auth.models import User
 
@@ -323,6 +324,19 @@ def todo_detail(request, pk):
                 inquiry_updated_at = timezone.now())
             return JsonResponse({'message': 'Статус заявки обновлён'}, status=status.HTTP_200_OK)
         return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
+
+class FileUploadView(APIView):
+    parser_class = (FileUploadParser,)
+
+    def post(self, request, *args, **kwargs):
+
+      file_serializer = FileSerializer(data=request.data)
+
+      if file_serializer.is_valid():
+          file_serializer.save()
+          return JsonResponse(file_serializer.data, status=status.HTTP_201_CREATED)
+      else:
+          return JsonResponse(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # @api_view(['GET', 'POST', 'DELETE'])

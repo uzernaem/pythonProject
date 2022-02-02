@@ -7,7 +7,7 @@ from rest_framework import routers
 #     CommentViewSet, \
 #     VoteOptionViewSet, VoteViewSet, ProfileViewSet, NotificationViewSet, \
 #     AnnouncementViewSet
-from .views import announcement_detail, announcement_list, comment_list, get_user, info_panel, notification_detail, notification_list, poll_detail, poll_list, post_vote, user_list, voteoption_list
+from .views import FileUploadView, announcement_detail, announcement_list, comment_list, get_user, info_panel, notification_detail, notification_list, poll_detail, poll_list, post_vote, user_list, voteoption_list
 
 router = routers.DefaultRouter()
 # router.register(r'announcements', AnnouncementViewSet, basename='Announcements')
@@ -38,4 +38,5 @@ urlpatterns = [
     re_path(r'^voteoptions$', voteoption_list),
     re_path(r'^vote$', post_vote),
     re_path(r'^info$', info_panel),
+    re_path(r'^upload$', FileUploadView.as_view())
 ]

@@ -20,6 +20,15 @@ class Inquiry(models.Model):
     inquiry_updated_at = models.DateTimeField(auto_now_add=True, help_text='Дата обновления заявки')
 
 
+class Attachment(models.Model):
+    attachment_id = models.AutoField(primary_key=True, help_text='Идентификатор вложения', blank=False)
+    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, blank=False, null=False, help_text='Заявка')
+    file = models.FileField(blank=False, null=False)
+
+    def __str__(self):
+        return self.file.name
+
+
 class InquiryForm(ModelForm):
     class Meta:
         model = Inquiry
