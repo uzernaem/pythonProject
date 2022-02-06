@@ -184,21 +184,20 @@ class Notification(Inquiry):
 class Property(models.Model):
     """Модель помещения"""
     property_id = models.AutoField(primary_key=True, help_text='Идентификатор помещения', blank=False)
-    property_street_name = models.CharField(max_length=100, help_text='Улица', blank=False)
-    property_building_number = models.IntegerField(help_text='Номер дома', blank=False)
-    property_entrance_number = models.IntegerField(help_text='Номер подъезда', blank=False)
-    property_flat_number = models.IntegerField(help_text='Номер этажа', blank=False)
-    property_room_number = models.IntegerField(help_text='Номер помещения', blank=False)
-    property_area = models.IntegerField(help_text='Площадь помещения', blank=False)
+    property_street_name = models.CharField("Улица", max_length=100, blank=False)
+    property_building_number = models.IntegerField("Номер дома", blank=False)
+    property_entrance_number = models.IntegerField("Номер подъезда", blank=False)
+    property_flat_number = models.IntegerField("Номер этажа", blank=False)
+    property_room_number = models.IntegerField("Номер помещения", blank=False)
+    property_area = models.IntegerField("Площадь помещения", blank=False)
     PROPERTY_TYPES = (
         ('0', 'Жилое'),
         ('1', 'Коммерческое'),
     )
-    property_type = models.CharField(
+    property_type = models.CharField("Тип помещения",
         max_length=1,
         choices=PROPERTY_TYPES,
         default='0',
-        help_text='Тип помещения',
         blank=False
     )
 
@@ -253,22 +252,22 @@ class Vote(models.Model):
 class Profile(models.Model):
     """Профиль пользователя системы"""
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Пользователь')
-    phone_number = models.CharField(max_length=100, help_text='Номер телефона')
-    photo = models.FileField(null=True, help_text='Фотография пользователя')
-    is_manager = models.BooleanField(default=False, blank=False, help_text='Признак управляющего')
+    phone_number = models.CharField("Номер телефона", max_length=100)
+    photo = models.FileField("Фотография профиля", null=True)
+    is_manager = models.BooleanField("Признак управляющего", default=False, blank=False)
 
     class Meta:
         ordering = ['is_manager', 'user']
         verbose_name = _('Дополнительная информация профиля')
         verbose_name_plural = _('Дополнительная информация профиля')  
 
-    # def __str__(self):
-    #     return {self.user.username}
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}'
 
 
 class Info(models.Model):
-    info_title = models.CharField(max_length=256, help_text='Заголовок информационного сообщения', blank=False)
-    info_text = models.TextField(max_length=4096, help_text='Текст информационного сообщения', blank=False, null=False)
+    info_title = models.CharField("Заголовок", max_length=256, blank=False)
+    info_text = models.TextField("Текст", max_length=4096, blank=False, null=False)
 
     def __str__(self):
          return str(self.info_title)
