@@ -269,3 +269,8 @@ def update_profile_signal(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
+
+def get_name(self):
+    return f'{self.first_name} {self.last_name}'
+
+User.add_to_class("__str__", get_name)
