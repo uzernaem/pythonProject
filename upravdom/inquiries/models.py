@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.contrib.postgres.fields import ArrayField
+from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
@@ -112,10 +113,10 @@ class ToDo(Inquiry):
         self.todo_assigned_to = assignee
 
 
-class Image(models.Model):
-    """Изображение в заявке"""
-    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, null=False, help_text='Заявка')
-    image = models.BinaryField(help_text='Изображение')
+# class Image(models.Model):
+#     """Изображение в заявке"""
+#     inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, null=False, help_text='Заявка')
+#     image = models.BinaryField(help_text='Изображение')
 
 
 class Poll(Inquiry):
@@ -204,6 +205,10 @@ class Property(models.Model):
     def __str__(self):
         return f'ул. {self.property_street_name}, д. {self.property_building_number}, кв. {self.property_room_number}'
 
+    class Meta:
+        verbose_name = _('помещение')
+        verbose_name_plural = _('помещения') 
+
 
 class Ownership(models.Model):
     """Модель отношения помещение-собственник"""
@@ -213,6 +218,9 @@ class Ownership(models.Model):
     def __str__(self):
         return f'{self.owner} - {self.property}'
 
+    class Meta:
+        verbose_name = _('владение недвижимостью')
+        verbose_name_plural = _('владение недвижимостью') 
 
 class Comment(models.Model):
     """Модель комментария в заявке на исполнение"""
@@ -246,11 +254,13 @@ class Profile(models.Model):
     """Профиль пользователя системы"""
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Пользователь')
     phone_number = models.CharField(max_length=100, help_text='Номер телефона')
-    photo = models.BinaryField(null=True, help_text='Фотография пользователя')
+    photo = models.FileField(null=True, help_text='Фотография пользователя')
     is_manager = models.BooleanField(default=False, blank=False, help_text='Признак управляющего')
 
     class Meta:
         ordering = ['is_manager', 'user']
+        verbose_name = _('Дополнительная информация профиля')
+        verbose_name_plural = _('Дополнительная информация профиля')  
 
     # def __str__(self):
     #     return {self.user.username}
@@ -262,6 +272,10 @@ class Info(models.Model):
 
     def __str__(self):
          return str(self.info_title)
+
+    class Meta:
+        verbose_name = _('информационное сообщение')
+        verbose_name_plural = _('информационные сообщения')  
 
 
 @receiver(post_save, sender=User)
