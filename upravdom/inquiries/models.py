@@ -254,7 +254,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Пользователь')
     phone_number = models.CharField("Номер телефона", max_length=100)
     is_manager = models.BooleanField("Признак управляющего", default=False, blank=False)
-    photo = models.ForeignKey('File', on_delete=models.CASCADE, blank=True, null=True, help_text='Фотография профиля')
+    photo = models.OneToOneField('File', on_delete=models.CASCADE, blank=True, null=True, help_text='Фотография профиля')
 
     class Meta:
         ordering = ['is_manager', 'user']
