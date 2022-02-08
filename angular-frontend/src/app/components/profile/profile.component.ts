@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
-import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { serverUrl } from 'src/app/_services/baseurl';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +11,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 })
 
 export class ProfileComponent implements OnInit {
-  currentUser?: User;
+  currentUser: User = {};
   profileForm!: FormGroup;
   imageForm!: FormGroup;
   submitted: boolean = false;
@@ -90,7 +89,7 @@ export class ProfileComponent implements OnInit {
         console.log(err);
       }
     );
-    window.location.reload();
+    //window.location.reload();
   }
   
 
