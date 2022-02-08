@@ -90,6 +90,8 @@ export class ProfileComponent implements OnInit {
         console.log(err);
       }
     );
+    window.location.reload();
   }
+  
 
 }

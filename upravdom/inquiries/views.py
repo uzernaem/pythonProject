@@ -371,7 +371,7 @@ def file_download(request, pk):
             file.file.delete()
             file.file = request.data['file']
             file.save()
-            return JsonResponse(file_serializer.data, status=status.HTTP_201_CREATED)
+            return JsonResponse({'message': 'Файл обновлён'}, status=status.HTTP_201_CREATED)
         else:
             return JsonResponse(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
