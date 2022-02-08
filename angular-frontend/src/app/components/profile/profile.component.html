@@ -2,7 +2,8 @@
   <mat-card>
     <mat-card-subtitle>{{ currentUser.username }}</mat-card-subtitle>
     <mat-card-title>{{ currentUser.first_name }} {{ currentUser.last_name }}</mat-card-title>
-    <mat-card-content>
+    <img mat-card-md-image src="{{ photo }}" alt="Изображение профиля">
+    <mat-card-content>      
       <div fxLayout="row wrap" fxLayoutGap="20px">
         <div class="icon-text"><mat-icon>mail</mat-icon>{{ currentUser.email }}</div>
         <div class="icon-text"><mat-icon>phone</mat-icon>{{ currentUser.phone_number }}</div>

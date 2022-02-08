@@ -4,6 +4,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
+
+from rest_framework.response import Response
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
@@ -11,7 +13,7 @@ from rest_framework.parsers import JSONParser, FileUploadParser
 from inquiries.serializers import UserSerializer, AnnouncementSerializer, ToDoSerializer, PollSerializer, NotificationSerializer, \
     CommentSerializer, VoteOptionSerializer, VoteSerializer, ProfileSerializer, ToDoCategorySerializer, InfoSerializer, ToDoListSerializer, AnnouncementListSerializer, \
     FileSerializer
-from inquiries.models import Announcement, ToDo, Poll, Notification, Info, Property, Comment, VoteOption, Vote, Profile, ToDoCategory, Inquiry
+from inquiries.models import Announcement, ToDo, Poll, Notification, Info, Property, Comment, VoteOption, Vote, Profile, ToDoCategory, Inquiry, File
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -327,16 +329,42 @@ def todo_detail(request, pk):
 
 class FileUploadView(APIView):
     parser_class = (FileUploadParser,)
-
+    
     def post(self, request, *args, **kwargs):
-
+      
       file_serializer = FileSerializer(data=request.data)
 
       if file_serializer.is_valid():
           file_serializer.save()
-          return JsonResponse(file_serializer.data, status=status.HTTP_201_CREATED)
+          return Response(file_serializer.data, status=status.HTTP_201_CREATED)
       else:
-          return JsonResponse(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+          return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def file_download(request, pk):
+    try: 
+        file = File.objects.get(pk=pk)
+    except Notification.DoesNotExist: 
+        return JsonResponse({'message': 'Файл не существует'}, status=status.HTTP_404_NOT_FOUND) 
+
+    if request.method == 'GET': 
+        file_serializer = FileSerializer(file)
+        data = JsonResponse(file_serializer.data)       
+        return data
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def file_upload(request):
+    if request.method == 'POST':
+        file_serializer = FileSerializer(data=request.data)
+        if file_serializer.is_valid():
+            file_serializer.save()
+            return JsonResponse(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return JsonResponse(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # @api_view(['GET', 'POST', 'DELETE'])

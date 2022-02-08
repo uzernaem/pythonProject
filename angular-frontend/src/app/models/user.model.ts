@@ -1,3 +1,5 @@
+import { File } from "./inquiry.model"
+
 export class User {
     id?: number
     username?: string
@@ -6,4 +8,5 @@ export class User {
     email?: string
     phone_number?: string
     is_manager?: boolean
+    photo?: File
 }

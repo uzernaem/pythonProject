@@ -21,13 +21,13 @@ class Inquiry(models.Model):
     inquiry_updated_at = models.DateTimeField(auto_now_add=True, help_text='Дата обновления заявки')
 
 
-class Attachment(models.Model):
-    attachment_id = models.AutoField(primary_key=True, help_text='Идентификатор вложения', blank=False)
-    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, blank=False, null=False, help_text='Заявка')
-    file = models.FileField(blank=False, null=False)
+# class Attachment(models.Model):
+#     attachment_id = models.AutoField(primary_key=True, help_text='Идентификатор вложения', blank=False)
+#     inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE, blank=False, null=False, help_text='Заявка')
+#     file = models.FileField(blank=False, null=False)
 
-    def __str__(self):
-        return self.file.name
+#     def __str__(self):
+#         return self.file.name
 
 
 class InquiryForm(ModelForm):
@@ -253,8 +253,8 @@ class Profile(models.Model):
     """Профиль пользователя системы"""
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, blank=False, help_text='Пользователь')
     phone_number = models.CharField("Номер телефона", max_length=100)
-    photo = models.FileField("Фотография профиля", null=True)
     is_manager = models.BooleanField("Признак управляющего", default=False, blank=False)
+    photo = models.ForeignKey('File', on_delete=models.CASCADE, blank=True, null=True, help_text='Фотография профиля')
 
     class Meta:
         ordering = ['is_manager', 'user']
@@ -274,7 +274,13 @@ class Info(models.Model):
 
     class Meta:
         verbose_name = _('информационное сообщение')
-        verbose_name_plural = _('информационные сообщения')  
+        verbose_name_plural = _('информационные сообщения')
+
+
+class File(models.Model):
+    file = models.FileField(blank=False, null=False)
+    def __str__(self):
+        return self.file.name
 
 
 @receiver(post_save, sender=User)

@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.models import Group
-from .models import Profile, ToDo, Poll, Announcement, Notification, Comment, VoteOption, Vote, Property, Ownership, Info
+from .models import Profile, ToDo, Poll, Announcement, Notification, Comment, VoteOption, Vote, Property, Ownership, Info, File
 
 class MyUserAdmin(UserAdmin):
 
@@ -27,8 +27,8 @@ admin.site.register(Profile)
 # admin.site.register(Vote)
 admin.site.register(Property)
 admin.site.register(Ownership)
-# admin.site.register(Image)
 admin.site.register(Info)
+admin.site.register(File)
 
 admin.site.unregister(Group)
 admin.site.unregister(User)
