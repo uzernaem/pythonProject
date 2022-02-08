@@ -59,8 +59,7 @@ def todo_list(request):
         title = request.GET.get('inquiry_title', None)
         if title is not None:
             todos = todos.filter(title__icontains=title)
-        
-        print(todos)
+
         todos_serializer = ToDoListSerializer(todos, many=True)
         return JsonResponse(todos_serializer.data, safe=False)
 
@@ -181,7 +180,6 @@ def poll_list(request):
         polls_data = JSONParser().parse(request)
         polls_data['inquiry_creator'] = request.user.id
         polls_serializer = PollSerializer(data=polls_data)
-        print(polls_data)
         if polls_serializer.is_valid():
             poll = polls_serializer.save()
             for option in polls_data['vote_options']:

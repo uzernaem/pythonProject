@@ -3,6 +3,7 @@ import { User } from 'src/app/models/user.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { serverUrl } from 'src/app/_services/baseurl';
+import { jsDocComment } from '@angular/compiler';
 
 @Component({
   selector: 'app-profile',
@@ -11,8 +12,7 @@ import { serverUrl } from 'src/app/_services/baseurl';
 })
 
 export class ProfileComponent implements OnInit {
-  currentUser: User = {  };
-  photo?: string;
+  currentUser?: User;
 
   constructor(private token: TokenStorageService, protected inquiryService: InquiryService) { }
 
@@ -20,8 +20,8 @@ export class ProfileComponent implements OnInit {
     this.inquiryService.getUser()
       .subscribe({
         next: (data) => {
+          data.photo_url = serverUrl.slice(0, -1) + data.photo?.file;
           this.currentUser = data;
-          this.photo = serverUrl.slice(0, -1) + data.photo?.file
           console.log(data);
         },
         error: (e) => console.error(e)

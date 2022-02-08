@@ -1,12 +1,12 @@
 <div class="container" >
   <mat-card>
-    <mat-card-subtitle>{{ currentUser.username }}</mat-card-subtitle>
-    <mat-card-title>{{ currentUser.first_name }} {{ currentUser.last_name }}</mat-card-title>
-    <img mat-card-md-image src="{{ photo }}" alt="Изображение профиля">
+    <mat-card-subtitle>{{ currentUser!.username }}</mat-card-subtitle>
+    <mat-card-title>{{ currentUser!.first_name }} {{ currentUser!.last_name }}</mat-card-title>
+    <img mat-card-md-image src="{{ currentUser!.photo_url }}" alt="Изображение профиля">
     <mat-card-content>      
       <div fxLayout="row wrap" fxLayoutGap="20px">
-        <div class="icon-text"><mat-icon>mail</mat-icon>{{ currentUser.email }}</div>
-        <div class="icon-text"><mat-icon>phone</mat-icon>{{ currentUser.phone_number }}</div>
+        <div class="icon-text"><mat-icon>mail</mat-icon>{{ currentUser!.email }}</div>
+        <div class="icon-text"><mat-icon>phone</mat-icon>{{ currentUser!.phone_number }}</div>
       </div>
     </mat-card-content>
     <mat-divider inset></mat-divider>
