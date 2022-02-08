@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 from django.urls.conf import re_path
 from django.views.generic import base
@@ -40,3 +42,6 @@ urlpatterns = [
     re_path(r'^info$', info_panel),
     re_path(r'^upload$', FileUploadView.as_view())
 ]
+
+if settings.DEBUG:
+  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
