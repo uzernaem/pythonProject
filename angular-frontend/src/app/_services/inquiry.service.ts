@@ -24,6 +24,10 @@ export class InquiryService {
     return this.http.get<User>(serverUrl + 'user');
   }
 
+  updateUser(data: any): Observable<User> {
+    return this.http.put(serverUrl + 'user', data);
+  }
+
   getToDos(): Observable<ToDo[]> {
     return this.http.get<ToDo[]>(serverUrl + 'todos');
   }

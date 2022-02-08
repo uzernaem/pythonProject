@@ -1,17 +1,57 @@
-<div class="container" >
-  <mat-card>
-    <mat-card-subtitle>{{ currentUser!.username }}</mat-card-subtitle>
-    <mat-card-title>{{ currentUser!.first_name }} {{ currentUser!.last_name }}</mat-card-title>
-    <img mat-card-md-image src="{{ currentUser!.photo_url }}" alt="Изображение профиля">
-    <mat-card-content>      
-      <div fxLayout="row wrap" fxLayoutGap="20px">
-        <div class="icon-text"><mat-icon>mail</mat-icon>{{ currentUser!.email }}</div>
-        <div class="icon-text"><mat-icon>phone</mat-icon>{{ currentUser!.phone_number }}</div>
-      </div>
-    </mat-card-content>
-    <mat-divider inset></mat-divider>
-    <mat-card-actions>
-    </mat-card-actions>
-    <mat-card-footer>
-    </mat-card-footer>
-  </mat-card>
+
+
+
+  <form [formGroup]="profileForm">
+        <mat-dialog-content class="mat-typography">
+          <div class="submit-form"> 
+            <img src="{{ currentUser!.photo_url }}" height="150" width="150" alt="Изображение профиля">
+              <div class="form-group">
+                <mat-form-field appearance="fill" >
+                  <mat-label>Имя</mat-label>
+                  <input matInput type="text" placeholder="Введите имя" name="first_name" required formControlName="first_name" maxlength="256">
+                  <mat-error>
+                    Пожалуйста, введите имя
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group">
+                <mat-form-field appearance="fill" >
+                  <mat-label>Фамилия</mat-label>
+                  <input matInput type="text" placeholder="Введите фамилию" name="last_name" required formControlName="last_name" maxlength="256">
+                  <mat-error>
+                    Пожалуйста, введите фамилию
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group">
+                <mat-form-field appearance="fill" >
+                  <mat-label>Номер телефона</mat-label>
+                  <input matInput type="text" placeholder="Введите номер телефона" name="phone_number" required formControlName="phone_number" maxlength="256">
+                  <mat-error>
+                    Пожалуйста, введите номер телефона
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group">
+                <mat-form-field appearance="fill" >
+                  <mat-label>Адрес электронной почты</mat-label>
+                  <input matInput type="text" placeholder="Введите адрес электронной почты" name="email" required formControlName="email" maxlength="256">
+                  <mat-error>
+                    Пожалуйста, введите адрес электронной почты
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+        </div>
+
+
+        </mat-dialog-content>
+    
+        <mat-dialog-actions>
+            <div><button mat-raised-button color="primary" [mat-dialog-close]="true" type="submit" (click)="updateProfile()">Обновить</button></div>
+            <div><label *ngIf="submitted">Данные пользователя обновлены</label></div>
+        </mat-dialog-actions>        
+      </form>
