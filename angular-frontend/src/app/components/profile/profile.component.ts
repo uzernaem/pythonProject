@@ -3,8 +3,7 @@ import { User } from 'src/app/models/user.model';
 import { InquiryService } from 'src/app/_services/inquiry.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { serverUrl } from 'src/app/_services/baseurl';
-import { jsDocComment } from '@angular/compiler';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -15,8 +14,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class ProfileComponent implements OnInit {
   currentUser?: User;
   profileForm!: FormGroup;
+  imageForm!: FormGroup;
   submitted: boolean = false;
-  constructor(private token: TokenStorageService, protected inquiryService: InquiryService) { }
+  imgSubmitted: boolean = false;
+  constructor(protected inquiryService: InquiryService) { }
 
   retrieveCurrentUser(): void {
     this.inquiryService.getUser()
@@ -58,6 +59,37 @@ export class ProfileComponent implements OnInit {
       phone_number: new FormControl('', Validators.required),
       email: new FormControl('', Validators.required)
       });
+    this.imageForm = new FormGroup({
+      profile: new FormControl('')
+    });
     this.retrieveCurrentUser();
   }
+  
+  onChange(event: any) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.imageForm.controls['profile'].setValue(file);
+    }
+  }
+
+  onSubmit() {    
+    const data = {
+      file: this.imageForm.controls['profile'].value
+    };
+
+
+    const formData = new FormData();
+    formData.append('file', this.imageForm.controls['profile'].value);
+    this.imgSubmitted = true;
+    this.inquiryService.updatePhoto(formData, this.currentUser!.photo!.id)
+    .subscribe(
+      (res) => {        
+        console.log(res);
+      },
+      (err) => {  
+        console.log(err);
+      }
+    );
+  }
+
 }

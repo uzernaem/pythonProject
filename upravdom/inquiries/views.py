@@ -364,11 +364,13 @@ def file_download(request, pk):
         return data
 
     elif request.method == 'PUT':
+        request.data['id'] = pk
         file_serializer = FileSerializer(data=request.data)
         if file_serializer.is_valid():
-            File.objects.filter(pk=pk).update(
-                file = request.data['file']
-            )
+            file = File.objects.get(pk=pk)
+            file.file.delete()
+            file.file = request.data['file']
+            file.save()
             return JsonResponse(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return JsonResponse(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -384,22 +386,6 @@ def file_upload(request):
             return JsonResponse(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return JsonResponse(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['PUT'])
-@permission_classes([permissions.IsAuthenticated])
-def file_update(request, pk):
-    if request.method == 'PUT':
-        file_serializer = FileSerializer(data=request.data)
-        if file_serializer.is_valid():
-            print(request.data)
-            # File.objects.filter(pk=pk).update(
-            #     file = 
-            # )
-            return JsonResponse(file_serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return JsonResponse(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 # @api_view(['GET', 'POST', 'DELETE'])
