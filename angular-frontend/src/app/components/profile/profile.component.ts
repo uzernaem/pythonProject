@@ -28,6 +28,16 @@ export class ProfileComponent implements OnInit {
       });
   }
 
+  // updateUser(publish: boolean): void {
+  //   this.inquiryService.updateAnnouncement(this.announcement.inquiry_id, this.announcement)
+  //     .subscribe({
+  //       next: (res) => {
+  //         console.log(res);
+  //       },
+  //       error: (e) => console.error(e)
+  //     });
+  // }
+
   ngOnInit(): void {
     this.retrieveCurrentUser();
   }

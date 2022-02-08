@@ -38,12 +38,23 @@ def user_list(request):
         return JsonResponse({'message': 'Доступ запрещён'}, status=status.HTTP_403_FORBIDDEN)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 @permission_classes([permissions.IsAuthenticated])
 def get_user(request):
     if request.method == 'GET':
         user = UserSerializer(request.user)
         return JsonResponse(user.data, safe=False)
+
+    elif request.method == 'PUT':
+        user_data = JSONParser().parse(request)
+        User.objects.filter(pk=request.user.pk).update(
+            first_name = user_data['first_name'],
+            last_name = user_data['last_name'],
+            email = user_data['email'])
+        Profile.objects.filter(pk=request.user.pk).update(phone_number = user_data['phone_number'])
+        return JsonResponse({'message': 'Профиль пользователя обновлён'}, status=status.HTTP_200_OK)
+        
+
 
 
 @api_view(['GET', 'POST', 'DELETE'])
