@@ -41,7 +41,7 @@ export class NotificationsListComponent extends BaseInquiryComponent implements 
     var e = new Date();
     s.setDate(s.getMonth()-10);
     this.range.patchValue({start: s, end: e})
-    this.retrieveNotifications();            
+    this.retrieveNotifications();
     this.retrieveCurrentUser();
   }
 

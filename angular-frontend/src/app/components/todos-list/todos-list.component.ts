@@ -7,6 +7,7 @@ import { AddInquiryComponent } from '../add-todo/add-todo.component';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { serverUrl } from 'src/app/_services/baseurl';
+import { BaseInquiryComponent } from '../base-inquiry/base-inquiry.component';
 
 @Component({
   selector: 'app-todos-list',
@@ -14,7 +15,7 @@ import { serverUrl } from 'src/app/_services/baseurl';
   styleUrls: ['./todos-list.component.css']
 })
 
-export class ToDosListComponent implements OnInit {
+export class ToDosListComponent extends BaseInquiryComponent implements OnInit {
 
   todos?: ToDo[];
   listedtodos?: ToDo[];
@@ -32,7 +33,8 @@ export class ToDosListComponent implements OnInit {
   categoryFilter: string[] = [];
   priorityFilter: string[] = [];
 
-  constructor(private inquiryService: InquiryService, public dialog: MatDialog, fb: FormBuilder) { 
+  constructor(inquiryService: InquiryService, public dialog: MatDialog, fb: FormBuilder) {     
+    super(inquiryService);
     this.filters = fb.group({
       new: true,
       worked: true,
@@ -58,7 +60,8 @@ export class ToDosListComponent implements OnInit {
     this.statusFilter = ['n', 'w', 'r'];
     this.categoryFilter = ['1', '2', '3', '4', '5'];
     this.priorityFilter = ['0', '1', '2', '3'];
-    this.retrieveInquiries();
+    this.retrieveInquiries();    
+    this.retrieveCurrentUser();
   }
 
   retrieveInquiries(): void {

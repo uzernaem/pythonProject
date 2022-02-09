@@ -49,7 +49,7 @@
 </mat-grid-list>
 </section>
 
-<button mat-button class="inquiries" color="primary" (click)="addInquiryDialog()"><mat-icon>create</mat-icon> Новая заявка</button>
+<button *ngIf="(!currentuser!.is_manager)" mat-button class="inquiries" color="primary" (click)="addInquiryDialog()"><mat-icon>create</mat-icon> Новая заявка</button>
 
 <div class="inquiries" *ngFor="let todo of listedtodos">
 <mat-expansion-panel>
@@ -68,7 +68,7 @@
     
       <mat-card-subtitle>
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="start center">
-          <img *ngIf="todo.inquiry_creator!.photo" mat-card-avatar src="{{ todo.inquiry_creator!.photo_url }}" alt="Изображение профиля">
+          <img *ngIf="todo.inquiry_creator!.photo!" mat-card-avatar src="{{ todo.inquiry_creator!.photo_url }}" alt="Изображение профиля">
           <div class="icon-text">{{ todo.inquiry_creator!.first_name }} {{ todo.inquiry_creator!.last_name }}</div>
           <div class="icon-text"><mat-icon>phone</mat-icon>{{ todo!.inquiry_creator!.phone_number }}</div>
         </div>
