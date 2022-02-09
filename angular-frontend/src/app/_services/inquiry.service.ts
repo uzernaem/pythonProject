@@ -18,6 +18,11 @@ export class InquiryService {
     return this.http.put<any>(`${serverUrl + 'files'}/${id}`, formData);
   }
 
+  createPhoto(formData: FormData, id: any) {
+    return this.http.post<any>(`${serverUrl + 'photo'}/${id}`, formData);
+  }
+
+
   getInfo() {
     return this.http.get<Info[]>(serverUrl + 'info');
   }

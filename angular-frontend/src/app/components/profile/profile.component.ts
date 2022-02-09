@@ -80,17 +80,31 @@ export class ProfileComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', this.imageForm.controls['profile'].value);
     this.imgSubmitted = true;
-    this.inquiryService.updatePhoto(formData, this.currentUser!.photo!.id)
-    .subscribe(
-      (res) => {        
-        console.log(res);
-      },
-      (err) => {  
-        console.log(err);
-      }
-    );
-    window.location.reload();
-  }
-  
 
+    if (this.currentUser!.photo)
+    {
+      this.inquiryService.updatePhoto(formData, this.currentUser!.photo!.id)
+      .subscribe(
+        (res) => {        
+          console.log(res);
+        },
+        (err) => {  
+          console.log(err);
+        }
+      );
+      window.location.reload();
+    }
+    else
+     {       
+      this.inquiryService.createPhoto(formData, this.currentUser!.id)
+      .subscribe(
+        (res) => {        
+          console.log(res);
+        },
+        (err) => {  
+          console.log(err);
+        }
+      );
+    }
+  }
 }

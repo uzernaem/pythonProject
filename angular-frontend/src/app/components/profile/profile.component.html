@@ -4,7 +4,8 @@
     <mat-dialog-content class="mat-typography">
       <div class="submit-form">
         <div class="form-group">
-            <img src="{{currentUser!.photo_url}}" alt="Изображение профиля">
+            <div><label *ngIf="!currentUser!.photo">Изображение профиля отсутствует</label></div>
+            <img *ngIf="currentUser!.photo" src="{{currentUser!.photo_url}}" alt="Изображение профиля">
         </div>
         <div class="form-group">
           <div><input text-align="center" type="file" name="profile" formControlName="profile" (change)="onChange($event)" /></div>

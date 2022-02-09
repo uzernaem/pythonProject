@@ -53,9 +53,6 @@ def get_user(request):
             email = user_data['email'])
         Profile.objects.filter(pk=request.user.pk).update(phone_number = user_data['phone_number'])
         return JsonResponse({'message': 'Профиль пользователя обновлён'}, status=status.HTTP_200_OK)
-        
-
-
 
 @api_view(['GET', 'POST', 'DELETE'])
 @permission_classes([permissions.IsAuthenticated])
@@ -383,6 +380,21 @@ def file_upload(request):
         file_serializer = FileSerializer(data=request.data)
         if file_serializer.is_valid():
             file_serializer.save()
+            return JsonResponse(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return JsonResponse(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def photo_upload(request, pk):
+    if request.method == 'POST':
+        file_serializer = FileSerializer(data=request.data)
+        if file_serializer.is_valid():
+            file = file_serializer.save()
+            Profile.objects.filter(user=pk).update(
+                photo = file
+            )
             return JsonResponse(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return JsonResponse(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
